@@ -1,7 +1,7 @@
 commander-core - это ядро для вашего обработчика команд, основан на [cocoscore](https://www.npmjs.com/package/cocoscore), написан на [Node.js](https://nodejs.org)
 модуль может работать не только с [vk-io](https://www.npmjs.com/package/vk-io) но и с [puregram](https://www.npmjs.com/package/puregram)
 
-| 📚 [Документация](https://github.com/Frodi1998/commander-core/tree/master/docs) | 📝 [Примеры](https://github.com/Frodi1998/commander-core/tree/master/examples) | 💬 [Беседа](https://vk.me/join/AJQ1d9IUCxhdW8s6imiygUU1)
+| 📚 [Документация](https://frodi1998.github.io/commander-core/) | 📝 [Примеры](https://github.com/Frodi1998/commander-core/tree/master/examples) | 💬 [Беседа](https://vk.me/join/AJQ1d9IUCxhdW8s6imiygUU1)
 |---------------------|---------------------|---------------------|
 
 Установка
