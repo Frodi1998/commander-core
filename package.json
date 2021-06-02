@@ -1,0 +1,49 @@
+{
+  "name": "commander-core",
+  "version": "2.0.2",
+  "description": "contextHandler",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "docs": "jsdoc -c jsdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frodi1998/commander-core.git"
+  },
+  "keywords": [
+    "node",
+    "handler",
+    "commander",
+    "core",
+    "bot"
+  ],
+  "author": "Frodi1998",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Frodi1998/commander-core/issues"
+  },
+  "homepage": "https://github.com/Frodi1998/commander-core#readme",
+  "dependencies": {
+    "events": "^3.1.0",
+    "glob": "^7.1.6"
+  },
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "better-docs": "^2.3.2",
+    "eslint": "^7.26.0",
+    "eslint-config-google": "^0.14.0",
+    "jsdoc": "^3.6.6"
+  }
+}
