@@ -184,6 +184,7 @@ export class Commander {
 		for(const com of this.commands) {
 			if((&lt;RegExp>com.pattern).test(context.command)) {
 				command = com;
+				break;
 			}
 		}
 

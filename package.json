@@ -1,14 +1,13 @@
 {
   "name": "commander-core",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "contextHandler",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "directories": {
     "doc": "docs",
     "example": "examples",
-    "lib": "lib",
-    "test": "test"
+    "lib": "lib"
   },
   "scripts": {
     "docs": "jsdoc -c jsdoc.json"

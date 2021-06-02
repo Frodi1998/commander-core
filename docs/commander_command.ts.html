@@ -136,7 +136,7 @@ export class Command {
      * @property {handler} handler
      */
     // eslint-disable-next-line
-    handler: (context: Record&lt;string, any>, bot: Record&lt;string, any> | IParams) => void | Promise&lt;void>;
+    handler: (context: any, bot: any) => void | Promise&lt;void>;
     
     /**
      * конструктор команды

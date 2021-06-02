@@ -108,11 +108,12 @@
 
 
     <section>
-        <article><p>commander-core - это ядро для вашего обработчика команд, основан на <a href="https://www.npmjs.com/package/cocoscore">cocoscore</a>, написан на <a href="https://nodejs.org">Node.js</a></p>
+        <article><p>commander-core - это ядро для вашего обработчика команд, основан на <a href="https://www.npmjs.com/package/cocoscore">cocoscore</a>, написан на <a href="https://nodejs.org">Node.js</a>
+модуль может работать не только с <a href="https://www.npmjs.com/package/vk-io">vk-io</a> но и с <a href="https://www.npmjs.com/package/puregram">puregram</a></p>
 <table>
 <thead>
 <tr>
-<th>📚 <a href="https://github.com/Frodi1998/commander-core/tree/master/docs">Документация</a></th>
+<th>📚 <a href="https://frodi1998.github.io/commander-core/">Документация</a></th>
 <th>📝 <a href="https://github.com/Frodi1998/commander-core/tree/master/examples">Примеры</a></th>
 <th>💬 <a href="https://vk.me/join/AJQ1d9IUCxhdW8s6imiygUU1">Беседа</a></th>
 </tr>
@@ -124,27 +125,38 @@
 <pre class="prettyprint source"><code>npm i commander-core
 </code></pre>
 <p>Использование</p>
-<p>Пример основан на <a href="https://www.npmjs.com/package/vk-io">vk-io</a>, вы можете использовать другое</p>
-<pre class="prettyprint source lang-js"><code>const { Handler } = require('commander-core');
-const { VK } = require('vk-io');
-const { format } = require('fecha')
-
-const TOKEN = process.env.TOKEN
-const GROUP_ID = process.env.GROUP_ID
-const vk = new VK({token: TOKEN})
-
-const params = {
-	getDateTime() {
-		return format(new Date(), 'D.MM.YY H:mm:ss')
-	}
+<p>Пример основан на <a href="https://www.npmjs.com/package/vk-io">vk-io</a>, вы можете использовать другое
+Сначало необходимо проинициализировать ваш проект</p>
+<pre class="prettyprint source"><code>npm init -y
+</code></pre>
+<p>далее в корне проекта создайте файл utils.js
+поместите туда следующий код</p>
+<pre class="prettyprint source lang-js"><code>/**
+ * класс утилит, понадобится для использования своих методов и констант в командах
+ * bot.testMetods() в теле команды
+ */
+class Utils {
+    developerId = 1 //ваш ID в вк так же можете поместить сюда массив идентификаторов
+    testMetods() {
+        return console.log('test')
+    }
 }
 
-const developerId = process.env.developerId;
+module.export = Utils
+</code></pre>
+<p>далее создайте файл start.js</p>
+<pre class="prettyprint source lang-js"><code>const { Handler } = require('commander-core')
+const { VK } = require('vk-io')
+const { format } = require('fecha')
+
+const Utils = require('./utils.js') //наши утилиты
+
+const TOKEN = process.env.TOKEN //токен от группы
+const vk = new VK({token: TOKEN})
 
 const handler = new Handler({
 	commandsDirectory: './commands',
-	developerId,
-	...params
+	params: 
 });
 
 handler.listener.on('command_error', async(context, bot, error) =>{
@@ -157,7 +169,7 @@ handler.listener.on('command_error', async(context, bot, error) =>{
 				${error.stack}`
 		})
 	}
-});
+}); //событие срабатывания ошибок в команде
 
 handler.listener.on('command_not_found', async(context, bot) =>{
 	if(!context.isChat) {
@@ -166,31 +178,37 @@ handler.listener.on('command_not_found', async(context, bot) =>{
 			🎒 Чтобы узнать список команд введите &quot;Помощь&quot;`
 		)
 	} 
-});
+}); //событие при отсутствие подходящей команды
 
 vk.updates.on('message_new', async(context, next) => {
 	context.text = context.text.replace(/^\[club(\d+)\|(.*)\]/i, '').trim();
 
 	await handler.execute(context);
-})
+});
 
 vk.updates.start()
 .then(x=>{
 	console.log('Старт')
 })
 </code></pre>
-<p>Пример команды</p>
-<pre class="prettyprint source lang-js"><code>const { Command } = require('commander-core');
+<p>далее создаем папку commands
+внутри папки создаем файл test.js</p>
+<pre class="prettyprint source lang-js"><code>//здесь и будет код команды
+const { Command } = require('commander-core');
 
+//по желанию вы можете объявить тут массив из команд
 exports.default = new Command({
-	pattern: /^(?:date)$/i,
-	name: 'дата',
+	pattern: /^(?:тест|test)$/i,
+	name: 'тест',
 	description: 'проверка даты',
+
 	params: {
-		commandType: 'date'
-	},
-	async handler(context, bot) {
-		context.send(bot.getDateTime());
+		commandType: 'test' 
+	}, //объект параметров команды, параметры создаются на свое усмотрение и используются для фильтрации команд
+
+	handler(context, bot) {
+		bot.testMetods() //созданная нами утилита в файле utils.js
+		context.send('тест');
 	}
 })
 </code></pre></article>
