@@ -38,6 +38,7 @@ module.export = Utils
 const { Handler } = require('commander-core')
 const { VK } = require('vk-io')
 const { format } = require('fecha')
+const path = require('path')
 
 const Utils = require('./utils.js') //наши утилиты
 
@@ -45,8 +46,8 @@ const TOKEN = process.env.TOKEN //токен от группы
 const vk = new VK({token: TOKEN})
 
 const handler = new Handler({
-	commandsDirectory: './commands',
-	params: 
+	commandsDirectory: path.resolve() + '/commands', //внимание, убедитесь что путь указан верно
+	params: new Utils() //загружаем наши утилиты в класс обработчика
 });
 
 handler.listener.on('command_error', async(context, bot, error) =>{
