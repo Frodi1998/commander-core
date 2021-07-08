@@ -13,20 +13,14 @@ export async function contextHandler<c extends Context>(context: c & IContext, b
 
 	bot.params.command = command;
 
-	try {
-		// bot.params.commander = bot.commander;
-		// bot.params.listener = bot.listener;
-
-		await Promise.all([
-			bot.listener.emit('command_job', context, bot.params),
-			command.handler(context, bot.params)
-		])
-	} 
-	
-	catch (error) {
+	await Promise.all([
+		bot.listener.emit('command_job', context, bot.params),
+		command.handler(context, bot.params)
+	])
+	.catch((error) =>{
 		bot.listener.emit('command_error', context, bot.params, error);
 		return;
-	}
+	})
 
 	bot.ping = Date.now() - startTime;
 

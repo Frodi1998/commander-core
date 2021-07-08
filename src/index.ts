@@ -1,33 +1,12 @@
 import { EventEmitter } from 'events';
 
 import { Commander } from './commander';
-// import { Listener } from './modules/listener';
 import { contextHandler } from './context/contextHandler';
 import { ConfigureError } from './errors';
 import { IHandlerParams, IContext, IParams } from './types';
 import { Context } from './types';
 export * from './commander/command'
 export * from "./types";
-
-// class Utils implements IParams {
-//     public listener: EventEmitter = null;
-
-//     public commander: Commander = null
-
-//     public ping: number = null;
-
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     [key: string]: any;
-
-//     constructor(params: IParams) {
-//         this.listener = params.listener;
-//         this.commander = params.commander;
-
-//         for(const [key, value] of Object.entries(params.default)) {
-//             this[key] = value;
-//         }
-//     }
-// }
 
 /**
  * @typedef {object} eventEmiter

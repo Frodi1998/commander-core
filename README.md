@@ -78,9 +78,9 @@ vk.updates.on('message_new', async(context, next) => {
 });
 
 vk.updates.start()
-.then(x=>{
+.then(x =>{
 	console.log('Старт')
-})
+});
 ```
 далее создаем папку commands
 внутри папки создаем файл test.js
