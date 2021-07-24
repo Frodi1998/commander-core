@@ -82,16 +82,18 @@ export class Handler<core extends IParams = null>{
      * })
      */
     constructor(data: IHandlerParams<core>) {
+        if(!data.commandsDirectory) {
+            throw new ConfigureError('не указана директория команд');
+        }
+
+        if(!data.params) {
+            throw new ConfigureError('не указаны параметры');
+        }
+
         this.commandsDirectory = data.commandsDirectory;
 		this.params = data.params;
         this.params.listener = this.listener;
         this.params.commander = this.commander;
-        
-        // this.params = new Utils({
-        //     listener: this.listener,
-        //     commander: this.commander,
-        //     default: data.params
-        // })
         
         return this
     }

@@ -36,7 +36,7 @@ module.export = Utils
 далее создайте файл start.js
 ```js
 const { Handler } = require('commander-core')
-const { VK } = require('vk-io')
+const { VK, getRandomId } = require('vk-io')
 const { format } = require('fecha')
 const path = require('path')
 
@@ -55,6 +55,7 @@ handler.listener.on('command_error', async(context, bot, error) =>{
 	if(bot.developerId) {
 		vk.api.messages.send({
 			user_ids: bot.developerId,
+			random_id: getRandomId(),
 			message: `Ошибка в команде ${bot.command.name}:
 				${context.senderId} => ${context.command}
 				${error.stack}`

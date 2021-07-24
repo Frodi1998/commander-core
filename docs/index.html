@@ -146,7 +146,7 @@ module.export = Utils
 </code></pre>
 <p>далее создайте файл start.js</p>
 <pre class="prettyprint source lang-js"><code>const { Handler } = require('commander-core')
-const { VK } = require('vk-io')
+const { VK, getRandomId } = require('vk-io')
 const { format } = require('fecha')
 const path = require('path')
 
@@ -165,6 +165,7 @@ handler.listener.on('command_error', async(context, bot, error) =>{
 	if(bot.developerId) {
 		vk.api.messages.send({
 			user_ids: bot.developerId,
+			random_id: getRandomId(),
 			message: `Ошибка в команде ${bot.command.name}:
 				${context.senderId} => ${context.command}
 				${error.stack}`
@@ -188,9 +189,9 @@ vk.updates.on('message_new', async(context, next) => {
 });
 
 vk.updates.start()
-.then(x=>{
+.then(x =>{
 	console.log('Старт')
-})
+});
 </code></pre>
 <p>далее создаем папку commands
 внутри папки создаем файл test.js</p>
