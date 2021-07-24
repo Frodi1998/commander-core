@@ -1,7 +1,7 @@
 import path = require('path');
 import { promisify } from 'util';
 import glob = require('glob');
-import { promises } from 'fs';
+import { existsSync } from 'fs';
 
 import { Command } from './command';
 import { ConfigureError } from '../errors';
@@ -9,9 +9,8 @@ import { Context, IContext } from '../types';
 
 const findFiles = promisify(glob);
 
-function existDirectory(dir: string): Promise<boolean> {
-    return promises.access(dir)
-        .then(() => true).catch(() => false);
+function existDirectory(dir: string): boolean {
+    return existsSync(dir)
 }
 
 /**
@@ -37,9 +36,7 @@ export class Commander {
 	 */
     async loadFromDirectory(dir: string): Promise<void> {
 		try {
-			const existDir = await existDirectory(dir);
-
-			if(!existDir) {
+			if(!existDirectory(dir)) {
 				throw new ConfigureError(`${dir} не существует`);
 			}
 
