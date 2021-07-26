@@ -1,16 +1,14 @@
-const { VK } = require('vk-io');
+const { VK, getRandomId } = require('vk-io');
 const { Handler } = require('commander-core');
 const path = require('path');
 const Utils = require('./utils');
-
-const currentFile = path.resolve() //расположение текущего файла
 
 const vk = VK({
     token: '' // токен группы
 })
 
 const handler = new Handler({
-    commandsDir: currentFile + '/commands', //директория с командами
+    commandsDir: path.resolve() + '/commands', //директория с командами
     params: new Utils() 
 }) //создание экземпляра обработчика
 
@@ -20,6 +18,7 @@ handler.listener.on('command_error', async(context, bot, error) =>{
 	if(bot.developerId) {
 		vk.api.messages.send({
 			user_ids: bot.developerId,
+			random_id: getRandomId(),
 			message: `Ошибка в команде ${bot.command.name}:
 				${context.senderId} => ${context.command}
 				${error.stack}`

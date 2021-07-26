@@ -25,19 +25,21 @@ npm init -y
  * bot.testMetods() в теле команды
  */
 class Utils {
-    developerId = 1 //ваш ID в вк так же можете поместить сюда массив идентификаторов
+	constructor() {
+        this.developerIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
+    }
+
     testMetods() {
         return console.log('test')
     }
 }
 
-module.export = Utils
+module.exports = Utils
 ```
 далее создайте файл start.js
 ```js
 const { Handler } = require('commander-core')
 const { VK, getRandomId } = require('vk-io')
-const { format } = require('fecha')
 const path = require('path')
 
 const Utils = require('./utils.js') //наши утилиты
