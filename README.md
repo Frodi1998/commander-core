@@ -92,7 +92,7 @@ vk.updates.start()
 const { Command } = require('commander-core');
 
 //по желанию вы можете объявить тут массив из команд
-exports.default = new Command({
+module.exports = new Command({
 	pattern: /^(?:тест|test)$/i,
 	name: 'тест',
 	description: 'проверка даты',
