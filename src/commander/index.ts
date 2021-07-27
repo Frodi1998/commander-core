@@ -43,9 +43,8 @@ export class Commander {
 			const absPath = path.resolve(dir);
 			const filePaths = await findFiles(`${absPath}/**/*.js`);
 
-			for(const filePath of filePaths) {
+			filePaths.forEach(async(filePath) => {
 				let file = await import(filePath);
-				// let file = require(filePath);
 				file = file.default? file.default: file;
 
 				if(!Array.isArray(file)) {
@@ -53,7 +52,7 @@ export class Commander {
 				}
 
 				if(file.length === 0) {
-					continue;
+					return;
 				}
 
 				for(const com of file) {
@@ -63,7 +62,29 @@ export class Commander {
 					
 					this.commands.push(com);
 				}
-			}
+			})
+
+			// for(const filePath of filePaths) {
+			// 	let file = await import(filePath);
+			// 	// let file = require(filePath);
+			// 	file = file.default? file.default: file;
+
+			// 	if(!Array.isArray(file)) {
+			// 		file = [file]
+			// 	}
+
+			// 	if(file.length === 0) {
+			// 		continue;
+			// 	}
+
+			// 	for(const com of file) {
+			// 		if(!(com instanceof Command)) {
+			// 			throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
+			// 		}
+					
+			// 		this.commands.push(com);
+			// 	}
+			// }
 		}
         
 		catch(err) {
