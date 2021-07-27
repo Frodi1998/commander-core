@@ -1,33 +1,47 @@
+/**
+ * перед использованием удалите все //@ts-ignore
+ */
 //@ts-ignore
-import { VK, MessageContext } from 'vk-io';
+import { VK, getRandomId, MessageContext } from 'vk-io';
 //@ts-ignore
 import { Handler, IContext, IParams } from 'commander-core';
-import path from 'path';
+import { resolve } from 'path';
 import Utils from './utils';
 
-const currentFile = path.resolve() //расположение текущего файла
+interface AdapterUtils extends Utils, IParams {}; //интерфейс утилит
+interface AdapterContext extends MessageContext, IContext {}; //интерфейс контекста
 
 const vk = new VK({
     token: '' // токен группы
 })
 
 const handler = new Handler<Utils>({
-    commandsDirectory: currentFile + '/commands', //директория с командами
+    commandsDirectory: resolve() + '/commands', //директория с командами
     params: new Utils() 
 }) //создание экземпляра обработчика
 
-handler.listener.on('command_error', async(context: MessageContext & IContext, bot: Utils & IParams, error: Error) =>{
+handler.listener.on('command_error', async(context: AdapterContext, bot: AdapterUtils, error: Error) =>{
 	context.send(`Произошла непредвиденная ошибка`);
 
 	if(bot.developerId) {
 		vk.api.messages.send({
 			user_ids: bot.developerId,
-			message: `Ошибка в команде ${bot.command.name}:
+			random_id: getRandomId(), 
+			message: `Ошибка в команде ${bot.command.name}: 
 				${context.senderId} => ${context.command}
 				${error.stack}`
 		}) 
 	}
 }) // событие срабатывает при ошибке в командах и отправляет текст ошибки в лс разработчику
+
+handler.listener.on('command_not_found', async(context: AdapterContext) =>{
+	if(!context.isChat) {
+		context.send(
+			`❗ Введенной вами команды не существует!
+			🎒 Чтобы узнать список команд введите "Помощь"`
+		)
+	} 
+});
 
 vk.updates.on('message_new', async(context) => {
     if(context.isGroup) return; //проверка на бота

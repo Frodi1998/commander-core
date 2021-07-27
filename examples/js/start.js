@@ -3,7 +3,7 @@ const { Handler } = require('commander-core');
 const path = require('path');
 const Utils = require('./utils');
 
-const vk = VK({
+const vk = new VK({
     token: '' // токен группы
 })
 
