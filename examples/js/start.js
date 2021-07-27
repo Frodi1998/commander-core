@@ -8,7 +8,7 @@ const vk = new VK({
 })
 
 const handler = new Handler({
-    commandsDir: path.resolve() + '/commands', //директория с командами
+    commandsDirectory: path.resolve() + '/commands', //директория с командами
     params: new Utils() 
 }) //создание экземпляра обработчика
 
