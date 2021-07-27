@@ -6,7 +6,7 @@ import { IParams } from "commander-core";
  * bot.testMetods() в теле команды
  */
 export default class Utils implements IParams {
-    developerId = 1 //ID разработчика в вк
+    developerIds = [1] //ID разработчика в вк
     testMetods(): void {
         return console.log('test');
     }
