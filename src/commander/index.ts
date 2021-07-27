@@ -45,6 +45,7 @@ export class Commander {
 
 			for(const filePath of filePaths) {
 				let file = await import(filePath);
+				// let file = require(filePath);
 				file = file.default? file.default: file;
 
 				if(!Array.isArray(file)) {

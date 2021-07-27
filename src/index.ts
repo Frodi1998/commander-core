@@ -113,8 +113,12 @@ export class Handler<core extends IParams = null>{
      */
 	async execute<T extends Context>(context: T & IContext): Promise<void> {
         if(!this.commander.commandsLoaded) {
-            await this.commander.loadFromDirectory(this.commandsDirectory)
-                .catch(() => new ConfigureError('не удалось загружить команды'))
+            try {
+                await this.commander.loadFromDirectory(this.commandsDirectory)
+            }
+            catch(err) {
+                throw new ConfigureError('не удалось загружить команды')
+            }
 
             this.commander.commandsLoaded = true;
         }
