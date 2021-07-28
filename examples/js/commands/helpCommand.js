@@ -10,7 +10,7 @@ module.exports = new Command({
     },
 
 	async handler(context, bot) {
-		const commands = bot.commander.commands
+		const commands = bot.commander.getCommands
             .filter(command => command.name);
 
         const tab = '&#12288;';

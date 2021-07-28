@@ -18,7 +18,7 @@ export default new Command({
 
 	async handler(context: AdapterContext, bot: AdapterUtils) {
         //@ts-ignore
-		const commands: Command[] = bot.commander.commands
+		const commands: Command[] = bot.commander.getCommands
             .filter((command: Command) => command.name);
 
         const tab = '&#12288;';
