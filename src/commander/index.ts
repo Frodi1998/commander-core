@@ -18,10 +18,7 @@ function existDirectory(dir: string): boolean {
  * @class 
  */
 export class Commander {
-	/**
-	 * @property {Array<Command>} commands массив команд
-	 */
-    public commands : Command[] = [];
+    private commands : Command[] = [];
 	
 	public commandsLoaded = false;
 
@@ -30,7 +27,14 @@ export class Commander {
     }
 
 	/**
-	 * @description загрузка команд
+	 * @description выводит команды
+	 */
+	get getCommands(): Command[] {
+		return this.commands
+	}
+
+	/**
+	 * @description загрузка команд из директории
 	 * @param {string} dir директория загрузки команд
 	 * @returns {Promise<void>}
 	 */
@@ -55,14 +59,24 @@ export class Commander {
 					return;
 				}
 
-				for(const com of file) {
-					if(!(com instanceof Command)) {
+				file.forEach((command) => {
+					if(!(command instanceof Command)) {
 						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
 					}
+
+					this.addCommand(command);
+				})
+
+				// for(const com of file) {
+				// 	if(!(com instanceof Command)) {
+				// 		throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
+				// 	}
 					
-					this.commands.push(com);
-				}
+					
+				// }
 			})
+
+			this.commandsLoaded = true;
 
 			// for(const filePath of filePaths) {
 			// 	let file = await import(filePath);
@@ -86,11 +100,18 @@ export class Commander {
 			// 	}
 			// }
 		}
-        
 		catch(err) {
 			this.commandsLoaded = false;
 		}
     }
+
+	/**
+	 * @description добавляет новые команды
+	 * @param command 
+	 */
+	addCommand(command: Command): void {
+		this.commands.push(command);
+	}
 
 	/**
 	 * @description поиск команды

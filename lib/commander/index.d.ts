@@ -5,18 +5,24 @@ import { Context, IContext } from '../types';
  * @class
  */
 export declare class Commander {
-    /**
-     * @property {Array<Command>} commands массив команд
-     */
-    commands: Command[];
+    private commands;
     commandsLoaded: boolean;
     constructor();
     /**
-     * @description загрузка команд
+     * @description выводит команды
+     */
+    get getCommands(): Command[];
+    /**
+     * @description загрузка команд из директории
      * @param {string} dir директория загрузки команд
      * @returns {Promise<void>}
      */
     loadFromDirectory(dir: string): Promise<void>;
+    /**
+     * @description добавляет новые команды
+     * @param command
+     */
+    addCommand(command: Command): void;
     /**
      * @description поиск команды
      * @param {any} context
