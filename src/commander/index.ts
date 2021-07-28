@@ -66,39 +66,9 @@ export class Commander {
 
 					this.addCommand(command);
 				})
-
-				// for(const com of file) {
-				// 	if(!(com instanceof Command)) {
-				// 		throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
-				// 	}
-					
-					
-				// }
 			})
 
 			this.commandsLoaded = true;
-
-			// for(const filePath of filePaths) {
-			// 	let file = await import(filePath);
-			// 	// let file = require(filePath);
-			// 	file = file.default? file.default: file;
-
-			// 	if(!Array.isArray(file)) {
-			// 		file = [file]
-			// 	}
-
-			// 	if(file.length === 0) {
-			// 		continue;
-			// 	}
-
-			// 	for(const com of file) {
-			// 		if(!(com instanceof Command)) {
-			// 			throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
-			// 		}
-					
-			// 		this.commands.push(com);
-			// 	}
-			// }
 		}
 		catch(err) {
 			this.commandsLoaded = false;

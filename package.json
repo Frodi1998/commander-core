@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/Frodi1998/commander-core#readme",
   "dependencies": {
-    "events": "^3.1.0",
     "glob": "^7.1.6"
   },
   "files": [

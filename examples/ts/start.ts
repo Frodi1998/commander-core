@@ -36,10 +36,7 @@ handler.listener.on('command_error', async(context: AdapterContext, bot: Adapter
 
 handler.listener.on('command_not_found', async(context: AdapterContext) =>{
 	if(!context.isChat) {
-		context.send(
-			`❗ Введенной вами команды не существует!
-			🎒 Чтобы узнать список команд введите "Помощь"`
-		)
+		context.send(`Введенной вами команды не существует!`)
 	} 
 });
 

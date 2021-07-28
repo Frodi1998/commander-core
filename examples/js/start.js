@@ -26,6 +26,12 @@ handler.listener.on('command_error', async(context, bot, error) =>{
 	}
 }) // событие срабатывает при ошибке в командах и отправляет текст ошибки в лс разработчику
 
+handler.listener.on('command_not_found', async(context, bot) =>{
+	if(!context.isChat) {
+		context.send(`Введенной вами команды не существует!`)
+	} 
+}); //событие при отсутствие подходящей команды
+
 vk.updates.on('message_new', async(context) => {
     if(context.isGroup) return; //проверка на бота
 
