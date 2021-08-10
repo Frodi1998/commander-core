@@ -20,6 +20,8 @@ const handler = new Handler<Utils>({
     params: new Utils() 
 }) //создание экземпляра обработчика
 
+handler.loadCommands().then(() => console.log('commands loaded')); //загружает команды
+
 handler.listener.on('command_error', async(context: AdapterContext, bot: AdapterUtils, error: Error) =>{
 	context.send(`Произошла непредвиденная ошибка`);
 

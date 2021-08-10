@@ -71,6 +71,9 @@ handler.listener.on('command_not_found', async(context, bot) =>{
 	} 
 }); //событие при отсутствие подходящей команды
 
+handler.loadCommands()
+.then(() => console.log('commands loaded')); //загружает команды
+
 vk.updates.on('message_new', async(context, next) => {
 	context.text = context.text.replace(/^\[club(\d+)\|(.*)\]/i, '').trim();
 
@@ -78,9 +81,7 @@ vk.updates.on('message_new', async(context, next) => {
 });
 
 vk.updates.start()
-.then(x =>{
-	console.log('Старт')
-});
+.then(() => console.log('Старт'));
 ```
 далее создаем папку commands
 внутри папки создаем файл test.js

@@ -32,6 +32,8 @@ handler.listener.on('command_not_found', async(context, bot) =>{
 	} 
 }); //событие при отсутствие подходящей команды
 
+handler.loadCommands().then(() => console.log('commands loaded')); //загружает команды
+
 vk.updates.on('message_new', async(context) => {
     if(context.isGroup) return; //проверка на бота
 

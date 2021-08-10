@@ -181,6 +181,9 @@ handler.listener.on('command_not_found', async(context, bot) =>{
 	} 
 }); //событие при отсутствие подходящей команды
 
+handler.loadCommands()
+.then(() => console.log('commands loaded')); //загружает команды
+
 vk.updates.on('message_new', async(context, next) => {
 	context.text = context.text.replace(/^\[club(\d+)\|(.*)\]/i, '').trim();
 
@@ -188,9 +191,7 @@ vk.updates.on('message_new', async(context, next) => {
 });
 
 vk.updates.start()
-.then(x =>{
-	console.log('Старт')
-});
+.then(() => console.log('Старт'));
 </code></pre>
 <p>далее создаем папку commands
 внутри папки создаем файл test.js</p>
@@ -212,7 +213,10 @@ module.exports = new Command({
 		context.send('тест');
 	}
 })
-</code></pre></article>
+</code></pre>
+<p>При использовании первое сообщение проигнорируется так как загрузка команд происходит в момент обработки первой команды</p>
+<p>#Обновление</p>
+<p>свойство bot.commander.commands стало приватным, для просмотра используйте метод bot.commander.getCommands</p></article>
     </section>
 
 

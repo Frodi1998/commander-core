@@ -193,6 +193,14 @@ export class Handler&lt;core extends IParams = null>{
         return this
     }
 
+    /**
+     * @description загружает команды из директории
+     * @returns {Promise&lt;void>}
+     */
+    loadCommands(): Promise&lt;void> {
+        return this.commander.loadFromDirectory(this.commandsDirectory)
+    }
+
     handler&lt;T extends Context>(context: T): Promise&lt;void> {
 		return this.execute&lt;T>(context)
 	}
@@ -210,12 +218,9 @@ export class Handler&lt;core extends IParams = null>{
         if(!this.commander.commandsLoaded) {
             try {
                 await this.commander.loadFromDirectory(this.commandsDirectory)
-            }
-            catch(err) {
+            } catch(err) {
                 throw new ConfigureError('не удалось загружить команды')
             }
-
-            this.commander.commandsLoaded = true;
         }
 
         this.listener.emit('command_begin', context, this.params)
