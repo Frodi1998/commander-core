@@ -72,6 +72,11 @@ export declare class Handler<core extends IParams = null> {
      * })
      */
     constructor(data: IHandlerParams<core>);
+    /**
+     * @description загружает команды из директории
+     * @returns {Promise<void>}
+     */
+    loadCommands(): Promise<void>;
     handler<T extends Context>(context: T): Promise<void>;
     /**
      * @description обработка команды
