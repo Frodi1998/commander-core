@@ -54,9 +54,9 @@ const handler = new Handler({
 
 handler.listener.on('command_error', async(context, bot, error) =>{
 	context.send(`Произошла непредвиденная ошибка`)
-	if(bot.developerId) {
+	if(bot.developerIds) {
 		vk.api.messages.send({
-			user_ids: bot.developerId,
+			user_ids: bot.developerIds,
 			random_id: getRandomId(),
 			message: `Ошибка в команде ${bot.command.name}:
 				${context.senderId} => ${context.command}

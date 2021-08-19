@@ -1,6 +1,6 @@
 {
   "name": "commander-core",
-  "version": "2.2.0-rc.1",
+  "version": "2.2.1",
   "description": "contextHandler",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
