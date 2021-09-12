@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { Commander } from "../commander";
+import { Commander } from "../core/commander";
 
 export abstract class Context {
     public id?: number;

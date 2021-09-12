@@ -2,15 +2,17 @@
   "name": "commander-core",
   "version": "2.2.1",
   "description": "contextHandler",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "directories": {
     "doc": "docs",
     "example": "examples",
-    "lib": "lib"
+    "dist": "dist"
   },
   "scripts": {
-    "docs": "jsdoc -c jsdoc.json"
+    "build": "tsc",
+    "docs": "jsdoc -c jsdoc.json",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,7 @@
     "glob": "^7.1.6"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "devDependencies": {
     "@types/glob": "^7.1.3",

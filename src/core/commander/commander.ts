@@ -5,7 +5,7 @@ import { existsSync } from 'fs';
 
 import { Command } from './command';
 import { ConfigureError } from '../errors';
-import { Context, IContext } from '../types';
+import { Context, IContext } from '../../types';
 
 const findFiles = promisify(glob);
 

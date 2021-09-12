@@ -1,5 +1,5 @@
 import { ConfigureError } from "../errors";
-import { IParams, ICommand, IContext, Context } from "../types";
+import { IParams, ICommand, IContext, Context } from "../../types";
 
 /**
  * @typedef {function} handler

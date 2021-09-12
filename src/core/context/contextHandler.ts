@@ -1,5 +1,5 @@
 import { Command } from "../commander/command";
-import { Context, IContext, IHandlerParams } from "../types";
+import { Context, IContext, IHandlerParams } from "../../types";
 
 export async function contextHandler<c extends Context>(context: c & IContext, bot: IHandlerParams): Promise<void> {
     const startTime: number = Date.now();
