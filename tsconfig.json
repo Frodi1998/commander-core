@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ES2019",
         "module": "commonjs",
-        "outDir": "lib",
+        "outDir": "dist",
         "esModuleInterop": true,
         "declaration": true,
         "skipLibCheck": true,
