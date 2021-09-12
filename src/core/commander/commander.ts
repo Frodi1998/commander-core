@@ -64,7 +64,7 @@ export class Commander {
 						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
 					}
 
-					this.addCommand(command);
+					this.addCommands(command);
 				})
 			})
 
@@ -79,8 +79,22 @@ export class Commander {
 	 * @description добавляет новые команды
 	 * @param command 
 	 */
-	addCommand(command: Command): void {
-		this.commands.push(command);
+	addCommands(commands: Command | Command[]): number {
+		if(!Array.isArray(commands)) {
+			return this.commands.push(commands);
+		}
+		
+		commands.forEach(command => this.commands.push(command));
+		
+		return this.commands.length;
+	}
+
+	/**
+	 * @description устанавливает команды удаляя старые
+	 * @param commands 
+	 */
+	setCommands(commands: Command[]): void {
+		this.commands = commands
 	}
 
 	/**

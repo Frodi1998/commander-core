@@ -1,137 +1,156 @@
 import { EventEmitter } from 'events';
 
-import { Commander } from './commander';
-import { contextHandler } from './context/contextHandler';
+import { Command, Commander } from './commander';
 import { ConfigureError } from './errors';
-import { IHandlerParams, IContext, IParams } from '../types';
+import { IContext } from '../types';
 import { Context } from '../types';
+import UtilsCore from './utils';
+import executeCommand from './executeCommand';
 
 /**
- * @typedef {object} eventEmiter
- * @property {function} emit создает новое событие
- * @property {function} on слушатель событий
- * @example
- * 
- * listener.emit('test', args1, args2 ...args)
- * listener.on('test', (args1, args2) => {
- * //code
- * })
+ * @interface
  */
+interface ICommandsLoader {
+  directory?: string;
+  fromArray?: Command[];
+}
 
- /**
- * 
- * @typedef {object} HandlerParams
- * @property {string} commandsDirectory директория команд
- * @property {object} params функции и константы
+/**
+ * @interface
  */
+export interface IHandlerParams<core extends UtilsCore = undefined> {
+  commands: ICommandsLoader;
+  strictLoader?: boolean
+  utils: core | UtilsCore;
+}
 
 /**
  * @description класс обработчика
  * @class
  */
-export class Handler<core extends IParams = null>{
-    public commandsDirectory : string;
+export class Handler<core extends UtilsCore = undefined>{
+  public commandsDirectory : string;
+
+  public events: EventEmitter;
+
+  public commander : Commander = new Commander();
+
+  public utils: core | UtilsCore;
+
+  private sourceCommands = '';
+
+  private strictLoader: boolean = false;
+
+  /**
+   * @description конструктор
+   * @param {IHandlerParams} data данные обработчика
+   * @returns {handler}
+   * @example js
+   * 
+   * const params = {
+   *  testMetods() {
+   *      console.log('test')
+   *  }
+   * }
+   * 
+   * const handler = new Handler({
+   *  commandsDirectory: path.resolve + '/commands',
+   *  params: params
+   * })
+   * 
+   * @example ts
+   * 
+   * import { IParams, Handler } from "commander-core";
+   * 
+   * class Params implements IParams {
+   *  testMetods() {
+   *      console.log('test')
+   *  }
+   * }
+   * 
+   * const handler = new Handler<Params>({
+   *  commandsDirectory: path.resolve + '/commands',
+   *  params: new Params();
+   * })
+   */
+  constructor(params: IHandlerParams<core> = {
+    commands: {},
+    strictLoader: false,
+    utils: new UtilsCore()
+  }) {
+    if(!params.commands.directory && !params.commands.fromArray.length) {
+      throw new ConfigureError('не указан источник загрузки команд');
+    }
+
+    this.strictLoader = params.strictLoader
     
-    public listener : EventEmitter = new EventEmitter();
-
-    public commander : Commander = new Commander();
-
-    public params: core & IParams | IParams
-
-    /**
-     * 
-     * @typedef {object} handler
-     * @property {string} commandsDirectory директория команд
-     * @property {object} params функции и константы доступны в команде через объект bot
-     * @property {listener} eventEmiter обработчик событий
-     * @property {commander} commander обработчик команд
-     */
-
-    /**
-     * @description конструктор
-     * @param {HandlerParams} data данные обработчика
-     * @returns {handler}
-     * @example js
-     * 
-     * const params = {
-     *  testMetods() {
-     *      console.log('test')
-     *  }
-     * }
-     * 
-     * const handler = new Handler({
-     *  commandsDirectory: path.resolve + '/commands',
-     *  params: params
-     * })
-     * 
-     * @example ts
-     * 
-     * import { IParams, Handler } from "commander-core";
-     * 
-     * class Params implements IParams {
-     *  testMetods() {
-     *      console.log('test')
-     *  }
-     * }
-     * 
-     * const handler = new Handler<Params>({
-     *  commandsDirectory: path.resolve + '/commands',
-     *  params: new Params();
-     * })
-     */
-    constructor(data: IHandlerParams<core>) {
-        if(!data.commandsDirectory) {
-            throw new ConfigureError('не указана директория команд');
-        }
-
-        if(!data.params) {
-            throw new ConfigureError('не указаны параметры');
-        }
-
-        this.commandsDirectory = data.commandsDirectory;
-		this.params = data.params;
-        this.params.listener = this.listener;
-        this.params.commander = this.commander;
-        
-        return this
+    if(!params.commands.fromArray.length && params.strictLoader) {
+      throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
-    /**
-     * @description загружает команды из директории
-     * @returns {Promise<void>}
-     */
-    loadCommands(): Promise<void> {
-        return this.commander.loadFromDirectory(this.commandsDirectory)
+    this.utils = params.utils;
+    this.events = params.utils.events;
+    this.commander = params.utils.commander;
+
+    if(params.commands.fromArray.length > 0) {
+      this.commander.commandsLoaded = true;
+      this.commander.setCommands(params.commands.fromArray)
+    }
+    
+    if(params.commands.directory) {
+      this.commandsDirectory = params.commands.directory;
+    } 
+
+    this.sourceCommands = params.commands.fromArray.length > 0? 'array': 'directory';
+  }
+
+  /**
+   * @description загружает команды из директории
+   * @returns {Promise<void>}
+   */
+  async loadCommands(): Promise<void> {
+    if(this.sourceCommands === 'array') {
+      throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
     }
 
-    handler<T extends Context>(context: T): Promise<void> {
-		return this.execute<T>(context)
-	}
+    await this.commander.loadFromDirectory(this.commandsDirectory);
 
-    /**
-     * @description обработка команды
-     * @param {object} context объект контекста возвращаемый из vk-io или puregram
-     * @returns {void}
-     * @example
-     * 
-     * execute<MessageContext>(context)
-     * // => void
-     */
-	async execute<T extends Context>(context: T & IContext): Promise<void> {
-        if(!this.commander.commandsLoaded) {
-            try {
-                await this.commander.loadFromDirectory(this.commandsDirectory)
-            } catch(err) {
-                throw new ConfigureError('не удалось загружить команды')
-            }
+    const commands = this.commander.getCommands;
+
+    if(!commands.length && this.strictLoader) {
+      throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
+    }
+  }
+
+  /**
+   * @description обработка команды
+   * @param {object} context объект контекста возвращаемый из vk-io или puregram
+   * @returns {void}
+   * @example
+   * 
+   * execute<MessageContext>(context)
+   * // => void
+   */
+  async execute<T extends Context>(context: T & IContext): Promise<void> {
+    if(!this.commander.commandsLoaded) {
+        try {
+          await this.commander.loadFromDirectory(this.commandsDirectory)
+        } catch(err) {
+          throw new ConfigureError('не удалось загружить команды')
         }
+    }
 
-        this.listener.emit('command_begin', context, this.params)
-		
-		if(!context.command) {
-			context.command = context.text
-		}
-		
-		return contextHandler<T>(context, this);
-	}
+    const params = {
+      context,
+      utils: this.utils
+    }
+
+    this.events.emit('command_begin', params)
+    
+    if(!context.command) {
+      context.command = context.text
+    }
+    
+    return executeCommand<T>(context, this.utils);
+  }
 }
