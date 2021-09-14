@@ -7,26 +7,33 @@ commander-core - это ядро для вашего обработчика ко
 Установка
 
 ## NPM
-```
+```shell
 npm i commander-core
 ```
-Использование
+## Yarn
+```shell
+yarn add commander-core
+```
 
+# Использование
 Пример основан на [vk-io](https://www.npmjs.com/package/vk-io), вы можете использовать другое
 Сначало необходимо проинициализировать ваш проект
-```
+```shell
 npm init -y
 ```
+
+# JavaScript
 далее в корне проекта создайте файл utils.js
 поместите туда следующий код
 ```js
+const { UtilsCore } = require('commander-core');
 /**
  * класс утилит, понадобится для использования своих методов и констант в командах
  * bot.testMetods() в теле команды
  */
-class Utils {
+class Utils extends UtilsCore {
 	constructor() {
-        this.developerIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
+        this.adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
     }
 
     testMetods() {
@@ -48,31 +55,36 @@ const TOKEN = process.env.TOKEN //токен от группы
 const vk = new VK({token: TOKEN})
 
 const handler = new Handler({
-	commandsDirectory: path.resolve() + '/commands', //внимание, убедитесь что путь указан верно
+	commands: {
+		directory: path.resolve(__dirname, 'commands')
+		// fromArray: [commands] //массив команд, используйте только один из двух методов загрузки команд
+	}
+	strictLoader: true, //строгость загрузки (проверяет есть ли команды иначе кидает ошибку)
 	params: new Utils() //загружаем наши утилиты в класс обработчика
 });
 
-handler.listener.on('command_error', async(context, bot, error) =>{
+handler.events.on('command_error', async({context, utils, error}) =>{
 	context.send(`Произошла непредвиденная ошибка`)
-	if(bot.developerIds) {
+	if(utils.adminIds) {
 		vk.api.messages.send({
-			user_ids: bot.developerIds,
+			user_ids: utils.adminIds,
 			random_id: getRandomId(),
-			message: `Ошибка в команде ${bot.command.name}:
+			message: `Ошибка в команде ${utils.command.name}:
 				${context.senderId} => ${context.command}
 				${error.stack}`
 		})
 	}
 }); //событие срабатывания ошибок в команде
 
-handler.listener.on('command_not_found', async(context, bot) =>{
+handler.listener.on('command_not_found', async({context}) =>{
 	if(!context.isChat) {
 		context.send(`Введенной вами команды не существует!`)
 	} 
 }); //событие при отсутствие подходящей команды
 
 handler.loadCommands()
-.then(() => console.log('commands loaded')); //загружает команды
+.then(() => console.log('commands loaded')) // загружает команды
+.catch(err => console.error(err)) // обязательно обрабатывайте ошибку
 
 vk.updates.on('message_new', async(context, next) => {
 	context.text = context.text.replace(/^\[club(\d+)\|(.*)\]/i, '').trim();
@@ -95,18 +107,99 @@ module.exports = new Command({
 	name: 'тест',
 	description: 'проверка даты',
 
-	params: {
-		commandType: 'test' 
-	}, //объект параметров команды, параметры создаются на свое усмотрение и используются для фильтрации команд
-
 	handler(context, bot) {
 		bot.testMetods() //созданная нами утилита в файле utils.js
 		context.send('тест');
 	}
 })
 ```
-При использовании первое сообщение проигнорируется так как загрузка команд происходит в момент обработки первой команды
 
-#Обновление
+# TypeScript
+далее в корне проекта создайте файл utils.ts
+поместите туда следующий код
+```ts
+import { UtilsCore } from 'commander-core';
+/**
+ * класс утилит, понадобится для использования своих методов и констант в командах
+ * bot.testMetods() в теле команды
+ */
+export class Utils extends UtilsCore {
+    public adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
 
-свойство bot.commander.commands стало приватным, для просмотра используйте метод bot.commander.getCommands
+    testMetods(): void {
+        return console.log('test')
+    }
+}
+```
+далее создайте файл start.ts
+```ts
+import { Handler } from 'commander-core';
+import { VK, getRandomId } from 'vk-io';
+import path from 'path';
+
+import Utils from './utils.js'; //наши утилиты
+
+const TOKEN = process.env.TOKEN //токен от группы
+const vk = new VK({token: TOKEN})
+
+const handler = new Handler({
+	commands: {
+		directory: path.resolve(__dirname, 'commands') //директория команд
+		// fromArray: [commands] //массив команд, используйте только один из двух методов загрузки команд
+	}
+	strictLoader: true, //строгость загрузки (проверяет есть ли команды иначе кидает ошибку)
+	params: new Utils() //загружаем наши утилиты в класс обработчика
+});
+
+handler.events.on('command_error', async({context, utils, error}) =>{
+	context.send(`Произошла непредвиденная ошибка`)
+	if(utils.adminIds) {
+		vk.api.messages.send({
+			user_ids: utils.adminIds,
+			random_id: getRandomId(),
+			message: `Ошибка в команде ${utils.command.name}:
+				${context.senderId} => ${context.command}
+				${error.stack}`
+		})
+	}
+}); //событие срабатывания ошибок в команде
+
+handler.listener.on('command_not_found', async({context}) =>{
+	if(!context.isChat) {
+		context.send(`Введенной вами команды не существует!`)
+	} 
+}); //событие при отсутствие подходящей команды
+
+handler.loadCommands()
+.then(() => console.log('commands loaded')) // загружает команды
+.catch(err => console.error(err)) // обязательно обрабатывайте ошибку
+
+vk.updates.on('message_new', async(context, next) => {
+	context.text = context.text.replace(/^\[club(\d+)\|(.*)\]/i, '').trim();
+
+	await handler.execute(context);
+});
+
+vk.updates.start()
+.then(() => console.log('Старт'));
+```
+далее создаем папку commands
+внутри папки создаем файл test.ts
+```js
+//здесь и будет код команды
+import { Command, IContext } from 'commander-core';
+import { Utils } from '../utils';
+import { MessageContext } from 'vk-io';
+
+//по желанию вы можете объявить тут массив из команд
+export default new Command({
+	pattern: /^(?:тест|test)$/i,
+	name: 'тест',
+	description: 'проверка даты',
+
+	handler(context: MessageContext & IContext, bot: Utils) {
+		bot.testMetods() //созданная нами утилита в файле utils.js
+		context.send('тест');
+	}
+})
+```
