@@ -48,32 +48,22 @@ export class Handler<core extends UtilsCore>{
    * @description конструктор
    * @param {IHandlerParams} data данные обработчика
    * @returns {handler}
-   * @example js
+   * @example
    * 
-   * const params = {
+   * const { Handler, UtilsCore } = require('commander-core');
+   * 
+   * class Utils extends UtilsCore {
    *  testMetods() {
    *      console.log('test')
    *  }
    * }
    * 
    * const handler = new Handler({
-   *  commandsDirectory: path.resolve + '/commands',
-   *  params: params
-   * })
-   * 
-   * @example ts
-   * 
-   * import { IParams, Handler } from "commander-core";
-   * 
-   * class Params implements IParams {
-   *  testMetods() {
-   *      console.log('test')
-   *  }
-   * }
-   * 
-   * const handler = new Handler<Params>({
-   *  commandsDirectory: path.resolve + '/commands',
-   *  params: new Params();
+   *  commands: {
+   *    directory: path.resolve(__dirname, 'commands'); //директория команд
+   *  },
+   *  strictLoader: true // строгая загрузка
+   *  utils: new Utils() // Utils
    * })
    */
   constructor(params: IHandlerParams<core> = {
