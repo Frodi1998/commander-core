@@ -65,6 +65,12 @@ export class Handler<core extends UtilsCore>{
    *  strictLoader: true // строгая загрузка
    *  utils: new Utils() // Utils
    * })
+   * @description
+   * так же в качестве источника загрузки можно указать массив
+   * @example
+   * commands: {
+    *   fromArray: [new Command(params)]
+    * },
    */
   constructor(params: IHandlerParams<core> = {
     commands: {},
@@ -149,14 +155,6 @@ export class Handler<core extends UtilsCore>{
    */
   async execute<C extends Context>(context: C & IContext): Promise<void> {
     logger('start command processing');
-
-    if(!this.commander.commandsLoaded) {
-        try {
-          await this.commander.loadFromDirectory(this.commandsDirectory)
-        } catch(err) {
-          throw new ConfigureError('не удалось загружить команды')
-        }
-    }
 
     this.events.emit('command_begin', {context, utils: this.utils});
     
