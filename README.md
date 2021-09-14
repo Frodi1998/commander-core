@@ -69,8 +69,8 @@ handler.events.on('command_error', async({context, utils, error}) =>{
 		vk.api.messages.send({
 			user_ids: utils.adminIds,
 			random_id: getRandomId(),
-			message: `Ошибка в команде ${utils.command.name}:
-				${context.senderId} => ${context.command}
+			message: `Ошибка в команде ${utils.getCommand.name}:
+				${context.senderId} => ${context.$command}
 				${error.stack}`
 		})
 	}
@@ -157,8 +157,8 @@ handler.events.on('command_error', async({context, utils, error}) =>{
 		vk.api.messages.send({
 			user_ids: utils.adminIds,
 			random_id: getRandomId(),
-			message: `Ошибка в команде ${utils.command.name}:
-				${context.senderId} => ${context.command}
+			message: `Ошибка в команде ${utils.getCommand.name}:
+				${context.senderId} => ${context.$command}
 				${error.stack}`
 		})
 	}
