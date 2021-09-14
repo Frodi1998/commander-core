@@ -11,10 +11,18 @@ import executeCommand from './executeCommand';
 const logger = debug('commander-core:handler');
 
 /**
+ * @description источники загрузок
  * @interface
  */
 interface ICommandsLoader {
+  /**
+   * @description директория
+   */
   directory?: string;
+
+  /**
+   * @description массив, при указании этого источника директория будет игнорироваться
+   */
   fromArray?: Command[];
 }
 
@@ -22,8 +30,19 @@ interface ICommandsLoader {
  * @interface
  */
 export interface IHandlerParams<core extends UtilsCore> {
+  /**
+   * @description объект описывающий источник загрузок
+   */
   commands: ICommandsLoader;
+
+  /**
+   * @description строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
+   */
   strictLoader?: boolean
+
+  /**
+   * @description настраиваемые утилиты для вашей логики, например для работы с базой данных
+   */
   utils: core | UtilsCore;
 }
 
@@ -65,12 +84,15 @@ export class Handler<core extends UtilsCore>{
    *  strictLoader: true // строгая загрузка
    *  utils: new Utils() // Utils
    * })
-   * @description
-   * так же в качестве источника загрузки можно указать массив
    * @example
-   * commands: {
-    *   fromArray: [new Command(params)]
-    * },
+   * 
+   * onst handler = new Handler({
+   *  commands: {
+   *    fromArray: [new Command(params)]; //массив команд
+   *  },
+   *  strictLoader: true // строгая загрузка
+   *  utils: new Utils() // Utils
+   * })
    */
   constructor(params: IHandlerParams<core> = {
     commands: {},
