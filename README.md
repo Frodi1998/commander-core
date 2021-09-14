@@ -60,7 +60,7 @@ const handler = new Handler({
 		// fromArray: [commands] //массив команд, используйте только один из двух методов загрузки команд
 	}
 	strictLoader: true, //строгость загрузки (проверяет есть ли команды иначе кидает ошибку)
-	params: new Utils() //загружаем наши утилиты в класс обработчика
+	utils: new Utils() //загружаем наши утилиты в класс обработчика
 });
 
 handler.events.on('command_error', async({context, utils, error}) =>{
@@ -148,7 +148,7 @@ const handler = new Handler({
 		// fromArray: [commands] //массив команд, используйте только один из двух методов загрузки команд
 	}
 	strictLoader: true, //строгость загрузки (проверяет есть ли команды иначе кидает ошибку)
-	params: new Utils() //загружаем наши утилиты в класс обработчика
+	utils: new Utils() //загружаем наши утилиты в класс обработчика
 });
 
 handler.events.on('command_error', async({context, utils, error}) =>{
