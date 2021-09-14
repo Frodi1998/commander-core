@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation handler.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Commander-core documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>handler.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { EventEmitter } from 'events';
+import debug from 'debug';
+
+import { Command, Commander } from './commander';
+import { ConfigureError } from './errors';
+import { IContext } from '../types';
+import { Context } from '../types';
+import { UtilsCore } from './utils';
+import executeCommand from './executeCommand';
+
+const logger = debug('commander-core:handler');
+
+/**
+ * @interface
+ */
+interface ICommandsLoader {
+  directory?: string;
+  fromArray?: Command[];
+}
+
+/**
+ * @interface
+ */
+export interface IHandlerParams&lt;core extends UtilsCore> {
+  commands: ICommandsLoader;
+  strictLoader?: boolean
+  utils: core | UtilsCore;
+}
+
+/**
+ * @description класс обработчика
+ * @class
+ */
+export class Handler&lt;core extends UtilsCore>{
+  public commandsDirectory : string;
+
+  public events: EventEmitter;
+
+  public commander : Commander;
+
+  public utils: core | UtilsCore;
+
+  private sourceCommands = '';
+
+  private strictLoader = false;
+
+  /**
+   * @description конструктор
+   * @param {IHandlerParams} data данные обработчика
+   * @returns {handler}
+   * @example
+   * 
+   * const { Handler, UtilsCore } = require('commander-core');
+   * 
+   * class Utils extends UtilsCore {
+   *  testMetods() {
+   *      console.log('test')
+   *  }
+   * }
+   * 
+   * const handler = new Handler({
+   *  commands: {
+   *    directory: path.resolve(__dirname, 'commands'); //директория команд
+   *  },
+   *  strictLoader: true // строгая загрузка
+   *  utils: new Utils() // Utils
+   * })
+   * @description
+   * так же в качестве источника загрузки можно указать массив
+   * @example
+   * commands: {
+    *   fromArray: [new Command(params)]
+    * },
+   */
+  constructor(params: IHandlerParams&lt;core> = {
+    commands: {},
+    strictLoader: false,
+    utils: new UtilsCore()
+  }) {
+    logger('create handler start');
+    this.strictLoader = params.strictLoader
+
+    logger('strictLoader: %s', this.strictLoader);
+
+    if(!params.commands.directory &amp;&amp; !params.commands.fromArray?.length) {
+      throw new ConfigureError('не указан источник загрузки команд');
+    }
+    
+    if (params.strictLoader
+      &amp;&amp; !params.commands.fromArray?.length
+      &amp;&amp; !params.commands.directory) {
+      throw new ConfigureError('Строгий режим загрузки! команды не найдены');
+    }
+
+    this.utils = params.utils;
+    logger('handler.utils: %o', this.utils);
+    
+    this.events = params.utils.events;
+    logger('handler.events: %o', this.events);
+
+    this.commander = params.utils.commander;
+    logger('handler.commander: %o', this.commander);
+
+    if(params.commands.fromArray?.length > 0) {
+      this.commander.commandsLoaded = true;
+      this.commander.setCommands(params.commands.fromArray)
+    }
+    
+    if(params.commands.directory) {
+      this.commandsDirectory = params.commands.directory;
+    } 
+
+    this.sourceCommands = params.commands.fromArray?.length > 0? 'array': 'directory';
+    logger('sourceCommands: %s', this.sourceCommands)
+    logger('create handler complited');
+  }
+
+  get [Symbol.toStringTag](): string {
+		return 'Handler';
+	}
+
+  /**
+   * @description загружает команды из директории
+   * @returns {Promise&lt;void>}
+   */
+  async loadCommands(): Promise&lt;void> {
+    logger('booting commands');
+
+    if(this.sourceCommands === 'array') {
+      throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
+    }
+
+    await this.commander.loadFromDirectory(this.commandsDirectory);
+
+    const commands: Command[] = this.commander.getCommands;
+    logger('commands count: %d', commands.length);
+
+    if(commands.length &lt; 1 &amp;&amp; this.strictLoader) {
+      logger('booting commands error');
+      throw new ConfigureError('Строгий режим загрузки! команды не найдены');
+    }
+    
+    logger('handler.commander: %o', this.commander);
+    logger('booting commands complited');
+  }
+
+  /**
+   * @description обработка команды
+   * @param {object} context объект контекста возвращаемый из vk-io или puregram
+   * @returns {void}
+   * @example
+   * 
+   * execute&lt;MessageContext>(context)
+   * // => void
+   */
+  async execute&lt;C extends Context>(context: C &amp; IContext): Promise&lt;void> {
+    logger('start command processing');
+
+    this.events.emit('command_begin', {context, utils: this.utils});
+    
+    if(!context.$command) {
+      context.$command = context.text
+    }
+    
+    return executeCommand&lt;C, core | UtilsCore>(context, this.utils);
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

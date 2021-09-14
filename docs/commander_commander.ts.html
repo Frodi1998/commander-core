@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation commander/command.ts</title>
+  <title>Documentation commander/commander.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -84,7 +84,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>commander/command.ts</h1>
+                    <h1>commander/commander.ts</h1>
                 </header>
                 
 
@@ -93,122 +93,149 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { ConfigureError } from "../errors";
-import { ICommand, IContext, Context } from "../../types";
+            <pre class="prettyprint source linenums"><code>import path = require('path');
+import { promisify } from 'util';
+import glob = require('glob');
+import { existsSync } from 'fs';
+import debug from 'debug';
+
+import { Command } from './command';
+import { ConfigureError } from '../errors';
+import { Context, IContext } from '../../types';
+
+const findFiles = promisify(glob);
+const logger = debug('commander-core:commander');
+
+function existDirectory(dir: string): boolean {
+    return existsSync(dir)
+}
 
 /**
- * @description Класс команды
- * @class
+ * @description класс обработки
+ * @class 
  */
-export class Command {
-    /**
-     * @property {RegExp | string} pattern паттерн команды
-     */
-    public pattern: RegExp | string;
+export class Commander {
+  private commands : Command[] = [];
+	
+	public commandsLoaded = false;
 
-    /**
-     * @property {string} name название команды
-     */
-    public name?: string;
+	get [Symbol.toStringTag](): string {
+		return 'Commander';
+	}
 
-    /**
-     * @property {string} description описание команды
-     */
-    public description?: string = '';
+	/**
+	 * @description выводит команды
+	 */
+	get getCommands(): Command[] {
+		return this.commands
+	}
 
-    /**
-     * @property {Array&lt;Command>} commands массив подкоманд 
-     */
-    public commands: Command[] = [];
+	/**
+	 * @description загрузка команд из директории
+	 * @param {string} dir директория загрузки команд
+	 * @returns {Promise&lt;void>}
+	 */
+    async loadFromDirectory(dir: string): Promise&lt;void> {
+		try {
+			if(!existDirectory(dir)) {
+        logger('Commandsdirectory not found');
+				throw new ConfigureError(`${dir} не существует`);
+			}
 
-    /**
-     * @property {handler} handler
-     */
-    // eslint-disable-next-line
-    handler: (context: any, bot: any) => void | Promise&lt;void>;
+			const absPath = path.resolve(dir);
+			const filePaths = await findFiles(`${absPath}/**/*.js`);
 
-    [key: string]: unknown;
-    
-    /**
-     * конструктор команды
-     * @param data 
-     * @example
-     * 
-     * new Command({
-     *  pattern: /test/i,
-     *  description: 'test',
-     * 
-     *  params: {
-     *      commandsType: 'test'
-     *  },
-     *  
-     *  handler(context) {
-     *      return context.send('test');
-     *  }
-     * })
-     */
-    constructor(data: ICommand) {
-        if(!data.pattern) {
-			throw new ConfigureError('Не указан pattern команды (регулярное выражение)');
-        }
+      logger('Commandsdirectory files %O', filePaths);
 
-        if(!(data.pattern instanceof RegExp)) {
-			data.pattern = new RegExp(data.pattern);
+			await filePaths.forEach(async(filePath) => {
+				let file = await import(filePath);
+				file = file.default? file.default: file;
+        logger('fileName: %s, fileContent: %o', filePath, file);
+
+				if(!Array.isArray(file)) {
+					file = [file]
+				}
+
+				if(file.length === 0) {
+					return;
+				}
+
+				file.forEach((command) => {
+					if(!(command instanceof Command)) {
+            logger('Command not instance Command');
+						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
+					}
+
+					this.addCommands(command);
+				})
+			})
+
+			this.commandsLoaded = true;
+		} catch(err) {
+      console.error(err);
+			this.commandsLoaded = false;
 		}
-
-        if(!data.handler) {
-			throw new ConfigureError('Не указан обработчик команды');
-		}
-
-		if(typeof data.handler !== 'function') {
-			throw new ConfigureError('Обработчик команды не является функцией');
-        }
-
-        const { 
-            pattern, 
-            name, 
-            description,  
-            commands, 
-            handler 
-        } = data;
-        
-        this.pattern = pattern;
-		this.name = name;
-		this.description = description || '';
-		this.commands = &lt;Command[] | []>commands || [];
-        this.handler = handler;
     }
 
-    get [Symbol.toStringTag](): string {
-		return 'Command';
+	/**
+	 * @description добавляет новые команды
+	 * @param command 
+	 */
+	addCommands(commands: Command | Command[]): number {
+		if(!Array.isArray(commands)) {
+      logger('add new command');
+			return this.commands.push(commands);
+		}
+		
+    logger('add new commands');
+		commands.forEach(command => this.commands.push(command));
+		
+		return this.commands.length;
 	}
 
-    /**
-     * @description поиск подкоманд
-     * @param {Record&lt;string, any>} context 
-     * @returns {Command}
-     */
-    findSubCommand&lt;c extends Context>(context: c &amp; IContext): Command {
-        let command: Command;
-
-        for(const subCommand of this.commands) {            
-            if ((&lt;RegExp>subCommand.pattern).test(context.body[1])) {
-                command = subCommand;
-            }
-        }
-
-        if(!command) {
-            return this;
-        }
-
-        context.body = context.body[1].match(command.pattern);
-
-        if(command.commands.length) {
-            command = (&lt;Command>command).findSubCommand&lt;c>(context);
-        }      
-
-        return command;
+	/**
+	 * @description устанавливает команды удаляя старые
+	 * @param commands 
+	 */
+	setCommands(commands: Command[]): void {
+    logger('set new commands');
+		this.commands = commands
 	}
+
+	/**
+	 * @description поиск команды
+	 * @param {any} context 
+	 * @returns {Command}
+	 * @example ts
+	 * 
+	 * import { MessageContext } from "vk-io";
+	 * 
+	 * const command = commander.find&lt;MessageContext>(context)
+	 */
+    async find&lt;c extends Context>(context: c &amp; IContext): Promise&lt;Command> {
+		let command: Command;
+
+		for await(const com of this.commands) {
+			if((&lt;RegExp>com.pattern).test(context.$command)) {
+        logger('command found');
+				command = com;
+				break;
+			}
+		}
+
+		if(!command) {
+			return null;
+		}
+
+		context.body = context.$command.match(command.pattern)
+
+		if((&lt;Command[]>command.commands).length) {
+      logger('find subсommand');
+      command = command.findSubCommand&lt;c>(context);
+		}
+
+		return command;
+    }
 }</code></pre>
         </article>
     </section>

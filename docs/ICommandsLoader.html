@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation commander/command.ts</title>
+  <title>Documentation ICommandsLoader</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -83,135 +81,99 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Source</p>
-                    <h1>commander/command.ts</h1>
+                    <p>Interface</p>
+                    <h1>ICommandsLoader</h1>
                 </header>
                 
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { ConfigureError } from "../errors";
-import { ICommand, IContext, Context } from "../../types";
-
-/**
- * @description Класс команды
- * @class
- */
-export class Command {
-    /**
-     * @property {RegExp | string} pattern паттерн команды
-     */
-    public pattern: RegExp | string;
-
-    /**
-     * @property {string} name название команды
-     */
-    public name?: string;
-
-    /**
-     * @property {string} description описание команды
-     */
-    public description?: string = '';
-
-    /**
-     * @property {Array&lt;Command>} commands массив подкоманд 
-     */
-    public commands: Command[] = [];
-
-    /**
-     * @property {handler} handler
-     */
-    // eslint-disable-next-line
-    handler: (context: any, bot: any) => void | Promise&lt;void>;
-
-    [key: string]: unknown;
-    
-    /**
-     * конструктор команды
-     * @param data 
-     * @example
-     * 
-     * new Command({
-     *  pattern: /test/i,
-     *  description: 'test',
-     * 
-     *  params: {
-     *      commandsType: 'test'
-     *  },
-     *  
-     *  handler(context) {
-     *      return context.send('test');
-     *  }
-     * })
-     */
-    constructor(data: ICommand) {
-        if(!data.pattern) {
-			throw new ConfigureError('Не указан pattern команды (регулярное выражение)');
-        }
-
-        if(!(data.pattern instanceof RegExp)) {
-			data.pattern = new RegExp(data.pattern);
-		}
-
-        if(!data.handler) {
-			throw new ConfigureError('Не указан обработчик команды');
-		}
-
-		if(typeof data.handler !== 'function') {
-			throw new ConfigureError('Обработчик команды не является функцией');
-        }
-
-        const { 
-            pattern, 
-            name, 
-            description,  
-            commands, 
-            handler 
-        } = data;
+        <h2>ICommandsLoader</h2>
         
-        this.pattern = pattern;
-		this.name = name;
-		this.description = description || '';
-		this.commands = &lt;Command[] | []>commands || [];
-        this.handler = handler;
-    }
+    
+</header>
 
-    get [Symbol.toStringTag](): string {
-		return 'Command';
-	}
+<article>
+    <div class="container-overview">
+    
+        
 
-    /**
-     * @description поиск подкоманд
-     * @param {Record&lt;string, any>} context 
-     * @returns {Command}
-     */
-    findSubCommand&lt;c extends Context>(context: c &amp; IContext): Command {
-        let command: Command;
+        
 
-        for(const subCommand of this.commands) {            
-            if ((&lt;RegExp>subCommand.pattern).test(context.body[1])) {
-                command = subCommand;
-            }
-        }
 
-        if(!command) {
-            return this;
-        }
+<dl class="details">
 
-        context.body = context.body[1].match(command.pattern);
+    
 
-        if(command.commands.length) {
-            command = (&lt;Command>command).findSubCommand&lt;c>(context);
-        }      
+    
 
-        return command;
-	}
-}</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="handler.ts.html" class="button">View Source</a>
+            <span>
+                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line125">line 125</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
