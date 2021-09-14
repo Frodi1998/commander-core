@@ -1,11 +1,11 @@
-import { IParams } from '../dist/main';
+import { UtilsCore } from '../dist/main';
 
-export default class Utils implements IParams {
+export default class Utils extends UtilsCore {
     adminId = 1;
 
     testMetod() {
-        console.log('testMetod complit');
+        console.log('testMetod complited');
     }
 }
 
-export const utilsInstance = new Utils()
+// export const utilsInstance = new Utils()

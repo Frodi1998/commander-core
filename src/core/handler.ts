@@ -1,11 +1,14 @@
 import { EventEmitter } from 'events';
+import debug from 'debug';
 
 import { Command, Commander } from './commander';
 import { ConfigureError } from './errors';
 import { IContext } from '../types';
 import { Context } from '../types';
-import UtilsCore from './utils';
+import { UtilsCore } from './utils';
 import executeCommand from './executeCommand';
+
+const logger = debug('commander-core:handler');
 
 /**
  * @interface
@@ -18,7 +21,7 @@ interface ICommandsLoader {
 /**
  * @interface
  */
-export interface IHandlerParams<core extends UtilsCore = undefined> {
+export interface IHandlerParams<core extends UtilsCore> {
   commands: ICommandsLoader;
   strictLoader?: boolean
   utils: core | UtilsCore;
@@ -28,12 +31,12 @@ export interface IHandlerParams<core extends UtilsCore = undefined> {
  * @description класс обработчика
  * @class
  */
-export class Handler<core extends UtilsCore = undefined>{
+export class Handler<core extends UtilsCore>{
   public commandsDirectory : string;
 
   public events: EventEmitter;
 
-  public commander : Commander = new Commander();
+  public commander : Commander;
 
   public utils: core | UtilsCore;
 
@@ -78,21 +81,31 @@ export class Handler<core extends UtilsCore = undefined>{
     strictLoader: false,
     utils: new UtilsCore()
   }) {
-    if(!params.commands.directory && !params.commands.fromArray.length) {
+    logger('create handler start');
+    this.strictLoader = params.strictLoader
+
+    logger('strictLoader: %s', this.strictLoader);
+
+    if(!params.commands.directory && !params.commands.fromArray?.length) {
       throw new ConfigureError('не указан источник загрузки команд');
     }
-
-    this.strictLoader = params.strictLoader
     
-    if(!params.commands.fromArray.length && params.strictLoader) {
+    if (params.strictLoader
+      && !params.commands.fromArray?.length
+      && !params.commands.directory) {
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
     this.utils = params.utils;
+    logger('handler.utils: %o', this.utils);
+    
     this.events = params.utils.events;
-    this.commander = params.utils.commander;
+    logger('handler.events: %o', this.events);
 
-    if(params.commands.fromArray.length > 0) {
+    this.commander = params.utils.commander;
+    logger('handler.commander: %o', this.commander);
+
+    if(params.commands.fromArray?.length > 0) {
       this.commander.commandsLoaded = true;
       this.commander.setCommands(params.commands.fromArray)
     }
@@ -101,25 +114,38 @@ export class Handler<core extends UtilsCore = undefined>{
       this.commandsDirectory = params.commands.directory;
     } 
 
-    this.sourceCommands = params.commands.fromArray.length > 0? 'array': 'directory';
+    this.sourceCommands = params.commands.fromArray?.length > 0? 'array': 'directory';
+    logger('sourceCommands: %s', this.sourceCommands)
+    logger('create handler complited');
   }
+
+  get [Symbol.toStringTag]() {
+		return 'Handler';
+	}
 
   /**
    * @description загружает команды из директории
    * @returns {Promise<void>}
    */
   async loadCommands(): Promise<void> {
+    logger('booting commands');
+
     if(this.sourceCommands === 'array') {
       throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
     }
 
     await this.commander.loadFromDirectory(this.commandsDirectory);
 
-    const commands = this.commander.getCommands;
+    const commands: Command[] = this.commander.getCommands;
+    logger('commands count: %d', commands.length);
 
-    if(!commands.length && this.strictLoader) {
-      throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
+    if(commands.length < 1 && this.strictLoader) {
+      logger('booting commands error');
+      throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
+    
+    logger('handler.commander: %o', this.commander);
+    logger('booting commands complited');
   }
 
   /**
@@ -132,6 +158,8 @@ export class Handler<core extends UtilsCore = undefined>{
    * // => void
    */
   async execute<T extends Context>(context: T & IContext): Promise<void> {
+    logger('start command processing');
+
     if(!this.commander.commandsLoaded) {
         try {
           await this.commander.loadFromDirectory(this.commandsDirectory)
@@ -147,8 +175,8 @@ export class Handler<core extends UtilsCore = undefined>{
 
     this.events.emit('command_begin', params)
     
-    if(!context.command) {
-      context.command = context.text
+    if(!context.$command) {
+      context.$command = context.text
     }
     
     return executeCommand<T>(context, this.utils);

@@ -1,13 +1,9 @@
-import { EventEmitter } from "events";
-import { Commander } from "../core/commander";
-
 export abstract class Context {
-    public text?: string;
+    public text: string;
 }
 
 export interface IContext {
-    text?: string,
-    command?: string;
+    $command?: string;
     body?: RegExpMatchArray;
 }
 

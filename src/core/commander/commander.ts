@@ -2,12 +2,14 @@ import path = require('path');
 import { promisify } from 'util';
 import glob = require('glob');
 import { existsSync } from 'fs';
+import debug from 'debug';
 
 import { Command } from './command';
 import { ConfigureError } from '../errors';
 import { Context, IContext } from '../../types';
 
 const findFiles = promisify(glob);
+const logger = debug('commander-core:commander');
 
 function existDirectory(dir: string): boolean {
     return existsSync(dir)
@@ -18,13 +20,13 @@ function existDirectory(dir: string): boolean {
  * @class 
  */
 export class Commander {
-    private commands : Command[] = [];
+  private commands : Command[] = [];
 	
 	public commandsLoaded = false;
 
-    constructor() {
-        return this
-    }
+	get [Symbol.toStringTag]() {
+		return 'Commander';
+	}
 
 	/**
 	 * @description выводит команды
@@ -41,15 +43,19 @@ export class Commander {
     async loadFromDirectory(dir: string): Promise<void> {
 		try {
 			if(!existDirectory(dir)) {
+        logger('Commandsdirectory not found');
 				throw new ConfigureError(`${dir} не существует`);
 			}
 
 			const absPath = path.resolve(dir);
 			const filePaths = await findFiles(`${absPath}/**/*.js`);
 
-			filePaths.forEach(async(filePath) => {
+      logger('Commandsdirectory files %O', filePaths);
+
+			await filePaths.forEach(async(filePath) => {
 				let file = await import(filePath);
 				file = file.default? file.default: file;
+        logger('fileName: %s, fileContent: %o', filePath, file);
 
 				if(!Array.isArray(file)) {
 					file = [file]
@@ -61,6 +67,7 @@ export class Commander {
 
 				file.forEach((command) => {
 					if(!(command instanceof Command)) {
+            logger('Command not instance Command');
 						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
 					}
 
@@ -69,8 +76,8 @@ export class Commander {
 			})
 
 			this.commandsLoaded = true;
-		}
-		catch(err) {
+		} catch(err) {
+      console.error(err);
 			this.commandsLoaded = false;
 		}
     }
@@ -81,9 +88,11 @@ export class Commander {
 	 */
 	addCommands(commands: Command | Command[]): number {
 		if(!Array.isArray(commands)) {
+      logger('add new command');
 			return this.commands.push(commands);
 		}
 		
+    logger('add new commands');
 		commands.forEach(command => this.commands.push(command));
 		
 		return this.commands.length;
@@ -94,6 +103,7 @@ export class Commander {
 	 * @param commands 
 	 */
 	setCommands(commands: Command[]): void {
+    logger('set new commands');
 		this.commands = commands
 	}
 
@@ -107,11 +117,12 @@ export class Commander {
 	 * 
 	 * const command = commander.find<MessageContext>(context)
 	 */
-    find<c extends Context = Context & IContext>(context: c & IContext): Command {
+    async find<c extends Context>(context: c & IContext): Promise<Command> {
 		let command: Command;
 
-		for(const com of this.commands) {
-			if((<RegExp>com.pattern).test(context.command)) {
+		for await(const com of this.commands) {
+			if((<RegExp>com.pattern).test(context.$command)) {
+        logger('command found');
 				command = com;
 				break;
 			}
@@ -121,10 +132,11 @@ export class Commander {
 			return null;
 		}
 
-		context.body = context.command.match(command.pattern)
+		context.body = context.$command.match(command.pattern)
 
 		if((<Command[]>command.commands).length) {
-            command = command.findSubCommand<c>(context);
+      logger('find subсommand');
+      command = command.findSubCommand<c>(context);
 		}
 
 		return command;

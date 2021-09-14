@@ -1,11 +1,5 @@
 import { ConfigureError } from "../errors";
-import { IParams, ICommand, IContext, Context } from "../../types";
-
-/**
- * @typedef {function} handler
- * @param {Record<string, any>} context контекст из vk-io или puregram
- * @param {Record<string, any>} bot дополнительные параметры переданные в обработчик (params)
- */
+import { ICommand, IContext, Context } from "../../types";
 
 /**
  * @description Класс команды
@@ -26,11 +20,6 @@ export class Command {
      * @property {string} description описание команды
      */
     public description?: string = '';
-
-    /**
-     * @property {Record<string, any>} params дополнительные параметры команды
-     */
-    public params?: IParams | Record<string, unknown>;
 
     /**
      * @property {Array<Command>} commands массив подкоманд 
@@ -91,9 +80,12 @@ export class Command {
 		this.name = name;
 		this.description = description || '';
 		this.commands = <Command[] | []>commands || [];
-		this.params = params || {};
         this.handler = handler;
     }
+
+    get [Symbol.toStringTag]() {
+		return 'Command';
+	}
 
     /**
      * @description поиск подкоманд
