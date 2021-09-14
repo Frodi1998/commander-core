@@ -17,7 +17,7 @@ export class UtilsCore {
     this[ping] = Date.now() - start;
   }
 
-  public get getCommand() {
+  public get getCommand(): Command {
     return this[command]
   }
 
