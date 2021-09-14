@@ -42,7 +42,7 @@ export class Handler<core extends UtilsCore>{
 
   private sourceCommands = '';
 
-  private strictLoader: boolean = false;
+  private strictLoader = false;
 
   /**
    * @description конструктор
@@ -119,7 +119,7 @@ export class Handler<core extends UtilsCore>{
     logger('create handler complited');
   }
 
-  get [Symbol.toStringTag]() {
+  get [Symbol.toStringTag](): string {
 		return 'Handler';
 	}
 
