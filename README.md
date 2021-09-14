@@ -105,7 +105,7 @@ const { Command } = require('commander-core');
 module.exports = new Command({
 	pattern: /^(?:тест|test)$/i,
 	name: 'тест',
-	description: 'проверка даты',
+	description: 'тестирование',
 
 	handler(context, bot) {
 		bot.testMetods() //созданная нами утилита в файле utils.js
@@ -195,7 +195,7 @@ import { MessageContext } from 'vk-io';
 export default new Command({
 	pattern: /^(?:тест|test)$/i,
 	name: 'тест',
-	description: 'проверка даты',
+	description: 'тестирование',
 
 	handler(context: MessageContext & IContext, bot: Utils) {
 		bot.testMetods() //созданная нами утилита в файле utils.js
