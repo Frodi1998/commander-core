@@ -24,7 +24,7 @@ export class Commander {
 	
 	public commandsLoaded = false;
 
-	get [Symbol.toStringTag]() {
+	get [Symbol.toStringTag](): string {
 		return 'Commander';
 	}
 

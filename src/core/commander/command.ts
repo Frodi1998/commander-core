@@ -84,7 +84,7 @@ export class Command {
         this.handler = handler;
     }
 
-    get [Symbol.toStringTag]() {
+    get [Symbol.toStringTag](): string {
 		return 'Command';
 	}
 
