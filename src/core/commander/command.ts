@@ -31,6 +31,8 @@ export class Command {
      */
     // eslint-disable-next-line
     handler: (context: any, bot: any) => void | Promise<void>;
+
+    [key: string]: unknown;
     
     /**
      * конструктор команды
@@ -70,8 +72,7 @@ export class Command {
         const { 
             pattern, 
             name, 
-            description, 
-            params, 
+            description,  
             commands, 
             handler 
         } = data;

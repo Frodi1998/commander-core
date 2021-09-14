@@ -157,7 +157,7 @@ export class Handler<core extends UtilsCore>{
    * execute<MessageContext>(context)
    * // => void
    */
-  async execute<T extends Context>(context: T & IContext): Promise<void> {
+  async execute<C extends Context>(context: C & IContext): Promise<void> {
     logger('start command processing');
 
     if(!this.commander.commandsLoaded) {
@@ -168,17 +168,12 @@ export class Handler<core extends UtilsCore>{
         }
     }
 
-    const params = {
-      context,
-      utils: this.utils
-    }
-
-    this.events.emit('command_begin', params)
+    this.events.emit('command_begin', {context, utils: this.utils});
     
     if(!context.$command) {
       context.$command = context.text
     }
     
-    return executeCommand<T>(context, this.utils);
+    return executeCommand<C, core | UtilsCore>(context, this.utils);
   }
 }
