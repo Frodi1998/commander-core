@@ -17,11 +17,13 @@ const logger = debug('commander-core:utils');
 export class UtilsCore {
   /**
    * @description менеджер событий
+   * @type {EventEmitter}
    */
   public events = new EventEmitter();
 
   /**
    * @description менеджер команд
+   * @type {Commander}
    */
   public commander = new Commander();
 
