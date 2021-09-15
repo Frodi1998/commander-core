@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation utils/index.ts</title>
+  <title>Documentation core/commander/command.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -84,7 +84,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>utils/index.ts</h1>
+                    <h1>core/commander/command.ts</h1>
                 </header>
                 
 
@@ -93,76 +93,122 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { EventEmitter } from 'events';
-import debug from 'debug';
-
-import { Context, IContext } from '../../types';
-import { Command, Commander } from '../commander';
-import executeCommand from '../executeCommand';
-
-const ping = Symbol('ping');
-const command = Symbol('command');
-
-const logger = debug('commander-core:utils');
+            <pre class="prettyprint source linenums"><code>import { ConfigureError } from "../errors";
+import { ICommand, IContext, Context } from "../../types";
 
 /**
- * @description утилиты
+ * @description Класс команды
  * @class
  */
-export class UtilsCore {
-  /**
-   * @property {EventEmitter} events менеджер событий
-   */
-  public events = new EventEmitter();
+export class Command {
+    /**
+     * @property {RegExp | string} pattern паттерн команды
+     */
+    public pattern: RegExp | string;
 
-  /**
-   * @description менеджер команд
-   * @type {Commander}
-   */
-  public commander = new Commander();
+    /**
+     * @property {string} name название команды
+     */
+    public name?: string;
 
-  public get getPing(): number {
-    return this[ping]
-  }
+    /**
+     * @property {string} description описание команды
+     */
+    public description?: string = '';
 
-  public setPing(start: number): void {
-    this[ping] = Date.now() - start;
-    logger('ping: %d', this[ping]);
-  }
+    /**
+     * @property {Array&lt;Command>} commands массив подкоманд 
+     */
+    public commands: Command[] = [];
 
-  /**
-   * @description возвращает текущую команду
-   * @return {Command}
-   */
-  public get getCommand(): Command {
-    return this[command];
-  }
+    /**
+     * @property {handler} handler
+     */
+    // eslint-disable-next-line
+    handler: (context: any, bot: any) => void | Promise&lt;void>;
 
-  /**
-   * @description устанавливает команду
-   * @param $command 
-   */
-  public setCommand($command: Command): void {
-    this[command] = $command
-    logger('set command: %o', this[command]);
-  }
-
-  /**
-   * @description выполняет команду по переданному контексту, аналогичен handler.execute
-   * @param context 
-   */
-  public executeCommand&lt;ctx extends Context>(context: ctx &amp; IContext): void {
-    logger('command execute from utils');
-    logger('params: context: %o, utils: %o', context, this);
-
-    this.events.emit('command_begin', {context, utils: this});
+    [key: string]: unknown;
     
-    if(!context.$command) {
-      context.$command = context.text
+    /**
+     * конструктор команды
+     * @param data 
+     * @example
+     * 
+     * new Command({
+     *  pattern: /test/i,
+     *  description: 'test',
+     * 
+     *  params: {
+     *      commandsType: 'test'
+     *  },
+     *  
+     *  handler(context) {
+     *      return context.send('test');
+     *  }
+     * })
+     */
+    constructor(data: ICommand) {
+        if(!data.pattern) {
+			throw new ConfigureError('Не указан pattern команды (регулярное выражение)');
+        }
+
+        if(!(data.pattern instanceof RegExp)) {
+			data.pattern = new RegExp(data.pattern);
+		}
+
+        if(!data.handler) {
+			throw new ConfigureError('Не указан обработчик команды');
+		}
+
+		if(typeof data.handler !== 'function') {
+			throw new ConfigureError('Обработчик команды не является функцией');
+        }
+
+        const { 
+            pattern, 
+            name, 
+            description,  
+            commands, 
+            handler 
+        } = data;
+        
+        this.pattern = pattern;
+		this.name = name;
+		this.description = description || '';
+		this.commands = &lt;Command[] | []>commands || [];
+        this.handler = handler;
     }
 
-    executeCommand&lt;ctx>(context, this)
-  }
+    get [Symbol.toStringTag](): string {
+		return 'Command';
+	}
+
+    /**
+     * @description поиск подкоманд
+     * @param {Record&lt;string, any>} context 
+     * @returns {Command}
+     */
+    findSubCommand&lt;c extends Context>(context: c &amp; IContext): Command {
+        let command: Command;
+
+        for(const subCommand of this.commands) {            
+            if ((&lt;RegExp>subCommand.pattern).test(context.body[1])) {
+                command = subCommand;
+            }
+        }
+
+        if(!command) {
+            return this;
+        }
+
+        context.body = context.body[1].match(command.pattern);
+
+        if(command.commands.length) {
+            command = (&lt;Command>command).findSubCommand&lt;c>(context);
+        }      
+
+        return command;
+	}
 }</code></pre>
         </article>
     </section>
