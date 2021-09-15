@@ -7,6 +7,8 @@ import debug from 'debug';
 import { Command } from './command';
 import { ConfigureError } from '../errors';
 import { Context, IContext } from '../../types';
+import executeCommand from '../executeCommand';
+import { UtilsCore } from '../utils';
 
 const findFiles = promisify(glob);
 const logger = debug('commander-core:commander');
@@ -141,4 +143,14 @@ export class Commander {
 
 		return command;
     }
+
+	executeCommand<ctx extends Context>(context:  ctx & IContext, utils: UtilsCore) {
+		utils.events.emit('command_begin', {context, utils});
+    
+		if(!context.$command) {
+		context.$command = context.text
+		}
+
+		executeCommand<ctx>(context, utils);
+	}
 }

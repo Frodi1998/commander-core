@@ -176,7 +176,7 @@ export class Handler<core extends UtilsCore>{
    * // => void
    */
   async execute<C extends Context>(context: C & IContext): Promise<void> {
-    logger('start command processing');
+    
 
     this.events.emit('command_begin', {context, utils: this.utils});
     
@@ -184,6 +184,6 @@ export class Handler<core extends UtilsCore>{
       context.$command = context.text
     }
     
-    return executeCommand<C, core | UtilsCore>(context, this.utils);
+    return this.commander.executeCommand<C>(context, this.utils);
   }
 }

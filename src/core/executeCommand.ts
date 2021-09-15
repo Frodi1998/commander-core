@@ -6,7 +6,8 @@ import { UtilsCore } from './utils';
 
 const logger = debug('commander-core:handler');
 
-export default async function executeCommand<ctx extends Context, core extends UtilsCore>(context: ctx & IContext, bot: core): Promise<void> {
+export default async function executeCommand<ctx extends Context>(context: ctx & IContext, bot: UtilsCore): Promise<void> {
+	logger('start command processing');
 	logger('execute params: context: %o, utils: %o', context, bot);
     const startTime: number = Date.now();
 
