@@ -86,7 +86,7 @@ export class Handler<core extends UtilsCore>{
    * })
    * @example
    * 
-   * onst handler = new Handler({
+   * сonst handler = new Handler({
    *  commands: {
    *    fromArray: [new Command(params)]; //массив команд
    *  },
