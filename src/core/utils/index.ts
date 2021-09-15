@@ -16,8 +16,7 @@ const logger = debug('commander-core:utils');
  */
 export class UtilsCore {
   /**
-   * @description менеджер событий
-   * @type {EventEmitter}
+   * @property {EventEmitter} events менеджер событий
    */
   public events = new EventEmitter();
 
@@ -38,7 +37,7 @@ export class UtilsCore {
 
   /**
    * @description возвращает текущую команду
-   * @return {Command}
+   * @type {Command}
    */
   public get getCommand(): Command {
     return this[command];
