@@ -4,7 +4,7 @@
 	},
 	"sourceType": "module",
 	"source": {
-		"include": ["./src"],
+		"include": ["./src", "./tutorials"],
 		"includePattern": "\\.(ts)$"
 	},
 	"plugins": [
@@ -16,6 +16,7 @@
 	"opts": {
 		"encoding": "utf8",
 		"destination": "docs/",
+		"tutorials": "./Tutorials",
 		"recurse": true,
 		"verbose": true,
 		"readme": "./readme.md",
