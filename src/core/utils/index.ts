@@ -51,10 +51,14 @@ export class UtilsCore {
     logger('set command: %o', this[command]);
   }
 
-  public executeCommand<ctx extends Context>(context: ctx & IContext) {
+  /**
+   * @description выполняет команду по переданному контексту, аналогичен handler.execute
+   * @param context 
+   */
+  public executeCommand<ctx extends Context>(context: ctx & IContext): void {
     logger('command execute from utils');
     logger('params: context: %o, utils: %o', context, this);
-    
+
     this.events.emit('command_begin', {context, utils: this});
     
     if(!context.$command) {
