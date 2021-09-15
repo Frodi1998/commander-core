@@ -141,5 +141,19 @@ export function fromDirectoryTest() {
         })
       });
     });
+
+    describe('utils', () => {
+      it('execute', () => {
+        const context = new MessageCTX();
+        context.text = 'utils test';
+
+        handler.execute(context);
+
+        it('должен вернуть тест', () => {
+          const { context } = storage.get('begin_params')
+          assert.equal(context.text, 'test');
+        })
+      });
+    })
   });
 };
