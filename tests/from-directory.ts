@@ -143,16 +143,21 @@ export function fromDirectoryTest() {
     });
 
     describe('utils', () => {
-      it('execute', () => {
+      it('execute', async () => {
         const context = new MessageCTX();
         context.text = 'utils test';
 
-        handler.execute(context);
+        await handler.execute(context);
+      });
 
-        it('должен вернуть тест', () => {
-          const { context } = storage.get('begin_params')
-          assert.equal(context.text, 'test');
-        })
+      it('должен вернуть тест', () => {
+        const { context } = storage.get('begin_params');
+        assert.equal(context.text, 'test');
+      });
+
+      it('должен вернуть true если utils экземпляр Utils', () => {
+        const { utils } = storage.get('begin_params');
+        assert.equal(utils instanceof Utils, true);
       });
     })
   });
