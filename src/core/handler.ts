@@ -176,14 +176,12 @@ export class Handler<core extends UtilsCore>{
    * // => void
    */
   async execute<C extends Context>(context: C & IContext): Promise<void> {
-    
-
     this.events.emit('command_begin', {context, utils: this.utils});
     
     if(!context.$command) {
       context.$command = context.text
     }
     
-    return this.commander.executeCommand<C>(context, this.utils);
+    return executeCommand<C>(context, this.utils);
   }
 }
