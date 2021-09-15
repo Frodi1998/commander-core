@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation commander/commander.ts</title>
+  <title>Documentation utils/index.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -84,7 +84,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>commander/commander.ts</h1>
+                    <h1>utils/index.ts</h1>
                 </header>
                 
 
@@ -93,149 +93,75 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import path = require('path');
-import { promisify } from 'util';
-import glob = require('glob');
-import { existsSync } from 'fs';
+            <pre class="prettyprint source linenums"><code>import { EventEmitter } from 'events';
 import debug from 'debug';
 
-import { Command } from './command';
-import { ConfigureError } from '../errors';
 import { Context, IContext } from '../../types';
+import { Command, Commander } from '../commander';
+import executeCommand from '../executeCommand';
 
-const findFiles = promisify(glob);
-const logger = debug('commander-core:commander');
+const ping = Symbol('ping');
+const command = Symbol('command');
 
-function existDirectory(dir: string): boolean {
-    return existsSync(dir)
-}
+const logger = debug('commander-core:utils');
 
 /**
- * @description класс обработки
- * @class 
+ * @description утилиты
+ * @class
  */
-export class Commander {
-  private commands : Command[] = [];
-	
-	public commandsLoaded = false;
+export class UtilsCore {
+  /**
+   * @description менеджер событий
+   */
+  public events = new EventEmitter();
 
-	get [Symbol.toStringTag](): string {
-		return 'Commander';
-	}
+  /**
+   * @description менеджер команд
+   */
+  public commander = new Commander();
 
-	/**
-	 * @description выводит команды
-	 */
-	get getCommands(): Command[] {
-		return this.commands
-	}
+  public get getPing(): number {
+    return this[ping]
+  }
 
-	/**
-	 * @description загрузка команд из директории
-	 * @param {string} dir директория загрузки команд
-	 * @returns {Promise&lt;void>}
-	 */
-    async loadFromDirectory(dir: string): Promise&lt;void> {
-		try {
-			if(!existDirectory(dir)) {
-        logger('Commandsdirectory not found');
-				throw new ConfigureError(`${dir} не существует`);
-			}
+  public setPing(start: number): void {
+    this[ping] = Date.now() - start;
+    logger('ping: %d', this[ping]);
+  }
 
-			const absPath = path.resolve(dir);
-			const filePaths = await findFiles(`${absPath}/**/*.js`);
+  /**
+   * @description возвращает текущую команду
+   * @return {Command}
+   */
+  public get getCommand(): Command {
+    return this[command];
+  }
 
-      logger('Commandsdirectory files %O', filePaths);
+  /**
+   * @description устанавливает команду
+   * @param $command 
+   */
+  public setCommand($command: Command): void {
+    this[command] = $command
+    logger('set command: %o', this[command]);
+  }
 
-			await filePaths.forEach(async(filePath) => {
-				let file = await import(filePath);
-				file = file.default? file.default: file;
-        logger('fileName: %s, fileContent: %o', filePath, file);
+  /**
+   * @description выполняет команду по переданному контексту, аналогичен handler.execute
+   * @param context 
+   */
+  public executeCommand&lt;ctx extends Context>(context: ctx &amp; IContext): void {
+    logger('command execute from utils');
+    logger('params: context: %o, utils: %o', context, this);
 
-				if(!Array.isArray(file)) {
-					file = [file]
-				}
-
-				if(file.length === 0) {
-					return;
-				}
-
-				file.forEach((command) => {
-					if(!(command instanceof Command)) {
-            logger('Command not instance Command');
-						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
-					}
-
-					this.addCommands(command);
-				})
-			})
-
-			this.commandsLoaded = true;
-		} catch(err) {
-      console.error(err);
-			this.commandsLoaded = false;
-		}
+    this.events.emit('command_begin', {context, utils: this});
+    
+    if(!context.$command) {
+      context.$command = context.text
     }
 
-	/**
-	 * @description добавляет новые команды
-	 * @param command 
-	 */
-	addCommands(commands: Command | Command[]): number {
-		if(!Array.isArray(commands)) {
-      logger('add new command');
-			return this.commands.push(commands);
-		}
-		
-    logger('add new commands');
-		commands.forEach(command => this.commands.push(command));
-		
-		return this.commands.length;
-	}
-
-	/**
-	 * @description устанавливает команды удаляя старые
-	 * @param commands 
-	 */
-	setCommands(commands: Command[]): void {
-    logger('set new commands');
-		this.commands = commands
-	}
-
-	/**
-	 * @description поиск команды
-	 * @param {any} context 
-	 * @returns {Command}
-	 * @example ts
-	 * 
-	 * import { MessageContext } from "vk-io";
-	 * 
-	 * const command = commander.find&lt;MessageContext>(context)
-	 */
-    async find&lt;c extends Context>(context: c &amp; IContext): Promise&lt;Command> {
-		let command: Command;
-
-		for await(const com of this.commands) {
-			if((&lt;RegExp>com.pattern).test(context.$command)) {
-        logger('command found');
-				command = com;
-				break;
-			}
-		}
-
-		if(!command) {
-			return null;
-		}
-
-		context.body = context.$command.match(command.pattern)
-
-		if((&lt;Command[]>command.commands).length) {
-      logger('find subсommand');
-      command = command.findSubCommand&lt;c>(context);
-		}
-
-		return command;
-    }
+    executeCommand&lt;ctx>(context, this)
+  }
 }</code></pre>
         </article>
     </section>
