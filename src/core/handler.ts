@@ -29,7 +29,7 @@ interface ICommandsLoader {
 /**
  * @interface
  */
-export interface IHandlerParams<core extends UtilsCore> {
+export interface IHandlerParams {
   /**
    * @description объект описывающий источник загрузок
    */
@@ -37,13 +37,14 @@ export interface IHandlerParams<core extends UtilsCore> {
 
   /**
    * @description строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
+   * @default true
    */
   strictLoader?: boolean
 
   /**
    * @description настраиваемые утилиты для вашей логики, например для работы с базой данных
    */
-  utils: core | UtilsCore;
+  utils: UtilsCore;
 }
 
 /**
@@ -94,7 +95,7 @@ export class Handler<core extends UtilsCore>{
    *  utils: new Utils() // Utils
    * })
    */
-  constructor(params: IHandlerParams<core> = {
+  constructor(params: IHandlerParams = {
     commands: {},
     strictLoader: false,
     utils: new UtilsCore()
