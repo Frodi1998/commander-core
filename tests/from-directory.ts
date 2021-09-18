@@ -42,9 +42,9 @@ handler.loadCommands()
 export function fromDirectoryTest() {
   describe('handler', () => {
     describe('getCommands', () => {
-      it('должен вернуть 0, если в commands нет комманд', async() => {
+      it('должен вернуть true, если в commands 1 и более комад', async() => {
         assert.equal(
-          handler.commander.getCommands.length > 0,
+          handler.commander.getCommands.length >= 1,
           true
         );
       });
