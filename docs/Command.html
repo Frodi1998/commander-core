@@ -90,7 +90,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="tutorial%250D%25D0%25BF%25D0%25BE%25D1%2581%25D0%25BC%25D0%25BE%25D1%2582%25D1%2580%25D0%25B8%25D1%2582%25D0%25B5%2520%255B%25D0%25A2%25D1%2583%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B0%25D0%25BB%255D%257B@tutorial%2520main%257Dmodule_.html">tutorialпосмотрите <a href="tutorial-main.html">Туториал</a></a></li></ul><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="tutorial%250D%25D0%25BF%25D0%25BE%25D1%2581%25D0%25BC%25D0%25BE%25D1%2582%25D1%2580%25D0%25B8%25D1%2582%25D0%25B5%2520%255B%25D0%25A2%25D1%2583%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B0%25D0%25BB%255D%257B@tutorial%2520main%257Dmodule_.html">tutorialпосмотрите <a href="tutorial-main.html">Туториал</a></a></li></ul><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -185,6 +185,11 @@
 
   <td class="type">
   
+      
+<span class="param-type"><a href="ICommand.html">ICommand</a></span>
+
+
+  
   </td>
 
   
@@ -268,7 +273,7 @@
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>new Command({ pattern: /test/i, description: 'test', params: {     commandsType: 'test' }, handler(context) {     return context.send('test'); }})</code></pre>
+        <pre class="prettyprint"><code>new Command({ pattern: /test/i, name: 'test', description: 'test command', handler(context) {     context.send('test'); }})</code></pre>
     
 
 
@@ -306,11 +311,19 @@
             
                 <div class="member">
 
-<h4 class="name" id="commands">
-    <a class="href-link" href="#commands">#</a>
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </span>
+
+<h4 class="name" id="categories">
+    <a class="href-link" href="#categories">#</a>
     
     <span class="code-name">
-        commands
+        categories
     </span>
     
 </h4>
@@ -319,58 +332,6 @@
 
 
 
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>commands</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Array.&lt;<a href="Command.html">Command</a>></span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>массив подкоманд</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -409,7 +370,7 @@
         <p class="tag-source">
             <a href="src_core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line34">line 34</a>
+                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line95">line 95</a>
             </span>
         </p>
     
@@ -426,7 +387,7 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type">Array</span>
+<span class="param-type">Array.&lt;<a href="Command.html">Command</a>></span>
 
 
     </span>
@@ -443,59 +404,165 @@
 
 
 
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>commands</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Array.&lt;<a href="Command.html">Command</a>></span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>массив подкоманд</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
+<div class="description">
+    <p>массив подкоманд</p>
 </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line101">line 101</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">string</span>
+
+
+    </span>
+
+<h4 class="name" id="description">
+    <a class="href-link" href="#description">#</a>
+    
+    <span class="code-name">
+        description
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>короткое описание команды</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line89">line 89</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></span>
+
+
+    </span>
+
+<h4 class="name" id="handler">
+    <a class="href-link" href="#handler">#</a>
+    
+    <span class="code-name">
+        handler
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>обработчик команды</p>
+</div>
+
+
 
 
 
@@ -548,373 +615,6 @@
             
                 <div class="member">
 
-<h4 class="name" id="description">
-    <a class="href-link" href="#description">#</a>
-    
-    <span class="code-name">
-        description
-    </span>
-    
-</h4>
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>description</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>описание команды</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line30">line 30</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">string</span>
-
-
-    </span>
-
-<h4 class="name" id="description">
-    <a class="href-link" href="#description">#</a>
-    
-    <span class="code-name">
-        description
-    </span>
-    
-</h4>
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>description</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>описание команды</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line100">line 100</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">function</span>
-
-
-    </span>
-
-<h4 class="name" id="handler">
-    <a class="href-link" href="#handler">#</a>
-    
-    <span class="code-name">
-        handler
-    </span>
-    
-</h4>
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>handler</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">handler</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line111">line 111</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
@@ -935,59 +635,11 @@
 
 
 
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>name</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>название команды</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
+<div class="description">
+    <p>название команды</p>
 </div>
+
+
 
 
 
@@ -1026,7 +678,7 @@
         <p class="tag-source">
             <a href="src_core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line94">line 94</a>
+                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line83">line 83</a>
             </span>
         </p>
     
@@ -1063,62 +715,11 @@
 
 
 
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>pattern</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">RegExp</span>
-|
-
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>паттерн команды</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
+<div class="description">
+    <p>паттерн команды</p>
 </div>
+
+
 
 
 
@@ -1157,7 +758,7 @@
         <p class="tag-source">
             <a href="src_core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line88">line 88</a>
+                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line77">line 77</a>
             </span>
         </p>
     
@@ -1298,7 +899,7 @@
         <p class="tag-source">
             <a href="src_core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line62">line 62</a>
+                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line51">line 51</a>
             </span>
         </p>
     

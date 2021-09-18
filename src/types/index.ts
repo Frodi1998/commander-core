@@ -7,14 +7,55 @@ export interface IContext {
   body?: RegExpMatchArray;
 }
 
+/**
+ * @typedef {Function}
+ * @example
+ * 
+ * handler(context, bot) {
+ *  bot.testMetod() //utils.testMetod
+ *  context.send('ура')
+ * }
+ */
+// eslint-disable-next-line
+export type THandlerCommand = (context: any, bot: any) => void | Promise<void>
+
+/**
+ * @interface 
+ */
 export interface ICommand {
+  /**
+   * @type {RegExp | string} регулярное выражение 
+   */
   pattern: RegExp | string;
+
+  /**
+   * @type {string} название команды
+   */
   name?: string;
+
+  /**
+   * @type {string}
+   * @default ''
+   */
   description?: string;
-  params?: Record<string, unknown>;
-  commands?: ICommand[] | [];
+
+  /**
+   * @type {Array<string>}
+   * @default []
+   */
+  categories?: string[]
+  
+  /**
+   * @type {Array<ICommand>}
+   * @default []
+   */
+  commands?: ICommand[];
+
+  /**
+   * @type {THandlerCommand}
+   */
   // eslint-disable-next-line
-  handler: (context: any, bot: any) => void | Promise<void>;
+  handler: THandlerCommand;
 }
 
 /**
