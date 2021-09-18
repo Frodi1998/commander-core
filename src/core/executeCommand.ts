@@ -6,33 +6,35 @@ import { UtilsCore } from './utils';
 
 const logger = debug('commander-core:handler');
 
-export default async function executeCommand<ctx extends Context>(context: ctx & IContext, bot: UtilsCore): Promise<void> {
+export default async function executeCommand<ctx extends Context>(context: ctx & IContext, utils: UtilsCore): Promise<void> {
 	logger('start command processing');
-	logger('execute params: context: %o, utils: %o', context, bot);
-    const startTime: number = Date.now();
+	logger('execute param context: %O', context);
+	logger('execute param utils: %O', utils);
 
-    const command: Command = await bot.commander.find<ctx>(context);
+    const startTime = Date.now();
+
+    const command: Command = await utils.commander.find<ctx>(context);
 	
 	if(!command) {
 		logger('command not found');
 
-		bot.events.emit('command_not_found', {context, utils: bot});
+		utils.events.emit('command_not_found', {context, utils});
 		return;
 	}
 
-	bot.setCommand(command);
+	utils.setCommand(command);
 
 	await Promise.all([
-		bot.events.emit('command_job', {context, utils: bot}),
-		command.handler(context, bot)
+		utils.events.emit('command_job', {context, utils}),
+		command.handler(context, utils)
 	])
 	.catch((error) =>{
-		bot.events.emit('command_error', {context, utils: bot, error});
+		utils.events.emit('command_error', {context, utils, error});
 		return;
 	})
 
-	bot.setPing(startTime);
+	utils.setPing(startTime);
 
-	bot.events.emit('command_ready', context, bot);
+	utils.events.emit('command_ready', {context, utils});
 	logger('command executed');
 }
