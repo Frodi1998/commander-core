@@ -48,14 +48,16 @@ export class Commander {
 			}
 
 			const absPath = path.resolve(dir);
-			const filePaths = await findFiles(`${absPath}/**/*.js`);
+			let filePaths = await findFiles(`${absPath}/**/*.js`);
+			filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path))
 
-      logger('Commandsdirectory files %O', filePaths);
+      		logger('Commandsdirectory files %O', filePaths);
 
 			await filePaths.forEach(async(filePath) => {
 				let file = await import(filePath);
 				file = file.default? file.default: file;
-        logger('fileName: %s, fileContent: %o', filePath, file);
+        logger('fileName: %s', filePath);
+        logger('fileContent: %O', file);
 
 				if(!Array.isArray(file)) {
 					file = [file]
