@@ -1,5 +1,5 @@
 import { ConfigureError } from "../errors";
-import { ICommand, IContext, Context } from "../../types";
+import { ICommand, IContext, Context, THandlerCommand } from "../../types";
 
 /**
  * @description Класс команды
@@ -7,48 +7,49 @@ import { ICommand, IContext, Context } from "../../types";
  */
 export class Command {
     /**
-     * @property {RegExp | string} pattern паттерн команды
+     * @type {RegExp | string} паттерн команды
      */
     public pattern: RegExp | string;
 
     /**
-     * @property {string} name название команды
+     * @type {string} название команды
      */
     public name?: string;
 
     /**
-     * @property {string} description описание команды
+     * @type {string} короткое описание команды
      */
-    public description?: string = '';
+    public description?: string;
 
     /**
-     * @property {Array<Command>} commands массив подкоманд 
+     * @type {Array<string>}
      */
-    public commands: Command[] = [];
+    public categories: string[];
 
     /**
-     * @property {handler} handler
+     * @type {Array<Command>} массив подкоманд
      */
-    // eslint-disable-next-line
-    handler: (context: any, bot: any) => void | Promise<void>;
+    public commands: Command[];
+
+    /**
+     * @type {THandlerCommand} обработчик команды
+     */
+    handler: THandlerCommand;
 
     [key: string]: unknown;
     
     /**
      * конструктор команды
-     * @param data 
+     * @param {ICommand} data 
      * @example
      * 
      * new Command({
      *  pattern: /test/i,
-     *  description: 'test',
-     * 
-     *  params: {
-     *      commandsType: 'test'
-     *  },
+     *  name: 'test',
+     *  description: 'test command',
      *  
      *  handler(context) {
-     *      return context.send('test');
+     *      context.send('test');
      *  }
      * })
      */
