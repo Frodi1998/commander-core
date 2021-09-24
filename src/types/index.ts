@@ -34,27 +34,32 @@ export interface ICommand {
   name?: string;
 
   /**
-   * @type {string}
+   * @type {string} краткое описание команды
    * @default ''
    */
   description?: string;
 
   /**
-   * @type {Array<string>}
+   * @type {Array<string>} категории команды
    * @default []
    */
-  categories?: string[]
+  categories?: string[];
+
+  /**
+   * @type {Record<string, unknown>} дополнительные параметры
+   * @default {}
+   */
+  params: Record<string, unknown>
   
   /**
-   * @type {Array<ICommand>}
+   * @type {Array<ICommand>} массив подкоманд
    * @default []
    */
   commands?: ICommand[];
 
   /**
-   * @type {THandlerCommand}
+   * @type {THandlerCommand} функция обработки
    */
-  // eslint-disable-next-line
   handler: THandlerCommand;
 }
 
