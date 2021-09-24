@@ -27,12 +27,17 @@ export class Command {
     public categories: string[];
 
     /**
+     * @type {Record<string, unknown>} дополнительные параметры
+     */
+    params: Record<string, unknown>;
+
+    /**
      * @type {Array<Command>} массив подкоманд
      */
     public commands: Command[];
 
     /**
-     * @type {THandlerCommand} обработчик команды
+     * @type {THandlerCommand} функция обработки команды
      */
     handler: THandlerCommand;
 
@@ -47,6 +52,11 @@ export class Command {
      *  pattern: /test/i,
      *  name: 'test',
      *  description: 'test command',
+     *  categories: ['test'],
+     *  
+     *  params: {
+     *      emoji: '📄'
+     * },
      *  
      *  handler(context) {
      *      context.send('test');
