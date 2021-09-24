@@ -33,12 +33,12 @@ const { UtilsCore } = require('commander-core');
  */
 class Utils extends UtilsCore {
 	constructor() {
-        this.adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
-    }
+    this.adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
+  }
 
-    testMetods() {
-        return console.log('test')
-    }
+  testMetods() {
+    return console.log('test')
+  }
 }
 
 module.exports = Utils
@@ -124,11 +124,11 @@ import { UtilsCore } from 'commander-core';
  * bot.testMetods() в теле команды
  */
 export class Utils extends UtilsCore {
-    public adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
+  public adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
 
-    testMetods(): void {
-        return console.log('test')
-    }
+  testMetods(): void {
+    return console.log('test')
+  }
 }
 ```
 далее создайте файл start.ts
