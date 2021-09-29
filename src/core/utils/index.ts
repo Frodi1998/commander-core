@@ -1,9 +1,9 @@
-import { EventEmitter } from 'events';
 import debug from 'debug';
 
 import { Context, IContext } from '../../types';
 import { Command, Commander } from '../commander';
 import executeCommand from '../executeCommand';
+import EventListener from './event-emiter';
 
 const ping = Symbol('ping');
 const command = Symbol('command');
@@ -21,15 +21,20 @@ export class UtilsCore {
   [status]: TStatus = 'default';
 
   /**
-   * @property {EventEmitter} events менеджер событий
+   * @type {EventEmitter} events менеджер событий
    */
-  public events = new EventEmitter();
+  public events: EventListener;
 
   /**
    * @description менеджер команд
    * @type {Commander}
    */
-  public commander = new Commander();
+  public commander: Commander;
+
+  constructor() {
+    this.events = new EventListener();
+    this.commander =  new Commander();
+  }
 
   public get getPing(): number {
     return this[ping]
