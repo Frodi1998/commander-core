@@ -29,7 +29,7 @@ export class Command {
     /**
      * @type {Record<string, unknown>} дополнительные параметры
      */
-    params: Record<string, unknown>;
+    public params: Record<string, unknown>;
 
     /**
      * @type {Array<Command>} массив подкоманд
@@ -83,7 +83,9 @@ export class Command {
         const { 
             pattern, 
             name, 
-            description,  
+            description,
+            categories,
+            params,  
             commands, 
             handler 
         } = data;
@@ -91,6 +93,8 @@ export class Command {
         this.pattern = pattern;
 		this.name = name;
 		this.description = description || '';
+        this.categories = categories || [];
+        this.params = params || {};
 		this.commands = <Command[] | []>commands || [];
         this.handler = handler;
     }
