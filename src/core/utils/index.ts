@@ -7,14 +7,19 @@ import executeCommand from '../executeCommand';
 
 const ping = Symbol('ping');
 const command = Symbol('command');
+const status = Symbol('status');
 
 const logger = debug('commander-core:utils');
+
+type TStatus = 'stop' | 'ready' | 'default';
 
 /**
  * @description утилиты
  * @class
  */
 export class UtilsCore {
+  [status]: TStatus = 'default';
+
   /**
    * @property {EventEmitter} events менеджер событий
    */
@@ -41,6 +46,27 @@ export class UtilsCore {
    */
   public get getCommand(): Command {
     return this[command];
+  }
+
+  /**
+   * статус команды
+   * @returns {'stop' | 'ready' | 'default'}
+   */
+  public get getCommandStatus(): TStatus {
+    return this[status];
+  }
+
+  /**
+   * меняет статус выполнения команды
+   * @param {'stop' | 'ready' | 'default'} stat 
+   * @returns {'stop' | 'ready' | 'default'}
+   */
+  public setCommandStatus(stat: TStatus): TStatus {
+    if(stat) {
+      this[status] = stat;
+    }
+
+    return this[status];
   }
 
   /**
