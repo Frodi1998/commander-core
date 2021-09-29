@@ -1,4 +1,4 @@
 /**
  * @module tutorial
- * посмотрите [Туториал]{@tutorial main}
+ * посмотрите {@tutorial main}
  */
