@@ -90,7 +90,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="tutorial%250D%25D0%25BF%25D0%25BE%25D1%2581%25D0%25BC%25D0%25BE%25D1%2582%25D1%2580%25D0%25B8%25D1%2582%25D0%25B5%2520%255B%25D0%25A2%25D1%2583%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B0%25D0%25BB%255D%257B@tutorial%2520main%257Dmodule_.html">tutorialпосмотрите <a href="tutorial-main.html">Туториал</a></a></li></ul><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -242,9 +242,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line7">line 7</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line7">line 7</a>
             </span>
         </p>
     
@@ -273,7 +273,7 @@
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>new Command({ pattern: /test/i, name: 'test', description: 'test command', handler(context) {     context.send('test'); }})</code></pre>
+        <pre class="prettyprint"><code>new Command({ pattern: /test/i, name: 'test', description: 'test command', categories: ['test'], params: {     emoji: '📄'}, handler(context) {     context.send('test'); }})</code></pre>
     
 
 
@@ -368,9 +368,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line95">line 95</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line102">line 102</a>
             </span>
         </p>
     
@@ -445,9 +445,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line101">line 101</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line114">line 114</a>
             </span>
         </p>
     
@@ -522,9 +522,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line89">line 89</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line96">line 96</a>
             </span>
         </p>
     
@@ -559,7 +559,7 @@
 
 
 <div class="description">
-    <p>обработчик команды</p>
+    <p>функция обработки команды</p>
 </div>
 
 
@@ -599,9 +599,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line106">line 106</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line119">line 119</a>
             </span>
         </p>
     
@@ -676,9 +676,86 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line83">line 83</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line90">line 90</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">Record.&lt;string, unknown></span>
+
+
+    </span>
+
+<h4 class="name" id="params">
+    <a class="href-link" href="#params">#</a>
+    
+    <span class="code-name">
+        params
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>дополнительные параметры</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line108">line 108</a>
             </span>
         </p>
     
@@ -756,9 +833,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line77">line 77</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line84">line 84</a>
             </span>
         </p>
     
@@ -897,9 +974,9 @@
 
     
         <p class="tag-source">
-            <a href="src_core_commander_command.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="src_core_commander_command.ts.html">src/core/commander/command.ts</a>, <a href="src_core_commander_command.ts.html#line51">line 51</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line58">line 58</a>
             </span>
         </p>
     

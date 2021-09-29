@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation ICommand</title>
+  <title>Documentation EventEmitter</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -98,7 +98,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Interface</p>
-                    <h1>ICommand</h1>
+                    <h1>EventEmitter</h1>
                 </header>
                 
 
@@ -109,7 +109,7 @@
 
 <header>
     
-        <h2>ICommand</h2>
+        <h2>EventEmitter</h2>
         
     
 </header>
@@ -157,7 +157,7 @@
         <p class="tag-source">
             <a href="types_index.ts.html" class="button">View Source</a>
             <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line19">line 19</a>
+                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line83">line 83</a>
             </span>
         </p>
     
@@ -190,19 +190,17 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type"><a href="global.html#TEmit">TEmit</a></span>
 
 
     </span>
 
-<h4 class="name" id="categories">
-    <a class="href-link" href="#categories">#</a>
+<h4 class="name" id="emit">
+    <a class="href-link" href="#emit">#</a>
     
     <span class="code-name">
-        categories
+        emit
     </span>
-    
-        <span class='tag'>Optional</span>
     
 </h4>
 
@@ -210,7 +208,9 @@
 
 
 <div class="description">
-    <p>категории команды</p>
+    <p>Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события <code>eventName</code>, в том порядке,
+в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
+Возвращает <code>true</code>, если у события есть слушатели, в противном случае <code>false</code>.</p>
 </div>
 
 
@@ -242,11 +242,6 @@
     
 
     
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>[]</li>
-        </ul></dd>
-    
     
 
     
@@ -257,7 +252,7 @@
         <p class="tag-source">
             <a href="types_index.ts.html" class="button">View Source</a>
             <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line41">line 41</a>
+                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line87">line 87</a>
             </span>
         </p>
     
@@ -274,19 +269,17 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type">Array.&lt;<a href="ICommand.html">ICommand</a>></span>
+<span class="param-type"><a href="global.html#TEventNames">TEventNames</a></span>
 
 
     </span>
 
-<h4 class="name" id="commands">
-    <a class="href-link" href="#commands">#</a>
+<h4 class="name" id="eventNames">
+    <a class="href-link" href="#eventNames">#</a>
     
     <span class="code-name">
-        commands
+        eventNames
     </span>
-    
-        <span class='tag'>Optional</span>
     
 </h4>
 
@@ -294,7 +287,7 @@
 
 
 <div class="description">
-    <p>массив подкоманд</p>
+    <p>Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или <code>Symbols</code>.</p>
 </div>
 
 
@@ -326,11 +319,6 @@
     
 
     
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>[]</li>
-        </ul></dd>
-    
     
 
     
@@ -341,7 +329,7 @@
         <p class="tag-source">
             <a href="types_index.ts.html" class="button">View Source</a>
             <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line55">line 55</a>
+                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line103">line 103</a>
             </span>
         </p>
     
@@ -358,100 +346,16 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#TOn">TOn</a></span>
 
 
     </span>
 
-<h4 class="name" id="description">
-    <a class="href-link" href="#description">#</a>
+<h4 class="name" id="on">
+    <a class="href-link" href="#on">#</a>
     
     <span class="code-name">
-        description
-    </span>
-    
-        <span class='tag'>Optional</span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>краткое описание команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>''</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types_index.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line34">line 34</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></span>
-
-
-    </span>
-
-<h4 class="name" id="handler">
-    <a class="href-link" href="#handler">#</a>
-    
-    <span class="code-name">
-        handler
+        on
     </span>
     
 </h4>
@@ -460,7 +364,9 @@
 
 
 <div class="description">
-    <p>функция обработки</p>
+    <p>Добавляет <code>listener</code> функцию в конец массива слушателей для названного события eventName.
+Никаких проверок, чтобы увидеть, был ли <code>listener</code> уже добавлен, не делается .
+Несколько вызовов, передающих одну eventName и ту же комбинацию и <code>listener</code>, приведут к listenerдобавлению и вызову несколько раз.</p>
 </div>
 
 
@@ -502,250 +408,7 @@
         <p class="tag-source">
             <a href="types_index.ts.html" class="button">View Source</a>
             <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line62">line 62</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">string</span>
-
-
-    </span>
-
-<h4 class="name" id="name">
-    <a class="href-link" href="#name">#</a>
-    
-    <span class="code-name">
-        name
-    </span>
-    
-        <span class='tag'>Optional</span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>название команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types_index.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line28">line 28</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">Record.&lt;string, unknown></span>
-
-
-    </span>
-
-<h4 class="name" id="params">
-    <a class="href-link" href="#params">#</a>
-    
-    <span class="code-name">
-        params
-    </span>
-    
-        <span class='tag'>Optional</span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>дополнительные параметры</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>{}</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types_index.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line48">line 48</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">RegExp</span>
-|
-
-<span class="param-type">string</span>
-
-
-    </span>
-
-<h4 class="name" id="pattern">
-    <a class="href-link" href="#pattern">#</a>
-    
-    <span class="code-name">
-        pattern
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>регулярное выражение</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types_index.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line23">line 23</a>
+                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line95">line 95</a>
             </span>
         </p>
     

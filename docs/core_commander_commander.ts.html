@@ -58,6 +58,22 @@
                     API Documentation
                 </a>
                 
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-main.html">
+                                main
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
                 
                 
             </div>
@@ -76,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -143,14 +159,16 @@ export class Commander {
 			}
 
 			const absPath = path.resolve(dir);
-			const filePaths = await findFiles(`${absPath}/**/*.js`);
+			let filePaths = await findFiles(`${absPath}/**/*.js`);
+			filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path))
 
-      logger('Commandsdirectory files %O', filePaths);
+      		logger('Commandsdirectory files %O', filePaths);
 
 			await filePaths.forEach(async(filePath) => {
 				let file = await import(filePath);
 				file = file.default? file.default: file;
-        logger('fileName: %s, fileContent: %o', filePath, file);
+        logger('fileName: %s', filePath);
+        logger('fileContent: %O', file);
 
 				if(!Array.isArray(file)) {
 					file = [file]

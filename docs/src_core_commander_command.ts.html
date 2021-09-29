@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="tutorial%250D%25D0%25BF%25D0%25BE%25D1%2581%25D0%25BC%25D0%25BE%25D1%2582%25D1%2580%25D0%25B8%25D1%2582%25D0%25B5%2520%255B%25D0%25A2%25D1%2583%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B0%25D0%25BB%255D%257B@tutorial%2520main%257Dmodule_.html">tutorialпосмотрите [Туториал]{@tutorial main}</a></li></ul><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="tutorial%250D%25D0%25BF%25D0%25BE%25D1%2581%25D0%25BC%25D0%25BE%25D1%2582%25D1%2580%25D0%25B8%25D1%2582%25D0%25B5%2520%257B@tutorial%2520main%257Dmodule_.html">tutorialпосмотрите {@tutorial main}</a></li></ul><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -138,12 +138,17 @@ export class Command {
     public categories: string[];
 
     /**
+     * @type {Record&lt;string, unknown>} дополнительные параметры
+     */
+    public params: Record&lt;string, unknown>;
+
+    /**
      * @type {Array&lt;Command>} массив подкоманд
      */
     public commands: Command[];
 
     /**
-     * @type {THandlerCommand} обработчик команды
+     * @type {THandlerCommand} функция обработки команды
      */
     handler: THandlerCommand;
 
@@ -158,6 +163,11 @@ export class Command {
      *  pattern: /test/i,
      *  name: 'test',
      *  description: 'test command',
+     *  categories: ['test'],
+     *  
+     *  params: {
+     *      emoji: '📄'
+     * },
      *  
      *  handler(context) {
      *      context.send('test');
@@ -184,7 +194,9 @@ export class Command {
         const { 
             pattern, 
             name, 
-            description,  
+            description,
+            categories,
+            params,  
             commands, 
             handler 
         } = data;
@@ -192,6 +204,8 @@ export class Command {
         this.pattern = pattern;
 		this.name = name;
 		this.description = description || '';
+        this.categories = categories || [];
+        this.params = params || {};
 		this.commands = &lt;Command[] | []>commands || [];
         this.handler = handler;
     }

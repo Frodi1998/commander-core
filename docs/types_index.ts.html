@@ -58,6 +58,22 @@
                     API Documentation
                 </a>
                 
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-main.html">
+                                main
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
                 
                 
             </div>
@@ -76,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IEventEmitter.html">IEventEmitter</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -102,25 +118,73 @@ export interface IContext {
   body?: RegExpMatchArray;
 }
 
+/**
+ * @typedef {Function}
+ * @example
+ * 
+ * handler(context, bot) {
+ *  bot.testMetod() //utils.testMetod
+ *  context.send('ура')
+ * }
+ */
+// eslint-disable-next-line
+export type THandlerCommand = (context: any, bot: any) => void | Promise&lt;void>
+
+/**
+ * @interface 
+ */
 export interface ICommand {
+  /**
+   * @type {RegExp | string} регулярное выражение 
+   */
   pattern: RegExp | string;
+
+  /**
+   * @type {string} название команды
+   */
   name?: string;
+
+  /**
+   * @type {string} краткое описание команды
+   * @default ''
+   */
   description?: string;
-  params?: Record&lt;string, unknown>;
-  commands?: ICommand[] | [];
-  // eslint-disable-next-line
-  handler: (context: any, bot: any) => void | Promise&lt;void>;
+
+  /**
+   * @type {Array&lt;string>} категории команды
+   * @default []
+   */
+  categories?: string[];
+
+  /**
+   * @type {Record&lt;string, unknown>} дополнительные параметры
+   * @default {}
+   */
+  params?: Record&lt;string, unknown>
+  
+  /**
+   * @type {Array&lt;ICommand>} массив подкоманд
+   * @default []
+   */
+  commands?: ICommand[];
+
+  /**
+   * @type {THandlerCommand} функция обработки
+   */
+  handler: THandlerCommand;
 }
 
 /**
  * @typedef {Function}
  */
+// eslint-disable-next-line
 type TEmit = (eventName: string | symbol, ...args: any) => boolean;
 
 /**
  * @typedef {Function}
  */
-type TOn = (eventName: string | symbol, listener: (...args: any) => any) => IEventEmitter
+// eslint-disable-next-line
+type TOn = (eventName: string | symbol, listener: (...args: any) => any) => EventEmitter
 
 /**
  * @typedef {Function}
@@ -130,7 +194,7 @@ type TEventNames = () => Array&lt;string>
 /**
  * @interface
  */
-export interface IEventEmitter {
+export interface EventEmitter {
   /**
    * @description Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```, в том порядке, 
    * в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
