@@ -42,7 +42,7 @@ handler.loadCommands()
 export function fromDirectoryTest() {
   describe('handler', () => {
     describe('getCommands', () => {
-      it('должен вернуть true, если в commands 1 и более комад', async() => {
+      it('должен вернуть true, если в commands 1 и более команд', async() => {
         assert.equal(
           handler.commander.getCommands.length >= 1,
           true
