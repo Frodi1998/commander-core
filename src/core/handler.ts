@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import debug from 'debug';
 
 import { Command, Commander } from './commander';
@@ -6,6 +5,7 @@ import { ConfigureError } from './errors';
 import { IContext } from '../types';
 import { Context } from '../types';
 import { UtilsCore } from './utils';
+import EventListener from './utils/event-emiter';
 import executeCommand from './executeCommand';
 
 const logger = debug('commander-core:handler');
@@ -51,14 +51,17 @@ export interface IHandlerParams {
  * @description класс обработчика
  * @class
  */
-export class Handler<core extends UtilsCore>{
-  public commandsDirectory : string;
+export class Handler {
+  /**
+   * @type {EventEmitter} events менеджер событий
+   */
+  readonly events: EventListener;
 
-  public events: EventEmitter;
+  readonly commander: Commander;
 
-  public commander : Commander;
+  readonly utils: UtilsCore;
 
-  public utils: core | UtilsCore;
+  private readonly commandsDirectory: string;
 
   private sourceCommands = '';
 
