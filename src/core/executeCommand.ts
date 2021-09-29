@@ -11,9 +11,8 @@ export default async function executeCommand<ctx extends Context>(context: ctx &
 	logger('execute param context: %O', context);
 	logger('execute param utils: %O', utils);
 
-    const startTime = Date.now();
-
-    const command: Command = await utils.commander.find<ctx>(context);
+  const startTime = Date.now();
+  const command: Command = await utils.commander.find<ctx>(context);
 	
 	if(!command) {
 		logger('command not found');
@@ -24,14 +23,32 @@ export default async function executeCommand<ctx extends Context>(context: ctx &
 
 	utils.setCommand(command);
 
-	await Promise.all([
-		utils.events.emit('command_job', {context, utils}),
-		command.handler(context, utils)
-	])
-	.catch((error) =>{
-		utils.events.emit('command_error', {context, utils, error});
+	if(utils.getCommandStatus === 'default') {
+		await utils.events.emit('command_job', {context, utils});
+	}
+
+	if(utils.getCommandStatus === 'stop') {
+		logger('stop execute');
 		return;
-	})
+	}
+
+	if(utils.getCommandStatus === 'default') {
+		try {
+			await command.handler(context, utils)
+		} catch(error) {
+			utils.events.emit('command_error', {context, utils, error});
+			return;
+		}
+	}
+
+	// await Promise.all([
+	// 	utils.events.emit('command_job', {context, utils}),
+	// 	command.handler(context, utils)
+	// ])
+	// .catch((error) =>{
+	// 	utils.events.emit('command_error', {context, utils, error});
+	// 	return;
+	// })
 
 	utils.setPing(startTime);
 
