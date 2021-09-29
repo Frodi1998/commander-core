@@ -49,7 +49,7 @@ export interface ICommand {
    * @type {Record<string, unknown>} дополнительные параметры
    * @default {}
    */
-  params: Record<string, unknown>
+  params?: Record<string, unknown>
   
   /**
    * @type {Array<ICommand>} массив подкоманд
@@ -66,12 +66,14 @@ export interface ICommand {
 /**
  * @typedef {Function}
  */
+// eslint-disable-next-line
 type TEmit = (eventName: string | symbol, ...args: any) => boolean;
 
 /**
  * @typedef {Function}
  */
-type TOn = (eventName: string | symbol, listener: (...args: any) => any) => IEventEmitter
+// eslint-disable-next-line
+type TOn = (eventName: string | symbol, listener: (...args: any) => any) => EventEmitter
 
 /**
  * @typedef {Function}
@@ -81,7 +83,7 @@ type TEventNames = () => Array<string>
 /**
  * @interface
  */
-export interface IEventEmitter {
+export interface EventEmitter {
   /**
    * @description Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```, в том порядке, 
    * в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
