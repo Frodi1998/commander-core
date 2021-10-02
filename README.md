@@ -133,11 +133,17 @@ export class Utils extends UtilsCore {
 ```
 далее создайте файл start.ts
 ```ts
-import { Handler } from 'commander-core';
-import { VK, getRandomId } from 'vk-io';
+import { Handler, IContext } from 'commander-core';
+import { VK, getRandomId, MessageContext } from 'vk-io';
 import path from 'path';
 
 import Utils from './utils.js'; //наши утилиты
+
+interface IListener {
+	context: MessageContext & IContext;
+	utils: Utils;
+	error?: Error;
+}
 
 const TOKEN = process.env.TOKEN //токен от группы
 const vk = new VK({token: TOKEN})
@@ -151,7 +157,7 @@ const handler = new Handler({
 	utils: new Utils() //загружаем наши утилиты в класс обработчика
 });
 
-handler.events.on('command_error', async({context, utils, error}) =>{
+handler.events.on('command_error', async({context, utils, error}: IListener) =>{
 	context.send(`Произошла непредвиденная ошибка`)
 	if(utils.adminIds) {
 		vk.api.messages.send({
@@ -164,7 +170,7 @@ handler.events.on('command_error', async({context, utils, error}) =>{
 	}
 }); //событие срабатывания ошибок в команде
 
-handler.listener.on('command_not_found', async({context}) =>{
+handler.listener.on('command_not_found', async({context}: IListener) =>{
 	if(!context.isChat) {
 		context.send(`Введенной вами команды не существует!`)
 	} 
