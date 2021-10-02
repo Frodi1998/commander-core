@@ -76,7 +76,7 @@ handler.events.on('command_error', async({context, utils, error}) =>{
 	}
 }); //событие срабатывания ошибок в команде
 
-handler.listener.on('command_not_found', async({context}) =>{
+handler.events.on('command_not_found', async({context}) =>{
 	if(!context.isChat) {
 		context.send(`Введенной вами команды не существует!`)
 	} 
@@ -170,7 +170,7 @@ handler.events.on('command_error', async({context, utils, error}: IListener) =>{
 	}
 }); //событие срабатывания ошибок в команде
 
-handler.listener.on('command_not_found', async({context}: IListener) =>{
+handler.events.on('command_not_found', async({context}: IListener) =>{
 	if(!context.isChat) {
 		context.send(`Введенной вами команды не существует!`)
 	} 
