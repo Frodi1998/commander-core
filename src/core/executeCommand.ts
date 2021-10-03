@@ -11,7 +11,7 @@ export default async function executeCommand<ctx extends Context>(context: ctx &
 	logger('execute param context: %O', context);
 	logger('execute param utils: %O', utils);
 
-  this.events.emit('command_begin', {context, utils});
+  utils.events.emit('command_begin', {context, utils});
     
   if(!context.$command) {
     context.$command = context.text
