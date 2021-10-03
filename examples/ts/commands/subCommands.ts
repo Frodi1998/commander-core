@@ -1,11 +1,8 @@
 //@ts-ignore
-import { Command, IContext, IParams } from 'commander-core';
+import { Command, IContext } from 'commander-core';
 //@ts-ignore
 import { MessageContext } from 'vk-io';
 import Utils from '../utils';
-
-interface AdapterUtils extends Utils, IParams {};
-interface AdapterContext extends MessageContext, IContext {};
 
 export default new Command({
 	pattern: /^тест\s(.*|$)/i,
@@ -16,7 +13,7 @@ export default new Command({
 		commandType: 'тест'
 	},
 
-	handler(ctx: AdapterContext, bot: AdapterUtils) {
+	handler(ctx: MessageContext & IContext, bot: Utils) {
 		bot.testMetods();
 		//@ts-ignore
 		ctx.send('тест');
@@ -31,7 +28,7 @@ export default new Command({
 			params: {
 				commandType: 'подкоманда'
 			},
-			handler(ctx: AdapterContext, bot: AdapterUtils ) {
+			handler(ctx: MessageContext & IContext, bot: Utils ) {
 				//@ts-ignore
 				ctx.send('тост');
 				return;

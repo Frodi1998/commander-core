@@ -7,7 +7,7 @@ module.exports = new Command({
 	params: {
 		commandType: 'тест'
 	},
-	handler(ctx, bot) {
+	handler(ctx) {
 		ctx.send('успех')
 	}
 })

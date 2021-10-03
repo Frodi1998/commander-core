@@ -1,11 +1,8 @@
 //@ts-ignore
-import { Command, IContext, IParams } from 'commander-core';
+import { Command, IContext } from 'commander-core';
 //@ts-ignore
 import { MessageContext } from 'vk-io';
 import Utils from "../utils";
-
-interface AdapterUtils extends Utils, IParams {};
-interface AdapterContext extends MessageContext, IContext {};
 
 export default new Command({
 	pattern: /^(пом[ао]щь|help)$/i,
@@ -16,7 +13,7 @@ export default new Command({
         commandType: 'помощь'
     },
 
-	async handler(context: AdapterContext, bot: AdapterUtils) {
+	async handler(context: MessageContext & IContext, bot: Utils) {
         //@ts-ignore
 		const commands: Command[] = bot.commander.getCommands
             .filter((command: Command) => command.name);
