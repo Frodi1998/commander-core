@@ -91,12 +91,6 @@ export class UtilsCore {
     logger('command execute from utils');
     logger('params: context: %o, utils: %o', context, this);
 
-    this.events.emit('command_begin', {context, utils: this});
-    
-    if(!context.$command) {
-      context.$command = context.text
-    }
-
     executeCommand<ctx>(context, this)
   }
 }
