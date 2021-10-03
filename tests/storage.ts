@@ -9,7 +9,7 @@ export class Storage {
         this.state[name] = value;
     }
 
-    get(name) {
+    get<T>(name: string | symbol): T {
         return this.state[name];
     }
 }

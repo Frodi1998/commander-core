@@ -1,7 +1,7 @@
 import assert from 'assert';
 import path from 'path';
 
-import { Handler, Command } from '../dist/main';
+import { Handler, Command, IContext } from '..';
 import { MessageCTX } from './context';
 import { Storage } from './storage';
 import Utils from './utils';
@@ -15,6 +15,17 @@ class CustomCommand extends Command {
   }
 }
 
+interface IListener {
+	context: MessageCTX & IContext;
+	utils: Utils;
+	error?: Error;
+}
+
+interface IParams {
+  context: MessageCTX & IContext;
+	utils: Utils;
+}
+
 const storage = new Storage();
 
 const handler = new Handler({
@@ -25,14 +36,18 @@ const handler = new Handler({
   utils: new Utils()
 });
 
-handler.events.on('command_begin', ({context, utils}) => {
+handler.events.on('command_begin', ({context, utils}: IListener) => {
+  const params: IParams = {context, utils};
+
   storage.set('command_begin', 'begin');
-  storage.set('begin_params', {context, utils});
+  storage.set('begin_params', params);
 });
 
-handler.events.on('command_job', ({context, utils}) => {
+handler.events.on('command_job', ({context, utils}: IListener) => {
+  const params: IParams = {context, utils};
+
   storage.set('command_job', 'job');
-  storage.set('job_params', {context, utils});
+  storage.set('job_params', params);
 });
 
 handler.loadCommands()
@@ -103,13 +118,13 @@ export function fromDirectoryTest() {
         });
 
         it('должен вернуть begin', () => {
-          const state = storage.get('command_begin');
+          const state = storage.get<string>('command_begin');
 
           assert.equal(state, 'begin');
         });
 
         it('должен вернуть параметры события', () => {
-          const params = storage.get('begin_params');
+          const params = storage.get<IParams>('begin_params');
 
           assert.equal(params.utils instanceof Utils, true);
           assert.equal(params.context.text, 'test');
@@ -125,18 +140,18 @@ export function fromDirectoryTest() {
         });
 
         it('должен вернуть job', () => {
-          const state = storage.get('command_job');
+          const state = storage.get<string>('command_job');
 
           assert.equal(state, 'job');
         });
 
         it('должен вернуть true, если utils экземпляр Utils', () => {
-          const params = storage.get('job_params');
+          const params = storage.get<IParams>('job_params');
           assert.equal(params.utils instanceof Utils, true);
         });
 
         it('должен вернуть test', () => {
-          const params = storage.get('job_params');
+          const params = storage.get<IParams>('job_params');
           assert.equal(params.context.text, 'test');
         })
       });
@@ -151,12 +166,12 @@ export function fromDirectoryTest() {
       });
 
       it('должен вернуть тест', () => {
-        const { context } = storage.get('begin_params');
+        const { context } = storage.get<IParams>('begin_params');
         assert.equal(context.text, 'test');
       });
 
       it('должен вернуть true если utils экземпляр Utils', () => {
-        const { utils } = storage.get('begin_params');
+        const { utils } = storage.get<IParams>('begin_params');
         assert.equal(utils instanceof Utils, true);
       });
     })
