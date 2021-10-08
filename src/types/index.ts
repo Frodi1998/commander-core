@@ -1,5 +1,5 @@
 export abstract class Context {
-  public text: string;
+  public text?: string;
 }
 
 export interface IContext {
