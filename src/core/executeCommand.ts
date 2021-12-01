@@ -11,6 +11,7 @@ export default async function executeCommand<ctx extends Context>(context: ctx &
 	logger('execute param context: %O', context);
 	logger('execute param utils: %O', utils);
 
+  utils.setCommandStatus('default');
   utils.events.emit('command_begin', {context, utils});
     
   if(!context.$command) {
@@ -46,15 +47,6 @@ export default async function executeCommand<ctx extends Context>(context: ctx &
 			return;
 		}
 	}
-
-	// await Promise.all([
-	// 	utils.events.emit('command_job', {context, utils}),
-	// 	command.handler(context, utils)
-	// ])
-	// .catch((error) =>{
-	// 	utils.events.emit('command_error', {context, utils, error});
-	// 	return;
-	// })
 
 	utils.setPing(startTime);
 
