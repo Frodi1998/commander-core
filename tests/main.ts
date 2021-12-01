@@ -4,8 +4,8 @@ import { fromDirectoryTest } from './from-directory';
 import { fromArrayTest } from './from-array';
 
 describe('main', () => {
-  describe('default test', function() {
-    it('должен вернуть 4', function() {
+  describe('default test', function () {
+    it('должен вернуть 4', function () {
       assert.equal(2 * 2, 4);
     });
   });

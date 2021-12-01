@@ -33,11 +33,11 @@ export class UtilsCore {
 
   constructor() {
     this.events = new EventListener();
-    this.commander =  new Commander();
+    this.commander = new Commander();
   }
 
   public get getPing(): number {
-    return this[ping]
+    return this[ping];
   }
 
   public setPing(start: number): void {
@@ -63,11 +63,11 @@ export class UtilsCore {
 
   /**
    * меняет статус выполнения команды
-   * @param {'stop' | 'ready' | 'default'} stat 
+   * @param {'stop' | 'ready' | 'default'} stat
    * @returns {'stop' | 'ready' | 'default'}
    */
   public setCommandStatus(stat: TStatus): TStatus {
-    if(stat) {
+    if (stat) {
       this[status] = stat;
     }
 
@@ -76,21 +76,21 @@ export class UtilsCore {
 
   /**
    * @description устанавливает команду
-   * @param $command 
+   * @param $command
    */
   public setCommand($command: Command): void {
-    this[command] = $command
+    this[command] = $command;
     logger('set command: %o', this[command]);
   }
 
   /**
    * @description выполняет команду по переданному контексту, аналогичен handler.execute
-   * @param context 
+   * @param context
    */
   public executeCommand<ctx extends Context>(context: ctx & IContext): void {
     logger('command execute from utils');
     logger('params: context: %o, utils: %o', context, this);
 
-    executeCommand<ctx>(context, this)
+    executeCommand<ctx>(context, this);
   }
 }

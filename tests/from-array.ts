@@ -9,23 +9,23 @@ import eventCommand from './commands/eventCommands';
 
 const handler = new Handler({
   commands: {
-    fromArray: [testCommand, eventCommand]
+    fromArray: [testCommand, eventCommand],
   },
   strictLoader: true,
-  utils: new Utils()
+  utils: new Utils(),
 });
 
-handler.events.on('command_job', ({context, utils}) => {
-  if(utils.getCommand.categories.includes(['job'])) {
-    console.log('command_job')
+handler.events.on('command_job', ({ context, utils }) => {
+  if (utils.getCommand.categories.includes(['job'])) {
+    console.log('command_job');
     return utils.setCommandStatus('stop');
   }
 });
 
-handler.events.on('command_ready', ({context, utils}) => {
+handler.events.on('command_ready', ({ context, utils }) => {
   const command = utils.getCommand;
 
-  if(command.categories.includes('job')) {
+  if (command.categories.includes('job')) {
     console.log('ready');
   }
 });
@@ -33,11 +33,8 @@ handler.events.on('command_ready', ({context, utils}) => {
 export function fromArrayTest() {
   describe('handler', () => {
     describe('getCommands', () => {
-      it('должен вернуть true, если в commands есть комманды', async() => {
-        assert.equal(
-          handler.commander.getCommands.length > 0,
-          true
-        );
+      it('должен вернуть true, если в commands есть комманды', async () => {
+        assert.equal(handler.commander.getCommands.length > 0, true);
       });
     });
 
@@ -46,13 +43,10 @@ export function fromArrayTest() {
       const context = new MessageCTX();
       context.$command = 'test';
 
-      it('должен найти и вернуть инстанс команды', async() => {
+      it('должен найти и вернуть инстанс команды', async () => {
         const command = await commander.find(context);
 
-        assert.equal(
-          command instanceof Command,
-          true
-        );
+        assert.equal(command instanceof Command, true);
       });
     });
 
@@ -63,8 +57,8 @@ export function fromArrayTest() {
           categories: ['job'],
           handler() {
             console.log('test job event');
-          }
-        })
+          },
+        }),
       ];
 
       handler.commander.addCommands(commands);
@@ -75,6 +69,6 @@ export function fromArrayTest() {
 
         handler.execute(context);
       });
-    })
+    });
   });
 }

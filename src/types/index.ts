@@ -10,21 +10,21 @@ export interface IContext {
 /**
  * @typedef {Function}
  * @example
- * 
+ *
  * handler(context, bot) {
  *  bot.testMetod() //utils.testMetod
  *  context.send('ура')
  * }
  */
 // eslint-disable-next-line
-export type THandlerCommand = (context: any, bot: any) => void | Promise<void>
+export type THandlerCommand = (context: any, bot: any) => void | Promise<void>;
 
 /**
- * @interface 
+ * @interface
  */
 export interface ICommand {
   /**
-   * @type {RegExp | string} регулярное выражение 
+   * @type {RegExp | string} регулярное выражение
    */
   pattern: RegExp | string;
 
@@ -49,8 +49,8 @@ export interface ICommand {
    * @type {Record<string, unknown>} дополнительные параметры
    * @default {}
    */
-  params?: Record<string, unknown>
-  
+  params?: Record<string, unknown>;
+
   /**
    * @type {Array<ICommand>} массив подкоманд
    * @default []
@@ -72,20 +72,23 @@ type TEmit = (eventName: string | symbol, ...args: any) => boolean;
 /**
  * @typedef {Function}
  */
-// eslint-disable-next-line
-type TOn = (eventName: string | symbol, listener: (...args: any) => any) => EventEmitter
+type TOn = (
+  eventName: string | symbol,
+  // eslint-disable-next-line
+  listener: (...args: any) => any,
+) => EventEmitter;
 
 /**
  * @typedef {Function}
  */
-type TEventNames = () => Array<string>
+type TEventNames = () => Array<string>;
 
 /**
  * @interface
  */
 export interface EventEmitter {
   /**
-   * @description Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```, в том порядке, 
+   * @description Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```, в том порядке,
    * в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
    * Возвращает ```true```, если у события есть слушатели, в противном случае ```false```.
    * @type {TEmit}
@@ -104,5 +107,5 @@ export interface EventEmitter {
    * @description Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или ```Symbols```.
    * @type {TEventNames}
    */
-  eventNames: TEventNames
+  eventNames: TEventNames;
 }

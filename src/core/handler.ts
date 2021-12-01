@@ -39,7 +39,7 @@ export interface IHandlerParams {
    * @description строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
    * @default true
    */
-  strictLoader?: boolean
+  strictLoader?: boolean;
 
   /**
    * @description настраиваемые утилиты для вашей логики, например для работы с базой данных
@@ -72,15 +72,15 @@ export class Handler {
    * @param {IHandlerParams} data данные обработчика
    * @returns {handler}
    * @example
-   * 
+   *
    * const { Handler, UtilsCore } = require('commander-core');
-   * 
+   *
    * class Utils extends UtilsCore {
    *  testMetods() {
    *      console.log('test')
    *  }
    * }
-   * 
+   *
    * const handler = new Handler({
    *  commands: {
    *    directory: path.resolve(__dirname, 'commands'); //директория команд
@@ -89,7 +89,7 @@ export class Handler {
    *  utils: new Utils() // Utils
    * })
    * @example
-   * 
+   *
    * сonst handler = new Handler({
    *  commands: {
    *    fromArray: [new Command(params)]; //массив команд
@@ -98,52 +98,57 @@ export class Handler {
    *  utils: new Utils() // Utils
    * })
    */
-  constructor(params: IHandlerParams = {
-    commands: {},
-    strictLoader: false,
-    utils: new UtilsCore()
-  }) {
+  constructor(
+    params: IHandlerParams = {
+      commands: {},
+      strictLoader: false,
+      utils: new UtilsCore(),
+    },
+  ) {
     logger('create handler start');
-    this.strictLoader = params.strictLoader
+    this.strictLoader = params.strictLoader;
 
     logger('strictLoader: %s', this.strictLoader);
 
-    if(!params.commands.directory && !params.commands.fromArray?.length) {
+    if (!params.commands.directory && !params.commands.fromArray?.length) {
       throw new ConfigureError('не указан источник загрузки команд');
     }
-    
-    if (params.strictLoader
-      && !params.commands.fromArray?.length
-      && !params.commands.directory) {
+
+    if (
+      params.strictLoader &&
+      !params.commands.fromArray?.length &&
+      !params.commands.directory
+    ) {
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
     this.utils = params.utils;
     logger('handler.utils: %o', this.utils);
-    
+
     this.events = params.utils.events;
     logger('handler.events: %o', this.events);
 
     this.commander = params.utils.commander;
     logger('handler.commander: %o', this.commander);
 
-    if(params.commands.fromArray?.length > 0) {
+    if (params.commands.fromArray?.length > 0) {
       this.commander.commandsLoaded = true;
-      this.commander.setCommands(params.commands.fromArray)
+      this.commander.setCommands(params.commands.fromArray);
     }
-    
-    if(params.commands.directory) {
-      this.commandsDirectory = params.commands.directory;
-    } 
 
-    this.sourceCommands = params.commands.fromArray?.length > 0? 'array': 'directory';
-    logger('sourceCommands: %s', this.sourceCommands)
+    if (params.commands.directory) {
+      this.commandsDirectory = params.commands.directory;
+    }
+
+    this.sourceCommands =
+      params.commands.fromArray?.length > 0 ? 'array' : 'directory';
+    logger('sourceCommands: %s', this.sourceCommands);
     logger('create handler complited');
   }
 
   get [Symbol.toStringTag](): string {
-		return 'Handler';
-	}
+    return 'Handler';
+  }
 
   /**
    * @description загружает команды из директории
@@ -152,8 +157,10 @@ export class Handler {
   async loadCommands(): Promise<void> {
     logger('booting commands');
 
-    if(this.sourceCommands === 'array') {
-      throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
+    if (this.sourceCommands === 'array') {
+      throw new ConfigureError(
+        'нельзя загружать команды из директории если указан массив комманд!',
+      );
     }
 
     await this.commander.loadFromDirectory(this.commandsDirectory);
@@ -161,11 +168,11 @@ export class Handler {
     const commands: Command[] = this.commander.getCommands;
     logger('commands count: %d', commands.length);
 
-    if(commands.length < 1 && this.strictLoader) {
+    if (commands.length < 1 && this.strictLoader) {
       logger('booting commands error');
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
-    
+
     logger('handler.commander: %o', this.commander);
     logger('booting commands complited');
   }
@@ -175,7 +182,7 @@ export class Handler {
    * @param {object} context объект контекста возвращаемый из vk-io или puregram
    * @returns {void}
    * @example
-   * 
+   *
    * execute<MessageContext>(context)
    * // => void
    */

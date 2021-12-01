@@ -13,6 +13,7 @@
     "build": "tsc",
     "docs": "jsdoc -c jsdoc.json",
     "lint": "eslint ./src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig-for-autotests.json' mocha -r ts-node/register './tests/main.ts'"
   },
   "repository": {

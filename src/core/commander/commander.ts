@@ -12,135 +12,137 @@ const findFiles = promisify(glob);
 const logger = debug('commander-core:commander');
 
 function existDirectory(dir: string): boolean {
-    return existsSync(dir)
+  return existsSync(dir);
 }
 
 /**
  * @description класс обработки
- * @class 
+ * @class
  */
 export class Commander {
-  private commands : Command[] = [];
-	
-	public commandsLoaded = false;
+  private commands: Command[] = [];
 
-	get [Symbol.toStringTag](): string {
-		return 'Commander';
-	}
+  public commandsLoaded = false;
 
-	/**
-	 * @description выводит команды
-	 */
-	get getCommands(): Command[] {
-		return this.commands
-	}
+  get [Symbol.toStringTag](): string {
+    return 'Commander';
+  }
 
-	/**
-	 * @description загрузка команд из директории
-	 * @param {string} dir директория загрузки команд
-	 * @returns {Promise<void>}
-	 */
-    async loadFromDirectory(dir: string): Promise<void> {
-		try {
-			if(!existDirectory(dir)) {
+  /**
+   * @description выводит команды
+   */
+  get getCommands(): Command[] {
+    return this.commands;
+  }
+
+  /**
+   * @description загрузка команд из директории
+   * @param {string} dir директория загрузки команд
+   * @returns {Promise<void>}
+   */
+  async loadFromDirectory(dir: string): Promise<void> {
+    try {
+      if (!existDirectory(dir)) {
         logger('Commandsdirectory not found');
-				throw new ConfigureError(`${dir} не существует`);
-			}
+        throw new ConfigureError(`${dir} не существует`);
+      }
 
-			const absPath = path.resolve(dir);
-			let filePaths = await findFiles(`${absPath}/**/*.js`);
-			filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path))
+      const absPath = path.resolve(dir);
+      let filePaths = await findFiles(`${absPath}/**/*.js`);
+      filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path));
 
-      		logger('Commandsdirectory files %O', filePaths);
+      logger('Commandsdirectory files %O', filePaths);
 
-			await filePaths.forEach(async(filePath) => {
-				let file = await import(filePath);
-				file = file.default? file.default: file;
+      await filePaths.forEach(async filePath => {
+        let file = await import(filePath);
+        file = file.default ? file.default : file;
         logger('fileName: %s', filePath);
         logger('fileContent: %O', file);
 
-				if(!Array.isArray(file)) {
-					file = [file]
-				}
+        if (!Array.isArray(file)) {
+          file = [file];
+        }
 
-				if(file.length === 0) {
-					return;
-				}
+        if (file.length === 0) {
+          return;
+        }
 
-				file.forEach((command) => {
-					if(!(command instanceof Command)) {
+        file.forEach(command => {
+          if (!(command instanceof Command)) {
             logger('Command not instance Command');
-						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
-					}
+            throw new ConfigureError(
+              `Экспартируемые данные в файле ${filePath} не являются командой`,
+            );
+          }
 
-					this.addCommands(command);
-				})
-			})
+          this.addCommands(command);
+        });
+      });
 
-			this.commandsLoaded = true;
-		} catch(err) {
+      this.commandsLoaded = true;
+    } catch (err) {
       console.error(err);
-			this.commandsLoaded = false;
-		}
+      this.commandsLoaded = false;
+    }
+  }
+
+  /**
+   * @description добавляет новые команды
+   * @param command
+   */
+  addCommands(commands: Command | Command[]): number {
+    if (!Array.isArray(commands)) {
+      logger('add new command');
+      return this.commands.push(commands);
     }
 
-	/**
-	 * @description добавляет новые команды
-	 * @param command 
-	 */
-	addCommands(commands: Command | Command[]): number {
-		if(!Array.isArray(commands)) {
-      logger('add new command');
-			return this.commands.push(commands);
-		}
-		
     logger('add new commands');
-		commands.forEach(command => this.commands.push(command));
-		
-		return this.commands.length;
-	}
+    commands.forEach(command => this.commands.push(command));
 
-	/**
-	 * @description устанавливает команды удаляя старые
-	 * @param commands 
-	 */
-	setCommands(commands: Command[]): void {
+    return this.commands.length;
+  }
+
+  /**
+   * @description устанавливает команды удаляя старые
+   * @param commands
+   */
+  setCommands(commands: Command[]): void {
     logger('set new commands');
-		this.commands = commands
-	}
+    this.commands = commands;
+  }
 
-	/**
-	 * @description поиск команды
-	 * @param {any} context 
-	 * @returns {Command}
-	 * @example ts
-	 * 
-	 * import { MessageContext } from "vk-io";
-	 * 
-	 * const command = commander.find<MessageContext>(context)
-	 */
-    async find<c extends Context>(context: c & IContext): Promise<Command> {
-		let command: Command;
+  /**
+   * @description поиск команды
+   * @param {any} context
+   * @returns {Command}
+   * @example ts
+   *
+   * import { MessageContext } from "vk-io";
+   *
+   * const command = commander.find<MessageContext>(context)
+   */
+  async find<c extends Context>(context: c & IContext): Promise<Command> {
+    let command: Command;
 
-		for await(const com of this.commands) {
-			if((<RegExp>com.pattern).test(context.$command)) {
+    for await (const com of this.commands) {
+      if ((<RegExp>com.pattern).test(context.$command)) {
         logger('command found');
-				command = com;
-				break;
-			}
-		}
+        command = com;
+        break;
+      }
+    }
 
-		if(!command) {
-			return null;
-		}
+    if (!command) {
+      return null;
+    }
 
-		context.body = context.$command.match(command.pattern)
+    context.body = context.$command.match(command.pattern);
 
-		if((<Command[]>command.commands).length) {
+    if ((<Command[]>command.commands).length) {
       logger('find subсommand');
       command = command.findSubCommand<c>(context);
-		}
-
-		return command;
     }
+
+    return command;
+  }
 }

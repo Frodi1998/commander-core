@@ -16,52 +16,50 @@ class CustomCommand extends Command {
 }
 
 interface IListener {
-	context: MessageCTX & IContext;
-	utils: Utils;
-	error?: Error;
+  context: MessageCTX & IContext;
+  utils: Utils;
+  error?: Error;
 }
 
 interface IParams {
   context: MessageCTX & IContext;
-	utils: Utils;
+  utils: Utils;
 }
 
 const storage = new Storage();
 
 const handler = new Handler({
   commands: {
-    directory: path.resolve(__dirname, 'commands')
+    directory: path.resolve(__dirname, 'commands'),
   },
   strictLoader: true,
-  utils: new Utils()
+  utils: new Utils(),
 });
 
-handler.events.on('command_begin', ({context, utils}: IListener) => {
-  const params: IParams = {context, utils};
+handler.events.on('command_begin', ({ context, utils }: IListener) => {
+  const params: IParams = { context, utils };
 
   storage.set('command_begin', 'begin');
   storage.set('begin_params', params);
 });
 
-handler.events.on('command_job', ({context, utils}: IListener) => {
-  const params: IParams = {context, utils};
+handler.events.on('command_job', ({ context, utils }: IListener) => {
+  const params: IParams = { context, utils };
 
   storage.set('command_job', 'job');
   storage.set('job_params', params);
 });
 
-handler.loadCommands()
+handler
+  .loadCommands()
   .then(() => console.log('commands loaded'))
-  .catch((err) => console.error(err));
+  .catch(err => console.error(err));
 
 export function fromDirectoryTest() {
   describe('handler', () => {
     describe('getCommands', () => {
-      it('должен вернуть true, если в commands 1 и более команд', async() => {
-        assert.equal(
-          handler.commander.getCommands.length >= 1,
-          true
-        );
+      it('должен вернуть true, если в commands 1 и более команд', async () => {
+        assert.equal(handler.commander.getCommands.length >= 1, true);
       });
     });
 
@@ -73,7 +71,7 @@ export function fromDirectoryTest() {
             type: 'new',
             handler() {
               console.log('add new command1');
-            }
+            },
           }),
 
           new CustomCommand({
@@ -81,30 +79,29 @@ export function fromDirectoryTest() {
             type: 'new',
             handler() {
               console.log('add new command2');
-            }
-          })
-        ]
+            },
+          }),
+        ];
 
         handler.commander.addCommands(commands);
 
-        const newCommands = handler.commander.getCommands.filter(x => x.type === 'new');
+        const newCommands = handler.commander.getCommands.filter(
+          x => x.type === 'new',
+        );
 
         assert.strictEqual(newCommands.length, 2);
-      })
-    })
+      });
+    });
 
     describe('find', async () => {
       const { commander } = handler;
       const context = new MessageCTX();
       context.$command = 'test';
 
-      it('должен найти и вернуть инстанс команды', async() => {
+      it('должен найти и вернуть инстанс команды', async () => {
         const command = await commander.find(context);
 
-        assert.equal(
-          command instanceof Command,
-          true
-        );
+        assert.equal(command instanceof Command, true);
       });
     });
 
@@ -153,7 +150,7 @@ export function fromDirectoryTest() {
         it('должен вернуть test', () => {
           const params = storage.get<IParams>('job_params');
           assert.equal(params.context.text, 'test');
-        })
+        });
       });
     });
 
@@ -174,6 +171,6 @@ export function fromDirectoryTest() {
         const { utils } = storage.get<IParams>('begin_params');
         assert.equal(utils instanceof Utils, true);
       });
-    })
+    });
   });
-};
+}
