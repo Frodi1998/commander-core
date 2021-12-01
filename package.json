@@ -24,7 +24,9 @@
     "handler",
     "commander",
     "core",
-    "bot"
+    "bot",
+    "vk-bot",
+    "tg-bot"
   ],
   "author": "Frodi1998",
   "license": "MIT",
@@ -32,13 +34,13 @@
     "url": "https://github.com/Frodi1998/commander-core/issues"
   },
   "homepage": "https://github.com/Frodi1998/commander-core#readme",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "debug": "^4.3.2",
     "glob": "^7.1.6"
   },
-  "files": [
-    "dist"
-  ],
   "devDependencies": {
     "@types/debug": "^4.1.7",
     "@types/glob": "^7.1.3",
