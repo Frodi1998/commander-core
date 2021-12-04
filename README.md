@@ -1,4 +1,7 @@
-NPM version Build Status NPM downloads Code quality
+<p align="center">
+<a href="https://www.npmjs.com/package/commander-core"><img src="https://img.shields.io/npm/v/commander-core.svg?style=flat-square" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/commander-core"><img src="https://img.shields.io/npm/dt/commander-core.svg?style=flat-square" alt="NPM downloads"></a>
+</p>
 
 commander-core - это ядро для вашего обработчика команд, основан на [cocoscore](https://www.npmjs.com/package/cocoscore), написан на [Node.js](https://nodejs.org)
 модуль может работать не только с [vk-io](https://www.npmjs.com/package/vk-io) но и с [puregram](https://www.npmjs.com/package/puregram)
