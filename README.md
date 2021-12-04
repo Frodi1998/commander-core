@@ -1,5 +1,4 @@
-npm package
-Version Downloads Support
+NPM version Build Status NPM downloads Code quality
 
 commander-core - это ядро для вашего обработчика команд, основан на [cocoscore](https://www.npmjs.com/package/cocoscore), написан на [Node.js](https://nodejs.org)
 модуль может работать не только с [vk-io](https://www.npmjs.com/package/vk-io) но и с [puregram](https://www.npmjs.com/package/puregram)
