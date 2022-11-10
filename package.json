@@ -43,7 +43,7 @@
   ],
   "dependencies": {
     "debug": "^4.3.2",
-    "glob": "^7.1.6"
+    "walk-sync": "^3.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.7",
