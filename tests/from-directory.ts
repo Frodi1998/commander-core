@@ -26,36 +26,20 @@ interface IParams {
   utils: Utils;
 }
 
-const storage = new Storage();
-
-const handler = new Handler({
-  commands: {
-    directory: path.resolve(__dirname, 'commands'),
-  },
-  strictLoader: true,
-  utils: new Utils(),
-});
-
-handler.events.on('command_begin', ({ context, utils }: IListener) => {
-  const params: IParams = { context, utils };
-
-  storage.set('command_begin', 'begin');
-  storage.set('begin_params', params);
-});
-
-handler.events.on('command_job', ({ context, utils }: IListener) => {
-  const params: IParams = { context, utils };
-
-  storage.set('command_job', 'job');
-  storage.set('job_params', params);
-});
-
-handler
-  .loadCommands()
-  .then(() => console.log('commands loaded'))
-  .catch(err => console.error(err));
+let storage: Storage;
+let handler: Handler;
 
 export function fromDirectoryTest() {
+  before(async () => {
+    storage = new Storage();
+    await createHandler();
+    await addListenerForHandler();
+    handler
+      .loadCommands()
+      .then(() => console.log('commands loaded'))
+      .catch(err => console.error(err));
+  });
+
   describe('handler', () => {
     describe('getCommands', () => {
       it('должен вернуть true, если в commands 1 и более команд', async () => {
@@ -172,5 +156,31 @@ export function fromDirectoryTest() {
         assert.equal(utils instanceof Utils, true);
       });
     });
+  });
+}
+
+async function createHandler() {
+  handler = new Handler({
+    commands: {
+      directory: path.join(__dirname, 'commands'),
+    },
+    strictLoader: true,
+    utils: new Utils(),
+  });
+}
+
+async function addListenerForHandler() {
+  handler.events.on('command_begin', ({ context, utils }: IListener) => {
+    const params: IParams = { context, utils };
+
+    storage.set('command_begin', 'begin');
+    storage.set('begin_params', params);
+  });
+
+  handler.events.on('command_job', ({ context, utils }: IListener) => {
+    const params: IParams = { context, utils };
+
+    storage.set('command_job', 'job');
+    storage.set('job_params', params);
   });
 }
