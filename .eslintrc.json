@@ -1,0 +1,44 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "google"
+  ],
+  "rules": {
+    // "@typescript-eslint/explicit-member-accessibility": "warn",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+
+    "operator-linebreak": [
+      "error",
+      "after",
+      { "overrides": { "?": "before", ":": "before" } }
+    ],
+    "object-curly-spacing": ["error", "always"],
+    "no-trailing-spaces": ["error", { "ignoreComments": true }],
+    "arrow-parens": ["error", "as-needed"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "quotes": "off",
+    "linebreak-style": "off",
+    "require-jsdoc": "off",
+    "no-empty": "off",
+    "new-cap": "off",
+    "no-tabs": "off",
+    "max-len": ["error", 120],
+    "no-unused-vars": "off",
+    "no-invalid-this": "off",
+    "no-useless-escape": "off"
+  }
+}
