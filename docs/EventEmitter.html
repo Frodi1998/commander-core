@@ -53,24 +53,8 @@
                     href="index.html"
                     class="link"
                 >
-                    API Documentation
+                    Documentation
                 </a>
-                
-                <div class="dropdown is-hoverable is-right">
-                    <a class="dropdown-trigger link">
-                        Tutorials
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                        
-                            <a class="dropdown-item" href="tutorial-main.html">
-                                main
-                            </a>
-                        
-                        </div>
-                    </div>
-                </div>
                 
                 
                 
@@ -90,7 +74,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Command_Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Handler_Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -190,7 +174,7 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type"><a href="global.html#TEmit">TEmit</a></span>
+<code class="param-type"><a href="global.html#TEmit">TEmit</a></code>
 
 
     </span>
@@ -208,9 +192,8 @@
 
 
 <div class="description">
-    <p>Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события <code>eventName</code>, в том порядке,
-в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
-Возвращает <code>true</code>, если у события есть слушатели, в противном случае <code>false</code>.</p>
+    <p>Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события <code>eventName</code>,
+в том порядке, в котором они были зарегистрированы, передавая каждому предоставленные аргументы.</p>
 </div>
 
 
@@ -269,7 +252,7 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type"><a href="global.html#TEventNames">TEventNames</a></span>
+<code class="param-type"><a href="global.html#TEventNames">TEventNames</a></code>
 
 
     </span>
@@ -287,7 +270,8 @@
 
 
 <div class="description">
-    <p>Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или <code>Symbols</code>.</p>
+    <p>Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей.
+Значения в массиве - это строки или <code>Symbols</code>.</p>
 </div>
 
 
@@ -329,7 +313,7 @@
         <p class="tag-source">
             <a href="types_index.ts.html" class="button">View Source</a>
             <span>
-                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line103">line 103</a>
+                <a href="types_index.ts.html">types/index.ts</a>, <a href="types_index.ts.html#line101">line 101</a>
             </span>
         </p>
     
@@ -346,7 +330,7 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<span class="param-type"><a href="global.html#TOn">TOn</a></span>
+<code class="param-type"><a href="global.html#TOn">TOn</a></code>
 
 
     </span>
@@ -364,9 +348,7 @@
 
 
 <div class="description">
-    <p>Добавляет <code>listener</code> функцию в конец массива слушателей для названного события eventName.
-Никаких проверок, чтобы увидеть, был ли <code>listener</code> уже добавлен, не делается .
-Несколько вызовов, передающих одну eventName и ту же комбинацию и <code>listener</code>, приведут к listenerдобавлению и вызову несколько раз.</p>
+    <p>Добавляет <code>listener</code> функцию в конец массива слушателей для названного события eventName.</p>
 </div>
 
 
@@ -440,9 +422,9 @@
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
                     <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
                     </p>
                 </div>
@@ -457,6 +439,7 @@
 <script src="scripts/linenumber.js"> </script>
 
 <script src="scripts/search.js"> </script>
+
 
 </body>
 </html>

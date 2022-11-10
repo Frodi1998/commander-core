@@ -1,34 +1,33 @@
 {
-	"tags": {
-		"allowUnknownTags": ["category", "subcategory"]
-	},
-	"sourceType": "module",
-	"source": {
-		"include": ["./src"],
-		"includePattern": "\\.(ts)$"
-	},
-	"plugins": [
-		"node_modules/better-docs/typescript",
-		"node_modules/better-docs/typedef-import",
-		"node_modules/better-docs/category",
-		"plugins/markdown"
-	],
-	"opts": {
-		"encoding": "utf8",
-		"destination": "docs/",
-		"recurse": true,
-		"verbose": true,
-		"readme": "./readme.md",
-		"template": "node_modules/better-docs",
-		"tutorials": "./tutorials"
-	},
-	"templates": {
-		"cleverLinks": false,
-		"monospaceLinks": false,
-		"better-docs": {
-			"name": "Commander-core documentation",
-			"title": "Documentation"
-		},
-		"search": true
-	}
+  "tags": {
+    "allowUnknownTags": ["category", "subcategory"]
+  },
+  "sourceType": "module",
+  "source": {
+    "include": ["./src"],
+    "includePattern": "\\.(ts)$"
+  },
+  "plugins": [
+    "node_modules/better-docs/typescript",
+    "node_modules/better-docs/typedef-import",
+    "node_modules/better-docs/category",
+    "plugins/markdown"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true,
+    "readme": "./readme.md",
+    "template": "node_modules/better-docs"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "better-docs": {
+      "name": "Commander-core documentation",
+      "title": "Documentation"
+    },
+    "search": true
+  }
 }

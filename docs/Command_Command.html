@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation IHandlerParams</title>
+  <title>Documentation Command</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -81,8 +81,8 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Interface</p>
-                    <h1>IHandlerParams</h1>
+                    <p>Class</p>
+                    <h1>Command</h1>
                 </header>
                 
 
@@ -93,7 +93,8 @@
 
 <header>
     
-        <h2>IHandlerParams</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="Command.html">Command</a>#</span>Command<span class="signature">(data)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -102,8 +103,95 @@
     <div class="container-overview">
     
         
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="Command">
+        <a class="href-link" href="#Command">#</a>
+        
+        <span class="code-name">
+            
+                new Command<span class="signature">(data)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>конструктор команды</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="ICommand.html">ICommand</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
 
         
+        </tbody>
+    </table>
+</div>
+
+
+
 
 
 <dl class="details">
@@ -139,15 +227,45 @@
 
     
         <p class="tag-source">
-            <a href="core_handler.ts.html" class="button">View Source</a>
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="core_handler.ts.html">core/handler.ts</a>, <a href="core_handler.ts.html#line147">line 147</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line170">line 170</a>
             </span>
         </p>
     
 </dl>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>new Command({ pattern: /test/i, name: 'test', description: 'test command', categories: ['test'], params: {     emoji: '📄'}, handler(context) {     context.send('test'); }})</code></pre>
+    
+
+
+
+                    </div>
+                </div>
+            </div>
         
     
     </div>
@@ -164,251 +282,6 @@
 
     
 
-    
-        <div class='vertical-section'>
-            <h1>Members</h1>
-            <div class="members">
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="ICommandsLoader.html">ICommandsLoader</a></code>
-
-
-    </span>
-
-<h4 class="name" id="commands">
-    <a class="href-link" href="#commands">#</a>
-    
-    <span class="code-name">
-        commands
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>объект описывающий источник загрузок</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_handler.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_handler.ts.html">core/handler.ts</a>, <a href="core_handler.ts.html#line151">line 151</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">boolean</code>
-
-
-    </span>
-
-<h4 class="name" id="strictLoader">
-    <a class="href-link" href="#strictLoader">#</a>
-    
-    <span class="code-name">
-        strictLoader
-    </span>
-    
-        <span class='tag'>Optional</span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>true</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_handler.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_handler.ts.html">core/handler.ts</a>, <a href="core_handler.ts.html#line156">line 156</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="UtilsCore.html">UtilsCore</a></code>
-
-
-    </span>
-
-<h4 class="name" id="utils">
-    <a class="href-link" href="#utils">#</a>
-    
-    <span class="code-name">
-        utils
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>настраиваемые утилиты для вашей логики, например для работы с базой данных</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_handler.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_handler.ts.html">core/handler.ts</a>, <a href="core_handler.ts.html#line163">line 163</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
     
 
     
