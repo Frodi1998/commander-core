@@ -34,10 +34,6 @@ export function fromDirectoryTest() {
     storage = new Storage();
     await createHandler();
     await addListenerForHandler();
-    handler
-      .loadCommands()
-      .then(() => console.log('commands loaded'))
-      .catch(err => console.error(err));
   });
 
   describe('handler', () => {
@@ -167,6 +163,11 @@ async function createHandler() {
     strictLoader: true,
     utils: new Utils(),
   });
+
+  handler
+    .loadCommands()
+    .then(() => console.log('commands loaded'))
+    .catch(err => console.error(err));
 }
 
 async function addListenerForHandler() {
