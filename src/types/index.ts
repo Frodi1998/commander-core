@@ -1,5 +1,7 @@
-export abstract class Context {
-  public text?: string;
+import { UtilsCore } from '../main';
+
+export interface Context {
+  text?: string;
 }
 
 export interface IContext {
@@ -17,7 +19,10 @@ export interface IContext {
  * }
  */
 // eslint-disable-next-line
-export type THandlerCommand = (context: any, bot: any) => void | Promise<void>;
+export type THandlerCommand = (
+  context: Context & IContext,
+  bot: UtilsCore,
+) => unknown | Promise<unknown>;
 
 /**
  * @interface
