@@ -1,7 +1,9 @@
 import { UtilsCore } from '../main';
 
-export interface Context {
+export interface Context extends Record<string, unknown> {
   text?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface IContext {
@@ -20,7 +22,8 @@ export interface IContext {
  */
 // eslint-disable-next-line
 export type THandlerCommand = (
-  context: Context & IContext,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: any,
   bot: UtilsCore,
 ) => unknown | Promise<unknown>;
 
