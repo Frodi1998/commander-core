@@ -107,8 +107,8 @@ export class Command {
 
   /**
    * @description поиск подкоманд
-   * @param {Record<string, any>} context
-   * @returns {Command}
+   * @param {Record<string, unknown>} context
+   * @return {Command}
    */
   findSubCommand<c extends Context>(context: c & IContext): Command {
     let command: Command;

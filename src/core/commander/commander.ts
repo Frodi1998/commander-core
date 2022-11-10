@@ -38,7 +38,7 @@ export class Commander {
   /**
    * @description загрузка команд из директории
    * @param {string} dir директория загрузки команд
-   * @returns {Promise<void>}
+   * @return {Promise<void>}
    */
   async loadFromDirectory(dir: string): Promise<void> {
     try {
@@ -88,7 +88,8 @@ export class Commander {
 
   /**
    * @description добавляет новые команды
-   * @param command
+   * @param {Command | Command[]} commands
+   * @return {number}
    */
   addCommands(commands: Command | Command[]): number {
     if (!Array.isArray(commands)) {
@@ -104,7 +105,8 @@ export class Commander {
 
   /**
    * @description устанавливает команды удаляя старые
-   * @param commands
+   * @param {Command[]} commands
+   * @return {void}
    */
   setCommands(commands: Command[]): void {
     logger('set new commands');
@@ -113,8 +115,8 @@ export class Commander {
 
   /**
    * @description поиск команды
-   * @param {any} context
-   * @returns {Command}
+   * @param {IContext} context
+   * @return {Promise<Command>}
    * @example ts
    *
    * import { MessageContext } from "vk-io";

@@ -55,7 +55,7 @@ export class UtilsCore {
 
   /**
    * статус команды
-   * @returns {'stop' | 'ready' | 'default'}
+   * @return {'stop' | 'ready' | 'default'}
    */
   public get getCommandStatus(): TStatus {
     return this[status];
@@ -64,7 +64,7 @@ export class UtilsCore {
   /**
    * меняет статус выполнения команды
    * @param {'stop' | 'ready' | 'default'} stat
-   * @returns {'stop' | 'ready' | 'default'}
+   * @return {'stop' | 'ready' | 'default'}
    */
   public setCommandStatus(stat: TStatus): TStatus {
     if (stat) {
@@ -76,7 +76,8 @@ export class UtilsCore {
 
   /**
    * @description устанавливает команду
-   * @param $command
+   * @param {Command} $command
+   * @return {void}
    */
   public setCommand($command: Command): void {
     this[command] = $command;
@@ -85,7 +86,8 @@ export class UtilsCore {
 
   /**
    * @description выполняет команду по переданному контексту, аналогичен handler.execute
-   * @param context
+   * @param {IContext} context
+   * @return {void}
    */
   public executeCommand<ctx extends Context>(context: ctx & IContext): void {
     logger('command execute from utils');

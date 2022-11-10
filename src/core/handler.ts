@@ -70,7 +70,6 @@ export class Handler {
   /**
    * @description конструктор
    * @param {IHandlerParams} data данные обработчика
-   * @returns {handler}
    * @example
    *
    * const { Handler, UtilsCore } = require('commander-core');
@@ -99,49 +98,49 @@ export class Handler {
    * })
    */
   constructor(
-    params: IHandlerParams = {
+    data: IHandlerParams = {
       commands: {},
       strictLoader: false,
       utils: new UtilsCore(),
     },
   ) {
     logger('create handler start');
-    this.strictLoader = params.strictLoader;
+    this.strictLoader = data.strictLoader;
 
     logger('strictLoader: %s', this.strictLoader);
 
-    if (!params.commands.directory && !params.commands.fromArray?.length) {
+    if (!data.commands.directory && !data.commands.fromArray?.length) {
       throw new ConfigureError('не указан источник загрузки команд');
     }
 
     if (
-      params.strictLoader &&
-      !params.commands.fromArray?.length &&
-      !params.commands.directory
+      data.strictLoader &&
+      !data.commands.fromArray?.length &&
+      !data.commands.directory
     ) {
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
-    this.utils = params.utils;
+    this.utils = data.utils;
     logger('handler.utils: %o', this.utils);
 
-    this.events = params.utils.events;
+    this.events = data.utils.events;
     logger('handler.events: %o', this.events);
 
-    this.commander = params.utils.commander;
+    this.commander = data.utils.commander;
     logger('handler.commander: %o', this.commander);
 
-    if (params.commands.fromArray?.length > 0) {
+    if (data.commands.fromArray?.length > 0) {
       this.commander.commandsLoaded = true;
-      this.commander.setCommands(params.commands.fromArray);
+      this.commander.setCommands(data.commands.fromArray);
     }
 
-    if (params.commands.directory) {
-      this.commandsDirectory = params.commands.directory;
+    if (data.commands.directory) {
+      this.commandsDirectory = data.commands.directory;
     }
 
     this.sourceCommands =
-      params.commands.fromArray?.length > 0 ? 'array' : 'directory';
+      data.commands.fromArray?.length > 0 ? 'array' : 'directory';
     logger('sourceCommands: %s', this.sourceCommands);
     logger('create handler complited');
   }
@@ -152,7 +151,7 @@ export class Handler {
 
   /**
    * @description загружает команды из директории
-   * @returns {Promise<void>}
+   * @return {Promise<void>}
    */
   async loadCommands(): Promise<void> {
     logger('booting commands');
@@ -180,7 +179,7 @@ export class Handler {
   /**
    * @description обработка команды
    * @param {object} context объект контекста возвращаемый из vk-io или puregram
-   * @returns {void}
+   * @return {void}
    * @example
    *
    * execute<MessageContext>(context)
