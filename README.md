@@ -28,10 +28,6 @@ yarn add commander-core
 Пример основан на [vk-io](https://www.npmjs.com/package/vk-io), вы можете использовать другое
 Сначало необходимо проинициализировать ваш проект
 
-```shell
-npm init -y
-```
-
 # JavaScript
 
 далее в корне проекта создайте файл utils.js
