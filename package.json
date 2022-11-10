@@ -10,9 +10,10 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --project tsconfig.json",
+    "build:prod": "rimraf dist && npm run build",
     "docs": "jsdoc -c jsdoc.json",
-    "lint": "eslint ./src --ext .ts",
+    "lint": "eslint ./src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig-for-autotests.json' mocha -r ts-node/register './tests/main.ts'"
   },
@@ -23,7 +24,9 @@
   "keywords": [
     "node",
     "handler",
+    "commander-core",
     "commander",
+    "bot-handler",
     "core",
     "bot",
     "vk-bot",
@@ -46,15 +49,18 @@
     "@types/debug": "^4.1.7",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^9.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.22.1",
-    "@typescript-eslint/parser": "^4.22.1",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
     "better-docs": "^2.3.2",
-    "eslint": "^7.26.0",
+    "eslint": "^8.27.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jsdoc": "^3.6.6",
     "mocha": "^9.1.1",
     "prettier": "2.5.0",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.2.1",
-    "typescript": "^4.5.2"
+    "typescript": "^4.8.4"
   }
 }
