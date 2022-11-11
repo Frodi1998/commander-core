@@ -16,7 +16,6 @@ const logger = debug('commander-core:commander');
 export class Commander {
   public commandsLoaded = false;
 
-  private absPath: string;
   private commands: Command[] = [];
 
   get [Symbol.toStringTag](): string {
@@ -42,8 +41,9 @@ export class Commander {
         throw new ConfigureError(`${dir} не существует`);
       }
 
-      this.absPath = path.resolve(dir);
-      const filePaths = walkSync(this.absPath, {
+      const absPath = path.resolve(dir);
+      const filePaths = walkSync(absPath, {
+        includeBasePath: true,
         globs: ['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts'],
         ignore: ['**/*ignore*', 'ignore/', '**/*.d.ts'],
       });
@@ -51,7 +51,7 @@ export class Commander {
       logger('Commandsdirectory files %O', filePaths);
 
       for await (const filePath of filePaths) {
-        this.importCommandFromFile(path.join(this.absPath, filePath));
+        this.importCommandFromFile(filePath);
       }
 
       this.commandsLoaded = true;
