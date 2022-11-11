@@ -1,4 +1,4 @@
-import { UtilsCore } from '../main';
+import { Command, UtilsCore } from '../main';
 
 export interface Context extends Record<string, unknown> {
   text?: string;
@@ -48,7 +48,7 @@ export interface ICommand {
   description?: string;
 
   /**
-   * @type {Array<string>} категории команды
+   * @type {string[]} категории команды
    * @default []
    */
   categories?: string[];
@@ -60,10 +60,10 @@ export interface ICommand {
   params?: Record<string, unknown>;
 
   /**
-   * @type {Array<ICommand>} массив подкоманд
+   * @type {Command[]} массив подкоманд
    * @default []
    */
-  commands?: ICommand[];
+  commands?: Command[];
 
   /**
    * @type {THandlerCommand} функция обработки

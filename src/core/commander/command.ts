@@ -14,15 +14,15 @@ export class Command {
   /**
    * @type {string} название команды
    */
-  public name?: string;
+  public name: string;
 
   /**
    * @type {string} короткое описание команды
    */
-  public description?: string;
+  public description: string;
 
   /**
-   * @type {Array<string>}
+   * @type {string[]}
    */
   public categories: string[];
 
@@ -32,7 +32,7 @@ export class Command {
   public params: Record<string, unknown>;
 
   /**
-   * @type {Array<Command>} массив подкоманд
+   * @type {Command[]} массив подкоманд
    */
   public commands: Command[];
 
