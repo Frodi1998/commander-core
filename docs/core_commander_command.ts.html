@@ -55,24 +55,8 @@
                     href="index.html"
                     class="link"
                 >
-                    API Documentation
+                    Documentation
                 </a>
-                
-                <div class="dropdown is-hoverable is-right">
-                    <a class="dropdown-trigger link">
-                        Tutorials
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                        
-                            <a class="dropdown-item" href="tutorial-main.html">
-                                main
-                            </a>
-                        
-                        </div>
-                    </div>
-                </div>
                 
                 
                 
@@ -92,7 +76,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Command_Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Handler_Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -109,138 +93,141 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { ConfigureError } from "../errors";
-import { ICommand, IContext, Context, THandlerCommand } from "../../types";
+            <pre class="prettyprint source linenums"><code>import { ConfigureError } from '../errors';
+import { ICommand, IContext, Context, THandlerCommand } from '../../types';
 
 /**
  * @description Класс команды
  * @class
  */
 export class Command {
-    /**
-     * @type {RegExp | string} паттерн команды
-     */
-    public pattern: RegExp | string;
+  /**
+   * @type {RegExp | string} паттерн команды
+   */
+  public pattern: RegExp | string;
 
-    /**
-     * @type {string} название команды
-     */
-    public name?: string;
+  /**
+   * @type {string} название команды
+   */
+  public name?: string;
 
-    /**
-     * @type {string} короткое описание команды
-     */
-    public description?: string;
+  /**
+   * @type {string} короткое описание команды
+   */
+  public description?: string;
 
-    /**
-     * @type {Array&lt;string>}
-     */
-    public categories: string[];
+  /**
+   * @type {Array&lt;string>}
+   */
+  public categories: string[];
 
-    /**
-     * @type {Record&lt;string, unknown>} дополнительные параметры
-     */
-    public params: Record&lt;string, unknown>;
+  /**
+   * @type {Record&lt;string, unknown>} дополнительные параметры
+   */
+  public params: Record&lt;string, unknown>;
 
-    /**
-     * @type {Array&lt;Command>} массив подкоманд
-     */
-    public commands: Command[];
+  /**
+   * @type {Array&lt;Command>} массив подкоманд
+   */
+  public commands: Command[];
 
-    /**
-     * @type {THandlerCommand} функция обработки команды
-     */
-    handler: THandlerCommand;
+  /**
+   * @type {THandlerCommand} функция обработки команды
+   */
+  handler: THandlerCommand;
 
-    [key: string]: unknown;
-    
-    /**
-     * конструктор команды
-     * @param {ICommand} data 
-     * @example
-     * 
-     * new Command({
-     *  pattern: /test/i,
-     *  name: 'test',
-     *  description: 'test command',
-     *  categories: ['test'],
-     *  
-     *  params: {
-     *      emoji: '📄'
-     * },
-     *  
-     *  handler(context) {
-     *      context.send('test');
-     *  }
-     * })
-     */
-    constructor(data: ICommand) {
-        if(!data.pattern) {
-			throw new ConfigureError('Не указан pattern команды (регулярное выражение)');
-        }
+  [key: string]: unknown;
 
-        if(!(data.pattern instanceof RegExp)) {
-			data.pattern = new RegExp(data.pattern);
-		}
-
-        if(!data.handler) {
-			throw new ConfigureError('Не указан обработчик команды');
-		}
-
-		if(typeof data.handler !== 'function') {
-			throw new ConfigureError('Обработчик команды не является функцией');
-        }
-
-        const { 
-            pattern, 
-            name, 
-            description,
-            categories,
-            params,  
-            commands, 
-            handler 
-        } = data;
-        
-        this.pattern = pattern;
-		this.name = name;
-		this.description = description || '';
-        this.categories = categories || [];
-        this.params = params || {};
-		this.commands = &lt;Command[] | []>commands || [];
-        this.handler = handler;
+  /**
+   * конструктор команды
+   * @param {ICommand} data
+   * @example
+   *
+   * new Command({
+   *  pattern: /test/i,
+   *  name: 'test',
+   *  description: 'test command',
+   *  categories: ['test'],
+   *
+   *  params: {
+   *      emoji: '📄'
+   * },
+   *
+   *  handler(context) {
+   *      context.send('test');
+   *  }
+   * })
+   */
+  constructor(data: ICommand) {
+    if (!data.pattern) {
+      throw new ConfigureError(
+        'Не указан pattern команды (регулярное выражение)',
+      );
     }
 
-    get [Symbol.toStringTag](): string {
-		return 'Command';
-	}
+    if (!(data.pattern instanceof RegExp)) {
+      data.pattern = new RegExp(data.pattern);
+    }
 
-    /**
-     * @description поиск подкоманд
-     * @param {Record&lt;string, any>} context 
-     * @returns {Command}
-     */
-    findSubCommand&lt;c extends Context>(context: c &amp; IContext): Command {
-        let command: Command;
+    if (!data.handler) {
+      throw new ConfigureError('Не указан обработчик команды');
+    }
 
-        for(const subCommand of this.commands) {            
-            if ((&lt;RegExp>subCommand.pattern).test(context.body[1])) {
-                command = subCommand;
-            }
-        }
+    if (typeof data.handler !== 'function') {
+      throw new ConfigureError('Обработчик команды не является функцией');
+    }
 
-        if(!command) {
-            return this;
-        }
+    const {
+      pattern,
+      name,
+      description,
+      categories,
+      params,
+      commands,
+      handler,
+    } = data;
 
-        context.body = context.body[1].match(command.pattern);
+    this.pattern = pattern;
+    this.name = name;
+    this.description = description || '';
+    this.categories = categories || [];
+    this.params = params || {};
+    this.commands = &lt;Command[] | []>commands || [];
+    this.handler = handler;
+  }
 
-        if(command.commands.length) {
-            command = (&lt;Command>command).findSubCommand&lt;c>(context);
-        }      
+  get [Symbol.toStringTag](): string {
+    return 'Command';
+  }
 
-        return command;
-	}
-}</code></pre>
+  /**
+   * @description поиск подкоманд
+   * @param {Record&lt;string, unknown>} context
+   * @return {Command}
+   */
+  findSubCommand&lt;c extends Context>(context: c &amp; IContext): Command {
+    let command: Command;
+
+    for (const subCommand of this.commands) {
+      if ((&lt;RegExp>subCommand.pattern).test(context.body[1])) {
+        command = subCommand;
+      }
+    }
+
+    if (!command) {
+      return this;
+    }
+
+    context.body = context.body[1].match(command.pattern);
+
+    if (command.commands.length) {
+      command = (&lt;Command>command).findSubCommand&lt;c>(context);
+    }
+
+    return command;
+  }
+}
+</code></pre>
         </article>
     </section>
 
@@ -251,9 +238,9 @@ export class Command {
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
                     <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
                     </p>
                 </div>
@@ -268,6 +255,7 @@ export class Command {
 <script src="scripts/linenumber.js"> </script>
 
 <script src="scripts/search.js"> </script>
+
 
 </body>
 </html>

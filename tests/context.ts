@@ -1,7 +1,7 @@
 import { Context, IContext } from '../dist/types';
 
-export class MessageCTX extends Context implements IContext {
+export class MessageCTX implements Context, IContext {
   text: string;
-  $command?: string;
-  body?: RegExpMatchArray;
+  $command: string;
+  body: RegExpMatchArray;
 }

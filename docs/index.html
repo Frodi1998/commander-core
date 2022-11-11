@@ -53,24 +53,8 @@
                     href="index.html"
                     class="link"
                 >
-                    API Documentation
+                    Documentation
                 </a>
-                
-                <div class="dropdown is-hoverable is-right">
-                    <a class="dropdown-trigger link">
-                        Tutorials
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                        
-                            <a class="dropdown-item" href="tutorial-main.html">
-                                main
-                            </a>
-                        
-                        </div>
-                    </div>
-                </div>
                 
                 
                 
@@ -90,7 +74,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Command_Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Handler_Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -124,7 +108,11 @@
 
 
     <section>
-        <article><p>commander-core - это ядро для вашего обработчика команд, основан на <a href="https://www.npmjs.com/package/cocoscore">cocoscore</a>, написан на <a href="https://nodejs.org">Node.js</a>
+        <article><p align="center">
+<a href="https://www.npmjs.com/package/commander-core"><img src="https://img.shields.io/npm/v/commander-core.svg?style=flat-square" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/commander-core"><img src="https://img.shields.io/npm/dt/commander-core.svg?style=flat-square" alt="NPM downloads"></a>
+</p>
+<p>commander-core - это ядро для вашего обработчика команд, основан на <a href="https://www.npmjs.com/package/cocoscore">cocoscore</a>, написан на <a href="https://nodejs.org">Node.js</a>
 модуль может работать не только с <a href="https://www.npmjs.com/package/vk-io">vk-io</a> но и с <a href="https://www.npmjs.com/package/puregram">puregram</a></p>
 <table>
 <thead>
@@ -134,7 +122,6 @@
 <th>💬 <a href="https://vk.me/join/AJQ1d9IUCxhdW8s6imiygUU1">Беседа</a></th>
 </tr>
 </thead>
-<tbody></tbody>
 </table>
 <p>Установка</p>
 <h2>NPM</h2>
@@ -146,8 +133,6 @@
 <h1>Использование</h1>
 <p>Пример основан на <a href="https://www.npmjs.com/package/vk-io">vk-io</a>, вы можете использовать другое
 Сначало необходимо проинициализировать ваш проект</p>
-<pre class="prettyprint source lang-shell"><code>npm init -y
-</code></pre>
 <h1>JavaScript</h1>
 <p>далее в корне проекта создайте файл utils.js
 поместите туда следующий код</p>
@@ -157,22 +142,22 @@
  * bot.testMetods() в теле команды
  */
 class Utils extends UtilsCore {
-	constructor() {
-    this.adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
+  constructor() {
+    super();
+    this.adminIds = [1]; //ваш ID в вк так же можете поместить сюда массив идентификаторов
   }
 
   testMetods() {
-    return console.log('test')
+    return console.log('test');
   }
 }
 
-module.exports = Utils
+module.exports = Utils;
 </code></pre>
 <p>далее создайте файл start.js</p>
 <pre class="prettyprint source lang-js"><code>const { Handler } = require('commander-core')
 const { VK, getRandomId } = require('vk-io')
 const path = require('path')
-
 const Utils = require('./utils.js') //наши утилиты
 
 const TOKEN = process.env.TOKEN //токен от группы
@@ -200,10 +185,10 @@ handler.events.on('command_error', async({context, utils, error}) =>{
 	}
 }); //событие срабатывания ошибок в команде
 
-handler.listener.on('command_not_found', async({context}) =>{
+handler.events.on('command_not_found', async({context}) =>{
 	if(!context.isChat) {
 		context.send(`Введенной вами команды не существует!`)
-	} 
+	}
 }); //событие при отсутствие подходящей команды
 
 handler.loadCommands()
@@ -226,15 +211,15 @@ const { Command } = require('commander-core');
 
 //по желанию вы можете объявить тут массив из команд
 module.exports = new Command({
-	pattern: /^(?:тест|test)$/i,
-	name: 'тест',
-	description: 'тестирование',
+  pattern: /^(?:тест|test)$/i,
+  name: 'тест',
+  description: 'тестирование',
 
-	handler(context, bot) {
-		bot.testMetods() //созданная нами утилита в файле utils.js
-		context.send('тест');
-	}
-})
+  handler(context, bot) {
+    bot.testMetods(); //созданная нами утилита в файле utils.js
+    context.send('тест');
+  },
+});
 </code></pre>
 <h1>TypeScript</h1>
 <p>далее в корне проекта создайте файл utils.ts
@@ -245,19 +230,25 @@ module.exports = new Command({
  * bot.testMetods() в теле команды
  */
 export class Utils extends UtilsCore {
-  public adminIds = [1] //ваш ID в вк так же можете поместить сюда массив идентификаторов
+  public adminIds = [1]; //ваш ID в вк так же можете поместить сюда массив идентификаторов
 
   testMetods(): void {
-    return console.log('test')
+    return console.log('test');
   }
 }
 </code></pre>
 <p>далее создайте файл start.ts</p>
-<pre class="prettyprint source lang-ts"><code>import { Handler } from 'commander-core';
-import { VK, getRandomId } from 'vk-io';
+<pre class="prettyprint source lang-ts"><code>import { Handler, IContext } from 'commander-core';
+import { VK, getRandomId, MessageContext } from 'vk-io';
 import path from 'path';
 
 import Utils from './utils.js'; //наши утилиты
+
+interface IListener {
+	context: MessageContext & IContext;
+	utils: Utils;
+	error?: Error;
+}
 
 const TOKEN = process.env.TOKEN //токен от группы
 const vk = new VK({token: TOKEN})
@@ -271,7 +262,7 @@ const handler = new Handler({
 	utils: new Utils() //загружаем наши утилиты в класс обработчика
 });
 
-handler.events.on('command_error', async({context, utils, error}) =>{
+handler.events.on('command_error', async({context, utils, error}: IListener) =>{
 	context.send(`Произошла непредвиденная ошибка`)
 	if(utils.adminIds) {
 		vk.api.messages.send({
@@ -284,10 +275,10 @@ handler.events.on('command_error', async({context, utils, error}) =>{
 	}
 }); //событие срабатывания ошибок в команде
 
-handler.listener.on('command_not_found', async({context}) =>{
+handler.events.on('command_not_found', async({context}: IListener) =>{
 	if(!context.isChat) {
 		context.send(`Введенной вами команды не существует!`)
-	} 
+	}
 }); //событие при отсутствие подходящей команды
 
 handler.loadCommands()
@@ -312,15 +303,15 @@ import { MessageContext } from 'vk-io';
 
 //по желанию вы можете объявить тут массив из команд
 export default new Command({
-	pattern: /^(?:тест|test)$/i,
-	name: 'тест',
-	description: 'тестирование',
+  pattern: /^(?:тест|test)$/i,
+  name: 'тест',
+  description: 'тестирование',
 
-	handler(context: MessageContext & IContext, bot: Utils) {
-		bot.testMetods() //созданная нами утилита в файле utils.js
-		context.send('тест');
-	}
-})
+  handler(context: MessageContext & IContext, bot: Utils) {
+    bot.testMetods(); //созданная нами утилита в файле utils.js
+    context.send('тест');
+  },
+});
 </code></pre></article>
     </section>
 
@@ -333,9 +324,9 @@ export default new Command({
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
                     <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
                     </p>
                 </div>
@@ -350,6 +341,7 @@ export default new Command({
 <script src="scripts/linenumber.js"> </script>
 
 <script src="scripts/search.js"> </script>
+
 
 </body>
 </html>

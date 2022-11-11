@@ -55,24 +55,8 @@
                     href="index.html"
                     class="link"
                 >
-                    API Documentation
+                    Documentation
                 </a>
-                
-                <div class="dropdown is-hoverable is-right">
-                    <a class="dropdown-trigger link">
-                        Tutorials
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                        
-                            <a class="dropdown-item" href="tutorial-main.html">
-                                main
-                            </a>
-                        
-                        </div>
-                    </div>
-                </div>
                 
                 
                 
@@ -92,7 +76,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Command_Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Handler_Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -150,7 +134,7 @@ export interface IHandlerParams {
    * @description строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
    * @default true
    */
-  strictLoader?: boolean
+  strictLoader?: boolean;
 
   /**
    * @description настраиваемые утилиты для вашей логики, например для работы с базой данных
@@ -181,17 +165,16 @@ export class Handler {
   /**
    * @description конструктор
    * @param {IHandlerParams} data данные обработчика
-   * @returns {handler}
    * @example
-   * 
+   *
    * const { Handler, UtilsCore } = require('commander-core');
-   * 
+   *
    * class Utils extends UtilsCore {
    *  testMetods() {
    *      console.log('test')
    *  }
    * }
-   * 
+   *
    * const handler = new Handler({
    *  commands: {
    *    directory: path.resolve(__dirname, 'commands'); //директория команд
@@ -200,7 +183,7 @@ export class Handler {
    *  utils: new Utils() // Utils
    * })
    * @example
-   * 
+   *
    * сonst handler = new Handler({
    *  commands: {
    *    fromArray: [new Command(params)]; //массив команд
@@ -209,62 +192,69 @@ export class Handler {
    *  utils: new Utils() // Utils
    * })
    */
-  constructor(params: IHandlerParams = {
-    commands: {},
-    strictLoader: false,
-    utils: new UtilsCore()
-  }) {
+  constructor(
+    data: IHandlerParams = {
+      commands: {},
+      strictLoader: false,
+      utils: new UtilsCore(),
+    },
+  ) {
     logger('create handler start');
-    this.strictLoader = params.strictLoader
+    this.strictLoader = data.strictLoader;
 
     logger('strictLoader: %s', this.strictLoader);
 
-    if(!params.commands.directory &amp;&amp; !params.commands.fromArray?.length) {
+    if (!data.commands.directory &amp;&amp; !data.commands.fromArray?.length) {
       throw new ConfigureError('не указан источник загрузки команд');
     }
-    
-    if (params.strictLoader
-      &amp;&amp; !params.commands.fromArray?.length
-      &amp;&amp; !params.commands.directory) {
+
+    if (
+      data.strictLoader &amp;&amp;
+      !data.commands.fromArray?.length &amp;&amp;
+      !data.commands.directory
+    ) {
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
-    this.utils = params.utils;
+    this.utils = data.utils;
     logger('handler.utils: %o', this.utils);
-    
-    this.events = params.utils.events;
+
+    this.events = data.utils.events;
     logger('handler.events: %o', this.events);
 
-    this.commander = params.utils.commander;
+    this.commander = data.utils.commander;
     logger('handler.commander: %o', this.commander);
 
-    if(params.commands.fromArray?.length > 0) {
+    if (data.commands.fromArray?.length > 0) {
       this.commander.commandsLoaded = true;
-      this.commander.setCommands(params.commands.fromArray)
+      this.commander.setCommands(data.commands.fromArray);
     }
-    
-    if(params.commands.directory) {
-      this.commandsDirectory = params.commands.directory;
-    } 
 
-    this.sourceCommands = params.commands.fromArray?.length > 0? 'array': 'directory';
-    logger('sourceCommands: %s', this.sourceCommands)
+    if (data.commands.directory) {
+      this.commandsDirectory = data.commands.directory;
+    }
+
+    this.sourceCommands =
+      data.commands.fromArray?.length > 0 ? 'array' : 'directory';
+    logger('sourceCommands: %s', this.sourceCommands);
     logger('create handler complited');
   }
 
   get [Symbol.toStringTag](): string {
-		return 'Handler';
-	}
+    return 'Handler';
+  }
 
   /**
    * @description загружает команды из директории
-   * @returns {Promise&lt;void>}
+   * @return {Promise&lt;void>}
    */
   async loadCommands(): Promise&lt;void> {
     logger('booting commands');
 
-    if(this.sourceCommands === 'array') {
-      throw new ConfigureError('нельзя загружать команды из директории если указан массив комманд!');
+    if (this.sourceCommands === 'array') {
+      throw new ConfigureError(
+        'нельзя загружать команды из директории если указан массив комманд!',
+      );
     }
 
     await this.commander.loadFromDirectory(this.commandsDirectory);
@@ -272,11 +262,11 @@ export class Handler {
     const commands: Command[] = this.commander.getCommands;
     logger('commands count: %d', commands.length);
 
-    if(commands.length &lt; 1 &amp;&amp; this.strictLoader) {
+    if (commands.length &lt; 1 &amp;&amp; this.strictLoader) {
       logger('booting commands error');
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
-    
+
     logger('handler.commander: %o', this.commander);
     logger('booting commands complited');
   }
@@ -284,22 +274,17 @@ export class Handler {
   /**
    * @description обработка команды
    * @param {object} context объект контекста возвращаемый из vk-io или puregram
-   * @returns {void}
+   * @return {void}
    * @example
-   * 
+   *
    * execute&lt;MessageContext>(context)
    * // => void
    */
   async execute&lt;C extends Context>(context: C &amp; IContext): Promise&lt;void> {
-    this.events.emit('command_begin', {context, utils: this.utils});
-    
-    if(!context.$command) {
-      context.$command = context.text
-    }
-    
     return executeCommand&lt;C>(context, this.utils);
   }
-}</code></pre>
+}
+</code></pre>
         </article>
     </section>
 
@@ -310,9 +295,9 @@ export class Handler {
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
                     <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
                     </p>
                 </div>
@@ -327,6 +312,7 @@ export class Handler {
 <script src="scripts/linenumber.js"> </script>
 
 <script src="scripts/search.js"> </script>
+
 
 </body>
 </html>

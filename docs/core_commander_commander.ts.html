@@ -55,24 +55,8 @@
                     href="index.html"
                     class="link"
                 >
-                    API Documentation
+                    Documentation
                 </a>
-                
-                <div class="dropdown is-hoverable is-right">
-                    <a class="dropdown-trigger link">
-                        Tutorials
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                        
-                            <a class="dropdown-item" href="tutorial-main.html">
-                                main
-                            </a>
-                        
-                        </div>
-                    </div>
-                </div>
                 
                 
                 
@@ -92,7 +76,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Command_Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Handler_Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -110,151 +94,166 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import path = require('path');
-import { promisify } from 'util';
-import glob = require('glob');
+// import { promisify } from 'util';
+// import glob = require('glob');
 import { existsSync } from 'fs';
 import debug from 'debug';
+import walkSync from 'walk-sync';
 
 import { Command } from './command';
 import { ConfigureError } from '../errors';
 import { Context, IContext } from '../../types';
 
-const findFiles = promisify(glob);
+// const findFiles = promisify(glob);
 const logger = debug('commander-core:commander');
 
-function existDirectory(dir: string): boolean {
-    return existsSync(dir)
-}
+// function existDirectory(dir: string): boolean {
+//   return existsSync(dir);
+// }
 
 /**
  * @description класс обработки
- * @class 
+ * @class
  */
 export class Commander {
-  private commands : Command[] = [];
-	
-	public commandsLoaded = false;
+  public commandsLoaded = false;
 
-	get [Symbol.toStringTag](): string {
-		return 'Commander';
-	}
+  private absPath: string;
+  private commands: Command[] = [];
 
-	/**
-	 * @description выводит команды
-	 */
-	get getCommands(): Command[] {
-		return this.commands
-	}
+  get [Symbol.toStringTag](): string {
+    return 'Commander';
+  }
 
-	/**
-	 * @description загрузка команд из директории
-	 * @param {string} dir директория загрузки команд
-	 * @returns {Promise&lt;void>}
-	 */
-    async loadFromDirectory(dir: string): Promise&lt;void> {
-		try {
-			if(!existDirectory(dir)) {
+  /**
+   * @description выводит команды
+   */
+  get getCommands(): Command[] {
+    return this.commands;
+  }
+
+  /**
+   * @description загрузка команд из директории
+   * @param {string} dir директория загрузки команд
+   * @return {Promise&lt;void>}
+   */
+  async loadFromDirectory(dir: string): Promise&lt;void> {
+    try {
+      if (!existsSync(dir)) {
         logger('Commandsdirectory not found');
-				throw new ConfigureError(`${dir} не существует`);
-			}
+        throw new ConfigureError(`${dir} не существует`);
+      }
 
-			const absPath = path.resolve(dir);
-			let filePaths = await findFiles(`${absPath}/**/*.js`);
-			filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path))
+      this.absPath = path.resolve(dir);
+      // let filePaths = await findFiles(`${absPath}/**/*.js`);
+      // filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path));
+      const filePaths = walkSync(this.absPath, {
+        globs: ['**/*.js'],
+        ignore: ['**/*ignore', 'ignore/'],
+      });
 
-      		logger('Commandsdirectory files %O', filePaths);
+      logger('Commandsdirectory files %O', filePaths);
 
-			await filePaths.forEach(async(filePath) => {
-				let file = await import(filePath);
-				file = file.default? file.default: file;
-        logger('fileName: %s', filePath);
-        logger('fileContent: %O', file);
+      for await (const filePath of filePaths) {
+        this.importCommandFromFile(path.join(this.absPath, filePath));
+      }
 
-				if(!Array.isArray(file)) {
-					file = [file]
-				}
-
-				if(file.length === 0) {
-					return;
-				}
-
-				file.forEach((command) => {
-					if(!(command instanceof Command)) {
-            logger('Command not instance Command');
-						throw new ConfigureError(`Экспартируемые данные в файле ${filePath} не являются командой`);
-					}
-
-					this.addCommands(command);
-				})
-			})
-
-			this.commandsLoaded = true;
-		} catch(err) {
+      this.commandsLoaded = true;
+    } catch (err) {
       console.error(err);
-			this.commandsLoaded = false;
-		}
+      this.commandsLoaded = false;
+    }
+  }
+
+  async importCommandFromFile(filePath: string): Promise&lt;void> {
+    const file = await import(filePath);
+    let commands = file.default ? file.default : file;
+    logger('fileName: %s', filePath);
+    logger('fileContent: %O', file);
+
+    if (!Array.isArray(commands)) {
+      commands = [commands];
     }
 
-	/**
-	 * @description добавляет новые команды
-	 * @param command 
-	 */
-	addCommands(commands: Command | Command[]): number {
-		if(!Array.isArray(commands)) {
+    if (file.length === 0) {
+      return;
+    }
+
+    for await (const command of commands) {
+      if (!(command instanceof Command)) {
+        logger('Command not instance Command');
+        throw new ConfigureError(
+          `Экспартируемые данные в файле ${filePath} не являются командой`,
+        );
+      }
+
+      this.addCommands(command);
+    }
+  }
+
+  /**
+   * @description добавляет новые команды
+   * @param {Command | Command[]} commands
+   * @return {number}
+   */
+  addCommands(commands: Command | Command[]): number {
+    if (!Array.isArray(commands)) {
       logger('add new command');
-			return this.commands.push(commands);
-		}
-		
+      return this.commands.push(commands);
+    }
+
     logger('add new commands');
-		commands.forEach(command => this.commands.push(command));
-		
-		return this.commands.length;
-	}
+    commands.forEach(command => this.commands.push(command));
 
-	/**
-	 * @description устанавливает команды удаляя старые
-	 * @param commands 
-	 */
-	setCommands(commands: Command[]): void {
+    return this.commands.length;
+  }
+
+  /**
+   * @description устанавливает команды удаляя старые
+   * @param {Command[]} commands
+   * @return {void}
+   */
+  setCommands(commands: Command[]): void {
     logger('set new commands');
-		this.commands = commands
-	}
+    this.commands = commands;
+  }
 
-	/**
-	 * @description поиск команды
-	 * @param {any} context 
-	 * @returns {Command}
-	 * @example ts
-	 * 
-	 * import { MessageContext } from "vk-io";
-	 * 
-	 * const command = commander.find&lt;MessageContext>(context)
-	 */
-    async find&lt;c extends Context>(context: c &amp; IContext): Promise&lt;Command> {
-		let command: Command;
+  /**
+   * @description поиск команды
+   * @param {IContext} context
+   * @return {Promise&lt;Command>}
+   * @example ts
+   *
+   * import { MessageContext } from "vk-io";
+   *
+   * const command = commander.find&lt;MessageContext>(context)
+   */
+  async find&lt;c extends Context>(context: c &amp; IContext): Promise&lt;Command> {
+    let command: Command;
 
-		for await(const com of this.commands) {
-			if((&lt;RegExp>com.pattern).test(context.$command)) {
+    for await (const com of this.commands) {
+      if ((&lt;RegExp>com.pattern).test(context.$command)) {
         logger('command found');
-				command = com;
-				break;
-			}
-		}
+        command = com;
+        break;
+      }
+    }
 
-		if(!command) {
-			return null;
-		}
+    if (!command) {
+      return null;
+    }
 
-		context.body = context.$command.match(command.pattern)
+    context.body = context.$command.match(command.pattern);
 
-		if((&lt;Command[]>command.commands).length) {
+    if ((&lt;Command[]>command.commands).length) {
       logger('find subсommand');
       command = command.findSubCommand&lt;c>(context);
-		}
-
-		return command;
     }
-}</code></pre>
+
+    return command;
+  }
+}
+</code></pre>
         </article>
     </section>
 
@@ -265,9 +264,9 @@ export class Commander {
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
                     <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
                     </p>
                 </div>
@@ -282,6 +281,7 @@ export class Commander {
 <script src="scripts/linenumber.js"> </script>
 
 <script src="scripts/search.js"> </script>
+
 
 </body>
 </html>

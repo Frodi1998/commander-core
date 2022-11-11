@@ -1,5 +1,9 @@
-export abstract class Context {
-  public text?: string;
+import { UtilsCore } from '../main';
+
+export interface Context extends Record<string, unknown> {
+  text?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface IContext {
@@ -17,7 +21,11 @@ export interface IContext {
  * }
  */
 // eslint-disable-next-line
-export type THandlerCommand = (context: any, bot: any) => void | Promise<void>;
+export type THandlerCommand = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: any,
+  bot: UtilsCore,
+) => unknown | Promise<unknown>;
 
 /**
  * @interface
@@ -88,23 +96,23 @@ type TEventNames = () => Array<string>;
  */
 export interface EventEmitter {
   /**
-   * @description Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```, в том порядке,
-   * в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
-   * Возвращает ```true```, если у события есть слушатели, в противном случае ```false```.
+   * @description
+   * Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```,
+   * в том порядке, в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
    * @type {TEmit}
    */
   emit: TEmit;
 
   /**
    * @description Добавляет ```listener``` функцию в конец массива слушателей для названного события eventName.
-   * Никаких проверок, чтобы увидеть, был ли ```listener``` уже добавлен, не делается .
-   * Несколько вызовов, передающих одну eventName и ту же комбинацию и ```listener```, приведут к listenerдобавлению и вызову несколько раз.
    * @type {TOn}
    */
   on: TOn;
 
   /**
-   * @description Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или ```Symbols```.
+   * @description
+   * Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей.
+   * Значения в массиве - это строки или ```Symbols```.
    * @type {TEventNames}
    */
   eventNames: TEventNames;

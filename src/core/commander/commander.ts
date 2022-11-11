@@ -1,28 +1,23 @@
 import path = require('path');
-import { promisify } from 'util';
-import glob = require('glob');
 import { existsSync } from 'fs';
 import debug from 'debug';
+import walkSync from 'walk-sync';
 
 import { Command } from './command';
 import { ConfigureError } from '../errors';
 import { Context, IContext } from '../../types';
 
-const findFiles = promisify(glob);
 const logger = debug('commander-core:commander');
-
-function existDirectory(dir: string): boolean {
-  return existsSync(dir);
-}
 
 /**
  * @description класс обработки
  * @class
  */
 export class Commander {
-  private commands: Command[] = [];
-
   public commandsLoaded = false;
+
+  private absPath: string;
+  private commands: Command[] = [];
 
   get [Symbol.toStringTag](): string {
     return 'Commander';
@@ -38,46 +33,26 @@ export class Commander {
   /**
    * @description загрузка команд из директории
    * @param {string} dir директория загрузки команд
-   * @returns {Promise<void>}
+   * @return {Promise<void>}
    */
   async loadFromDirectory(dir: string): Promise<void> {
     try {
-      if (!existDirectory(dir)) {
+      if (!existsSync(dir)) {
         logger('Commandsdirectory not found');
         throw new ConfigureError(`${dir} не существует`);
       }
 
-      const absPath = path.resolve(dir);
-      let filePaths = await findFiles(`${absPath}/**/*.js`);
-      filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path));
+      this.absPath = path.resolve(dir);
+      const filePaths = walkSync(this.absPath, {
+        globs: ['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts'],
+        ignore: ['**/*ignore*', 'ignore/', '**/*.d.ts'],
+      });
 
       logger('Commandsdirectory files %O', filePaths);
 
-      await filePaths.forEach(async filePath => {
-        let file = await import(filePath);
-        file = file.default ? file.default : file;
-        logger('fileName: %s', filePath);
-        logger('fileContent: %O', file);
-
-        if (!Array.isArray(file)) {
-          file = [file];
-        }
-
-        if (file.length === 0) {
-          return;
-        }
-
-        file.forEach(command => {
-          if (!(command instanceof Command)) {
-            logger('Command not instance Command');
-            throw new ConfigureError(
-              `Экспартируемые данные в файле ${filePath} не являются командой`,
-            );
-          }
-
-          this.addCommands(command);
-        });
-      });
+      for await (const filePath of filePaths) {
+        this.importCommandFromFile(path.join(this.absPath, filePath));
+      }
 
       this.commandsLoaded = true;
     } catch (err) {
@@ -86,9 +61,36 @@ export class Commander {
     }
   }
 
+  async importCommandFromFile(filePath: string): Promise<void> {
+    const file = await import(filePath);
+    let commands = file.default ? file.default : file;
+    logger('fileName: %s', filePath);
+    logger('fileContent: %O', file);
+
+    if (!Array.isArray(commands)) {
+      commands = [commands];
+    }
+
+    if (file.length === 0) {
+      return;
+    }
+
+    for await (const command of commands) {
+      if (!(command instanceof Command)) {
+        logger('Command not instance Command');
+        throw new ConfigureError(
+          `Экспартируемые данные в файле ${filePath} не являются командой`,
+        );
+      }
+
+      this.addCommands(command);
+    }
+  }
+
   /**
    * @description добавляет новые команды
-   * @param command
+   * @param {Command | Command[]} commands
+   * @return {number}
    */
   addCommands(commands: Command | Command[]): number {
     if (!Array.isArray(commands)) {
@@ -104,7 +106,8 @@ export class Commander {
 
   /**
    * @description устанавливает команды удаляя старые
-   * @param commands
+   * @param {Command[]} commands
+   * @return {void}
    */
   setCommands(commands: Command[]): void {
     logger('set new commands');
@@ -113,8 +116,8 @@ export class Commander {
 
   /**
    * @description поиск команды
-   * @param {any} context
-   * @returns {Command}
+   * @param {IContext} context
+   * @return {Promise<Command>}
    * @example ts
    *
    * import { MessageContext } from "vk-io";
