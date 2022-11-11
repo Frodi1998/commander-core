@@ -4,11 +4,8 @@
   "description": "contextHandler",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
-  "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "test": "tests"
-  },
+  "author": "Frodi1998",
+  "license": "MIT",
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "build:prod": "rimraf dist && npm run build",
@@ -16,6 +13,11 @@
     "lint": "eslint ./src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig-for-autotests.json' mocha -r ts-node/register './tests/main.ts'"
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
   },
   "repository": {
     "type": "git",
@@ -32,8 +34,6 @@
     "vk-bot",
     "tg-bot"
   ],
-  "author": "Frodi1998",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Frodi1998/commander-core/issues"
   },
@@ -41,6 +41,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=14.17"
+  },
   "dependencies": {
     "debug": "^4.3.2",
     "walk-sync": "^3.0.0"
