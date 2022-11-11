@@ -93,10 +93,12 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { UtilsCore } from '../main';
+            <pre class="prettyprint source linenums"><code>import { Command, UtilsCore } from '../main';
 
-export interface Context {
+export interface Context extends Record&lt;string, unknown> {
   text?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface IContext {
@@ -115,7 +117,8 @@ export interface IContext {
  */
 // eslint-disable-next-line
 export type THandlerCommand = (
-  context: Context &amp; IContext,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: any,
   bot: UtilsCore,
 ) => unknown | Promise&lt;unknown>;
 
@@ -140,7 +143,7 @@ export interface ICommand {
   description?: string;
 
   /**
-   * @type {Array&lt;string>} категории команды
+   * @type {string[]} категории команды
    * @default []
    */
   categories?: string[];
@@ -152,10 +155,10 @@ export interface ICommand {
   params?: Record&lt;string, unknown>;
 
   /**
-   * @type {Array&lt;ICommand>} массив подкоманд
+   * @type {Command[]} массив подкоманд
    * @default []
    */
-  commands?: ICommand[];
+  commands?: Command[];
 
   /**
    * @type {THandlerCommand} функция обработки

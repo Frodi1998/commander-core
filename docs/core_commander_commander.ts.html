@@ -94,8 +94,6 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import path = require('path');
-// import { promisify } from 'util';
-// import glob = require('glob');
 import { existsSync } from 'fs';
 import debug from 'debug';
 import walkSync from 'walk-sync';
@@ -104,12 +102,7 @@ import { Command } from './command';
 import { ConfigureError } from '../errors';
 import { Context, IContext } from '../../types';
 
-// const findFiles = promisify(glob);
 const logger = debug('commander-core:commander');
-
-// function existDirectory(dir: string): boolean {
-//   return existsSync(dir);
-// }
 
 /**
  * @description класс обработки
@@ -118,7 +111,6 @@ const logger = debug('commander-core:commander');
 export class Commander {
   public commandsLoaded = false;
 
-  private absPath: string;
   private commands: Command[] = [];
 
   get [Symbol.toStringTag](): string {
@@ -144,18 +136,17 @@ export class Commander {
         throw new ConfigureError(`${dir} не существует`);
       }
 
-      this.absPath = path.resolve(dir);
-      // let filePaths = await findFiles(`${absPath}/**/*.js`);
-      // filePaths = filePaths.filter(path => !/\.ignore\./gi.test(path));
-      const filePaths = walkSync(this.absPath, {
-        globs: ['**/*.js'],
-        ignore: ['**/*ignore', 'ignore/'],
+      const absPath = path.resolve(dir);
+      const filePaths = walkSync(absPath, {
+        includeBasePath: true,
+        globs: ['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts'],
+        ignore: ['**/*ignore*', 'ignore/', '**/*.d.ts'],
       });
 
       logger('Commandsdirectory files %O', filePaths);
 
       for await (const filePath of filePaths) {
-        this.importCommandFromFile(path.join(this.absPath, filePath));
+        this.importCommandFromFile(filePath);
       }
 
       this.commandsLoaded = true;
