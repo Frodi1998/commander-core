@@ -1,7 +1,3 @@
-interface IState {
-  [key: string]: unknown;
-}
-
 export class Storage {
   private state = {};
 

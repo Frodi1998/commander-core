@@ -1,15 +1,16 @@
-import assert from 'assert';
+import assert from 'node:assert';
+import { fileURLToPath } from 'node:url';
 import path from 'path';
 
-import { Handler, Command, IContext } from '..';
-import { MessageCTX } from './context';
-import { Storage } from './storage';
-import Utils from './utils';
+import { Handler, Command, IContext, ICommand } from '../dist/main.js';
+import { MessageCTX } from './context.js';
+import { Storage } from './storage.js';
+import { Utils } from './utils.js';
 
 class CustomCommand extends Command {
   type: string;
 
-  constructor(props) {
+  constructor(props: ICommand & { type: string }) {
     super(props);
     this.type = props.type;
   }
@@ -26,6 +27,7 @@ interface IParams {
   utils: Utils;
 }
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 let storage: Storage;
 let handler: Handler;
 
@@ -44,7 +46,7 @@ export function fromDirectoryTest() {
     });
 
     describe('addCommands', () => {
-      it('должен вернуть 2 добавленные команды', () => {
+      before(() => {
         const commands = [
           new CustomCommand({
             pattern: /^test1$/i,
@@ -64,10 +66,12 @@ export function fromDirectoryTest() {
         ];
 
         handler.commander.addCommands(commands);
+      });
 
-        const newCommands = handler.commander.getCommands.filter(
-          x => x.type === 'new',
-        );
+      it('должен вернуть 2 добавленные команды', () => {
+        const newCommands = (
+          handler.commander.getCommands as CustomCommand[]
+        ).filter(x => x.type === 'new');
 
         assert.strictEqual(newCommands.length, 2);
       });
