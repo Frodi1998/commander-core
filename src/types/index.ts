@@ -1,9 +1,12 @@
-import { Command, UtilsCore } from '../main';
+import { Command, UtilsCore } from '../main.js';
 
-export interface Context extends Record<string, unknown> {
-  text?: string;
+export type AnyObject = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
+};
+
+export interface Context extends AnyObject {
+  text?: string;
 }
 
 export interface IContext {
@@ -20,10 +23,9 @@ export interface IContext {
  *  context.send('ура')
  * }
  */
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type THandlerCommand = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: any,
+  context: AnyObject,
   bot: UtilsCore,
 ) => unknown | Promise<unknown>;
 
@@ -35,6 +37,11 @@ export interface ICommand {
    * @type {RegExp | string} регулярное выражение
    */
   pattern: RegExp | string;
+
+  /**
+   * @type {THandlerCommand} функция обработки
+   */
+  handler: THandlerCommand;
 
   /**
    * @type {string} название команды
@@ -64,11 +71,6 @@ export interface ICommand {
    * @default []
    */
   commands?: Command[];
-
-  /**
-   * @type {THandlerCommand} функция обработки
-   */
-  handler: THandlerCommand;
 }
 
 /**

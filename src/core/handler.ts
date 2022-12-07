@@ -1,12 +1,10 @@
 import debug from 'debug';
 
-import { Command, Commander } from './commander';
-import { ConfigureError } from './errors';
-import { IContext } from '../types';
-import { Context } from '../types';
-import { UtilsCore } from './utils';
-import EventListener from './utils/event-emiter';
-import executeCommand from './executeCommand';
+import { Command, Commander } from './commander/index.js';
+import { ConfigureError } from './errors/index.js';
+import { IContext, Context } from '../types/index.js';
+import { UtilsCore, EventListener } from './utils/index.js';
+import executeCommand from './executeCommand.js';
 
 const logger = debug('commander-core:handler');
 
@@ -31,18 +29,21 @@ interface ICommandsLoader {
  */
 export interface IHandlerParams {
   /**
-   * @description объект описывающий источник загрузок
+   * объект описывающий источник загрузок
+   * @type {ICommandsLoader}
    */
   commands: ICommandsLoader;
 
   /**
-   * @description строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
+   * строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
+   * @type {boolean}
    * @default true
    */
   strictLoader?: boolean;
 
   /**
-   * @description настраиваемые утилиты для вашей логики, например для работы с базой данных
+   * настраиваемые утилиты для вашей логики, например для работы с базой данных
+   * @type {UtilsCore}
    */
   utils: UtilsCore;
 }
@@ -50,53 +51,46 @@ export interface IHandlerParams {
 /**
  * @description класс обработчика
  * @class
+ * @param {IHandlerParams} data данные обработчика
+ * @example
+ *
+ * const { Handler, UtilsCore } = require('commander-core');
+ *
+ * class Utils extends UtilsCore {
+ *  testMetods() {
+ *      console.log('test')
+ *  }
+ * }
+ *
+ * const handler = new Handler({
+ *  commands: {
+ *    directory: path.resolve(__dirname, 'commands'); //директория команд
+ *  },
+ *  strictLoader: true // строгая загрузка
+ *  utils: new Utils() // Utils
+ * })
+ * @example
+ *
+ * сonst handler = new Handler({
+ *  commands: {
+ *    fromArray: [new Command(params)]; //массив команд
+ *  },
+ *  strictLoader: true // строгая загрузка
+ *  utils: new Utils() // Utils
+ * })
  */
 export class Handler {
   /**
    * @type {EventEmitter} events менеджер событий
    */
   readonly events: EventListener;
-
   readonly commander: Commander;
-
   readonly utils: UtilsCore;
 
-  private readonly commandsDirectory: string;
-
+  private readonly commandsDirectory!: string;
   private sourceCommands = '';
-
   private strictLoader = false;
 
-  /**
-   * @description конструктор
-   * @param {IHandlerParams} data данные обработчика
-   * @example
-   *
-   * const { Handler, UtilsCore } = require('commander-core');
-   *
-   * class Utils extends UtilsCore {
-   *  testMetods() {
-   *      console.log('test')
-   *  }
-   * }
-   *
-   * const handler = new Handler({
-   *  commands: {
-   *    directory: path.resolve(__dirname, 'commands'); //директория команд
-   *  },
-   *  strictLoader: true // строгая загрузка
-   *  utils: new Utils() // Utils
-   * })
-   * @example
-   *
-   * сonst handler = new Handler({
-   *  commands: {
-   *    fromArray: [new Command(params)]; //массив команд
-   *  },
-   *  strictLoader: true // строгая загрузка
-   *  utils: new Utils() // Utils
-   * })
-   */
   constructor(
     data: IHandlerParams = {
       commands: {},
@@ -105,7 +99,7 @@ export class Handler {
     },
   ) {
     logger('create handler start');
-    this.strictLoader = data.strictLoader;
+    this.strictLoader = data.strictLoader || false;
 
     logger('strictLoader: %s', this.strictLoader);
 
@@ -130,17 +124,17 @@ export class Handler {
     this.commander = data.utils.commander;
     logger('handler.commander: %o', this.commander);
 
-    if (data.commands.fromArray?.length > 0) {
+    if ((data.commands.fromArray?.length as number) > 0) {
       this.commander.commandsLoaded = true;
-      this.commander.setCommands(data.commands.fromArray);
+      this.commander.setCommands(data.commands.fromArray as Command[]);
     }
 
     if (data.commands.directory) {
-      this.commandsDirectory = data.commands.directory;
+      this.commandsDirectory = data.commands.directory || '';
     }
 
     this.sourceCommands =
-      data.commands.fromArray?.length > 0 ? 'array' : 'directory';
+      (data.commands.fromArray?.length as number) > 0 ? 'array' : 'directory';
     logger('sourceCommands: %s', this.sourceCommands);
     logger('create handler complited');
   }
@@ -153,16 +147,22 @@ export class Handler {
    * @description загружает команды из директории
    * @return {Promise<void>}
    */
-  async loadCommands(): Promise<void> {
-    logger('booting commands');
-
+  async loadCommands(): Promise<boolean> {
     if (this.sourceCommands === 'array') {
       throw new ConfigureError(
         'нельзя загружать команды из директории если указан массив комманд!',
       );
     }
 
-    await this.commander.loadFromDirectory(this.commandsDirectory);
+    logger('booting commands');
+    const isLoaded = await this.commander.loadFromDirectory(
+      this.commandsDirectory as string,
+    );
+
+    logger('isLoaded: %s', isLoaded);
+    if (!isLoaded) {
+      return false;
+    }
 
     const commands: Command[] = this.commander.getCommands;
     logger('commands count: %d', commands.length);
@@ -174,6 +174,7 @@ export class Handler {
 
     logger('handler.commander: %o', this.commander);
     logger('booting commands complited');
+    return true;
   }
 
   /**

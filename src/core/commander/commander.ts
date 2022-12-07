@@ -1,11 +1,11 @@
-import path = require('path');
+import path from 'path';
 import { existsSync } from 'fs';
 import debug from 'debug';
 import walkSync from 'walk-sync';
 
-import { Command } from './command';
-import { ConfigureError } from '../errors';
-import { Context, IContext } from '../../types';
+import { Command } from './command.js';
+import { ConfigureError } from '../errors/index.js';
+import { Context, IContext } from '../../types/index.js';
 
 const logger = debug('commander-core:commander');
 
@@ -34,7 +34,7 @@ export class Commander {
    * @param {string} dir директория загрузки команд
    * @return {Promise<void>}
    */
-  async loadFromDirectory(dir: string): Promise<void> {
+  async loadFromDirectory(dir: string): Promise<boolean> {
     try {
       if (!existsSync(dir)) {
         logger('Commandsdirectory not found');
@@ -51,39 +51,13 @@ export class Commander {
       logger('Commandsdirectory files %O', filePaths);
 
       for await (const filePath of filePaths) {
-        this.importCommandFromFile(filePath);
+        await this.importCommandFromFile(filePath);
       }
 
-      this.commandsLoaded = true;
+      return (this.commandsLoaded = true);
     } catch (err) {
       console.error(err);
-      this.commandsLoaded = false;
-    }
-  }
-
-  async importCommandFromFile(filePath: string): Promise<void> {
-    const file = await import(filePath);
-    let commands = file.default ? file.default : file;
-    logger('fileName: %s', filePath);
-    logger('fileContent: %O', file);
-
-    if (!Array.isArray(commands)) {
-      commands = [commands];
-    }
-
-    if (file.length === 0) {
-      return;
-    }
-
-    for await (const command of commands) {
-      if (!(command instanceof Command)) {
-        logger('Command not instance Command');
-        throw new ConfigureError(
-          `Экспартируемые данные в файле ${filePath} не являются командой`,
-        );
-      }
-
-      this.addCommands(command);
+      return (this.commandsLoaded = false);
     }
   }
 
@@ -92,14 +66,13 @@ export class Commander {
    * @param {Command | Command[]} commands
    * @return {number}
    */
-  addCommands(commands: Command | Command[]): number {
-    if (!Array.isArray(commands)) {
-      logger('add new command');
-      return this.commands.push(commands);
-    }
+  async addCommands(commands: Command | Command[]): Promise<number> {
+    commands = !Array.isArray(commands) ? [commands] : commands;
 
-    logger('add new commands');
-    commands.forEach(command => this.commands.push(command));
+    for await (const command of commands) {
+      logger('add new command');
+      this.commands.push(command);
+    }
 
     return this.commands.length;
   }
@@ -124,28 +97,70 @@ export class Commander {
    *
    * const command = commander.find<MessageContext>(context)
    */
-  async find<c extends Context>(context: c & IContext): Promise<Command> {
-    let command: Command;
+  async find<C extends Context & IContext>(
+    context: C,
+  ): Promise<Command | undefined> {
+    let command = this.commands.find(cmd =>
+      (cmd.pattern as RegExp).test(context.$command as string),
+    );
 
-    for await (const com of this.commands) {
-      if ((<RegExp>com.pattern).test(context.$command)) {
-        logger('command found');
-        command = com;
-        break;
+    if (command) {
+      context.body = context.$command?.match(
+        command.pattern as string,
+      ) as RegExpMatchArray;
+
+      if (command.commands.length) {
+        logger('find subсommand');
+        command = command.findSubCommand<C>(context);
       }
     }
 
-    if (!command) {
-      return null;
-    }
-
-    context.body = context.$command.match(command.pattern);
-
-    if ((<Command[]>command.commands).length) {
-      logger('find subсommand');
-      command = command.findSubCommand<c>(context);
-    }
-
     return command;
+  }
+
+  private async importCommandFromFile(filePath: string): Promise<void> {
+    // const file = await import(filePath);
+    const file = await this.loadFile(filePath);
+
+    if (!file) {
+      return;
+    }
+    // let commands = file.default ? file.default : file;
+    logger('fileName: %s', filePath);
+    logger('fileContent: %O', file);
+    const commands = !Array.isArray(file) ? [file] : file;
+    // if (!Array.isArray(file)) {
+    //   file = [file];
+    // }
+
+    for await (const command of commands) {
+      if (!(command instanceof Command)) {
+        logger('Command not instance Command');
+        throw new ConfigureError(
+          `Экспартируемые данные в файле ${filePath} не являются командой`,
+        );
+      }
+
+      const isCommands = commands.every(command => command instanceof Command);
+      if (!isCommands) {
+        logger('Command not instance Command');
+        throw new ConfigureError(
+          `Экспартируемые данные в файле ${filePath} не являются командой`,
+        );
+      }
+
+      await this.addCommands(commands);
+    }
+  }
+
+  private async loadFile(filePath: string) {
+    let file;
+    try {
+      file = await import(`file:///${filePath}`);
+    } catch (error) {
+      file = await import(filePath);
+    }
+
+    return file.default ? file.default : file;
   }
 }

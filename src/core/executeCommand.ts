@@ -1,8 +1,7 @@
 import debug from 'debug';
 
-import { Command } from './commander/command';
-import { Context, IContext } from '../types';
-import { UtilsCore } from './utils';
+import { Context, IContext } from '../types/index.js';
+import { UtilsCore } from './utils/index.js';
 
 const logger = debug('commander-core:handler');
 
@@ -22,7 +21,7 @@ export default async function executeCommand<ctx extends Context>(
   }
 
   const startTime = Date.now();
-  const command: Command = await utils.commander.find<ctx>(context);
+  const command = await utils.commander.find<ctx>(context);
 
   if (!command) {
     logger('command not found');
