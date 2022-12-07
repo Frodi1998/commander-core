@@ -1,7 +1,9 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "ESNext"
-    }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "esModuleInterop": true,
+    "module": "NodeNext"
+  },
+  "include": ["./tests"]
 }
