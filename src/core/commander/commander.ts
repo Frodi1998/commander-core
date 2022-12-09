@@ -119,38 +119,25 @@ export class Commander {
   }
 
   private async importCommandFromFile(filePath: string): Promise<void> {
-    // const file = await import(filePath);
     const file = await this.loadFile(filePath);
 
     if (!file) {
       return;
     }
-    // let commands = file.default ? file.default : file;
+
     logger('fileName: %s', filePath);
     logger('fileContent: %O', file);
     const commands = !Array.isArray(file) ? [file] : file;
-    // if (!Array.isArray(file)) {
-    //   file = [file];
-    // }
 
-    for await (const command of commands) {
-      if (!(command instanceof Command)) {
-        logger('Command not instance Command');
-        throw new ConfigureError(
-          `Экспартируемые данные в файле ${filePath} не являются командой`,
-        );
-      }
-
-      const isCommands = commands.every(command => command instanceof Command);
-      if (!isCommands) {
-        logger('Command not instance Command');
-        throw new ConfigureError(
-          `Экспартируемые данные в файле ${filePath} не являются командой`,
-        );
-      }
-
-      await this.addCommands(commands);
+    const isCommands = commands.every(command => command instanceof Command);
+    if (!isCommands) {
+      logger('Command not instance Command');
+      throw new ConfigureError(
+        `Экспартируемые данные в файле ${filePath} не являются командой`,
+      );
     }
+
+    await this.addCommands(commands);
   }
 
   private async loadFile(filePath: string) {
