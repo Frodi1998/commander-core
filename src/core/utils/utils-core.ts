@@ -20,7 +20,7 @@ type TStatus = 'stop' | 'ready' | 'default';
 export class UtilsCore {
   [status]: TStatus = 'default';
   [command]: Command | undefined;
-  private _startTime: number | undefined;
+  private _startTime!: number | undefined;
 
   /**
    * @type {EventEmitter} events менеджер событий
@@ -39,7 +39,12 @@ export class UtilsCore {
   }
 
   public get getPing(): number {
-    return Date.now() - (this._startTime as number);
+    if (!this._startTime) {
+      this._startTime = Date.now();
+      return 0;
+    }
+
+    return Date.now() - this._startTime;
   }
 
   public setPing(startTime: number): void {
