@@ -74,7 +74,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Command_Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="Handler_Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -228,7 +228,7 @@
         <p class="tag-source">
             <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line7">line 7</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line25">line 25</a>
             </span>
         </p>
     
@@ -257,7 +257,7 @@
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>new Command({ pattern: /test/i, name: 'test', description: 'test command', categories: ['test'], params: {     emoji: '📄'}, handler(context) {     context.send('test'); }})</code></pre>
+        <pre class="prettyprint"><code>new Command({ name: 'test', description: 'test command', categories: ['test'], params: {     emoji: '📄'}, handler(context) {     context.send('test'); }}) pattern: /test/i,</code></pre>
     
 
 
@@ -278,9 +278,6 @@
 
         <dl>
             <dt><a href="Command.html">Command</a></dt>
-            <dd></dd>
-        
-            <dt><a href="Command_Command.html">Command</a></dt>
             <dd></dd>
         </dl>
     
@@ -357,7 +354,7 @@
         <p class="tag-source">
             <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line23">line 23</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line45">line 45</a>
             </span>
         </p>
     
@@ -430,7 +427,128 @@
         <p class="tag-source">
             <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line130">line 130</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line139">line 139</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="commands">
+    <a class="href-link" href="#commands">#</a>
+    
+    <span class="code-name">
+        commands
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>массив подкоманд</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>commands</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">Array.&lt;<a href="Command.html">Command</a>></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line55">line 55</a>
             </span>
         </p>
     
@@ -447,7 +565,7 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<code class="param-type">Array.&lt;<a href="Command.html">Command</a>></code>
+<code class="param-type">Array</code>
 
 
     </span>
@@ -469,6 +587,1209 @@
 </div>
 
 
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>commands</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">Array.&lt;<a href="Command.html">Command</a>></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line153">line 153</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="description">
+    <a class="href-link" href="#description">#</a>
+    
+    <span class="code-name">
+        description
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>описание</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>description</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line41">line 41</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="description">
+    <a class="href-link" href="#description">#</a>
+    
+    <span class="code-name">
+        description
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>описание</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>description</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line133">line 133</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="handler">
+    <a class="href-link" href="#handler">#</a>
+    
+    <span class="code-name">
+        handler
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>обработчик комманды</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>handler</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line60">line 60</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></code>
+
+
+    </span>
+
+<h4 class="name" id="handler">
+    <a class="href-link" href="#handler">#</a>
+    
+    <span class="code-name">
+        handler
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>обработчик комманды</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>handler</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line160">line 160</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="name">
+    <a class="href-link" href="#name">#</a>
+    
+    <span class="code-name">
+        name
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>название</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line36">line 36</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="name">
+    <a class="href-link" href="#name">#</a>
+    
+    <span class="code-name">
+        name
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>название</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line126">line 126</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+    </span>
+
+<h4 class="name" id="params">
+    <a class="href-link" href="#params">#</a>
+    
+    <span class="code-name">
+        params
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>дополнительные параметры</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line50">line 50</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+    </span>
+
+<h4 class="name" id="params">
+    <a class="href-link" href="#params">#</a>
+    
+    <span class="code-name">
+        params
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>дополнительные параметры</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line146">line 146</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">RegExp</code>
+|
+
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="pattern">
+    <a class="href-link" href="#pattern">#</a>
+    
+    <span class="code-name">
+        pattern
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>паттерн команды</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">RegExp</code>
+|
+
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="core_commander_command.ts.html" class="button">View Source</a>
+            <span>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line119">line 119</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".pattern">
+    <a class="href-link" href="#.pattern">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        pattern
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>паттерн команды</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">RegExp</code>
+|
+
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -508,859 +1829,6 @@
             <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
                 <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line31">line 31</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">Array.&lt;<a href="Command.html">Command</a>></code>
-
-
-    </span>
-
-<h4 class="name" id="commands">
-    <a class="href-link" href="#commands">#</a>
-    
-    <span class="code-name">
-        commands
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>массив подкоманд</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line142">line 142</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">string</code>
-
-
-    </span>
-
-<h4 class="name" id="description">
-    <a class="href-link" href="#description">#</a>
-    
-    <span class="code-name">
-        description
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>короткое описание команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line19">line 19</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">string</code>
-
-
-    </span>
-
-<h4 class="name" id="description">
-    <a class="href-link" href="#description">#</a>
-    
-    <span class="code-name">
-        description
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>короткое описание команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line124">line 124</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></code>
-
-
-    </span>
-
-<h4 class="name" id="handler">
-    <a class="href-link" href="#handler">#</a>
-    
-    <span class="code-name">
-        handler
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>функция обработки команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line35">line 35</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#THandlerCommand">THandlerCommand</a></code>
-
-
-    </span>
-
-<h4 class="name" id="handler">
-    <a class="href-link" href="#handler">#</a>
-    
-    <span class="code-name">
-        handler
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>функция обработки команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line147">line 147</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">string</code>
-
-
-    </span>
-
-<h4 class="name" id="name">
-    <a class="href-link" href="#name">#</a>
-    
-    <span class="code-name">
-        name
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>название команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line15">line 15</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">string</code>
-
-
-    </span>
-
-<h4 class="name" id="name">
-    <a class="href-link" href="#name">#</a>
-    
-    <span class="code-name">
-        name
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>название команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line118">line 118</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">Record.&lt;string, unknown></code>
-
-
-    </span>
-
-<h4 class="name" id="params">
-    <a class="href-link" href="#params">#</a>
-    
-    <span class="code-name">
-        params
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>дополнительные параметры</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line27">line 27</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">Record.&lt;string, unknown></code>
-
-
-    </span>
-
-<h4 class="name" id="params">
-    <a class="href-link" href="#params">#</a>
-    
-    <span class="code-name">
-        params
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>дополнительные параметры</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line136">line 136</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">RegExp</code>
-|
-
-<code class="param-type">string</code>
-
-
-    </span>
-
-<h4 class="name" id="pattern">
-    <a class="href-link" href="#pattern">#</a>
-    
-    <span class="code-name">
-        pattern
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>паттерн команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line11">line 11</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">RegExp</code>
-|
-
-<code class="param-type">string</code>
-
-
-    </span>
-
-<h4 class="name" id="pattern">
-    <a class="href-link" href="#pattern">#</a>
-    
-    <span class="code-name">
-        pattern
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>паттерн команды</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="core_commander_command.ts.html" class="button">View Source</a>
-            <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line112">line 112</a>
             </span>
         </p>
     
@@ -1501,7 +1969,7 @@
         <p class="tag-source">
             <a href="core_commander_command.ts.html" class="button">View Source</a>
             <span>
-                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line177">line 177</a>
+                <a href="core_commander_command.ts.html">core/commander/command.ts</a>, <a href="core_commander_command.ts.html#line167">line 167</a>
             </span>
         </p>
     
@@ -1570,7 +2038,7 @@
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

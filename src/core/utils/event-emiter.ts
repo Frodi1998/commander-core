@@ -1,5 +1,3 @@
 import { EventEmitter } from 'events';
 
-class EventListener extends EventEmitter {}
-
-export default EventListener;
+export class EventListener extends EventEmitter {}

@@ -1,1 +1,1 @@
-export * from './configureError';
+export * from './configureError.js';

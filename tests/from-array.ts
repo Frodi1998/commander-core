@@ -1,11 +1,11 @@
-import assert from 'assert';
+import assert from 'node:assert';
 
-import { Handler, Command } from '../dist/main';
-import { MessageCTX } from './context';
-import Utils from './utils';
+import { Handler, Command } from '../dist/main.js';
+import { MessageCTX } from './context.js';
+import { Utils } from './utils.js';
 
-import testCommand from './commands/testCommands';
-import eventCommand from './commands/eventCommands';
+import testCommand from './commands/testCommands.js';
+import eventCommand from './commands/eventCommands.js';
 
 const handler = new Handler({
   commands: {

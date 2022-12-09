@@ -3,8 +3,11 @@
 <a href="https://www.npmjs.com/package/commander-core"><img src="https://img.shields.io/npm/dt/commander-core.svg?style=flat-square" alt="NPM downloads"></a>
 </p>
 
-commander-core - это ядро для вашего обработчика команд, основан на [cocoscore](https://www.npmjs.com/package/cocoscore), написан на [Node.js](https://nodejs.org)
-модуль может работать не только с [vk-io](https://www.npmjs.com/package/vk-io) но и с [puregram](https://www.npmjs.com/package/puregram)
+commander-core - это ядро для вашего обработчика команд, основан на [cocoscore](https://www.npmjs.com/package/cocoscore).
+Модуль поддерживает:
+
+- [vk-io](https://www.npmjs.com/package/vk-io)
+- [puregram](https://www.npmjs.com/package/puregram)
 
 | 📚 [Документация](https://frodi1998.github.io/commander-core/) | 📝 [Примеры](https://github.com/Frodi1998/commander-core/tree/master/examples) | 💬 [Беседа](https://vk.me/join/AJQ1d9IUCxhdW8s6imiygUU1) |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------- |
@@ -42,13 +45,13 @@ const { UtilsCore } = require('commander-core');
 class Utils extends UtilsCore {
   constructor() {
     super();
-    this.adminIds = [1]; //ваш ID в вк так же можете поместить сюда массив идентификаторов
+    this.adminIds = [1];
   }
 
   testMetods() {
     return console.log('test');
   }
-}
+} // это произвольный пример, можете поместить сюда что угодно
 
 module.exports = Utils;
 ```
@@ -58,7 +61,7 @@ module.exports = Utils;
 ```js
 const { Handler } = require('commander-core')
 const { VK, getRandomId } = require('vk-io')
-const path = require('path')
+const path = require('node:path')
 const Utils = require('./utils.js') //наши утилиты
 
 const TOKEN = process.env.TOKEN //токен от группы
@@ -138,12 +141,12 @@ import { UtilsCore } from 'commander-core';
  * bot.testMetods() в теле команды
  */
 export class Utils extends UtilsCore {
-  public adminIds = [1]; //ваш ID в вк так же можете поместить сюда массив идентификаторов
+  public adminIds = [1];
 
   testMetods(): void {
     return console.log('test');
   }
-}
+} // это произвольный пример, можете поместить сюда что угодно
 ```
 
 далее создайте файл start.ts
@@ -151,7 +154,7 @@ export class Utils extends UtilsCore {
 ```ts
 import { Handler, IContext } from 'commander-core';
 import { VK, getRandomId, MessageContext } from 'vk-io';
-import path from 'path';
+import path from 'node:path';
 
 import Utils from './utils.js'; //наши утилиты
 

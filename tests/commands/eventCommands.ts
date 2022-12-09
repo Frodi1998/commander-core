@@ -1,11 +1,11 @@
-import { Command } from '../../dist/main';
-import { MessageCTX } from '../context';
-import Utils from '../utils';
+import { Command, ICommand } from '../../dist/main.js';
+import { MessageCTX } from '../context.js';
+import { Utils } from '../utils.js';
 
 export default new Command({
   pattern: /^event\s(.*)$/i,
   name: 'event',
-  handler(context: MessageCTX, bot: Utils) {
+  handler(context: MessageCTX & ICommand, bot: Utils) {
     const params = {
       context,
       utils: bot,

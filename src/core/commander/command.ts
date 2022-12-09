@@ -1,23 +1,56 @@
-import { ConfigureError } from '../errors';
-import { ICommand, IContext, Context, THandlerCommand } from '../../types';
+import { ConfigureError } from '../errors/index.js';
+import {
+  ICommand,
+  IContext,
+  Context,
+  THandlerCommand,
+} from '../../types/index.js';
 
 /**
  * @description Класс команды
  * @class
+ * @param {ICommand} data
+ *
+ * @example
+ * new Command({
+ *
+ *  name: 'test',
+ *  description: 'test command',
+ *  categories: ['test'],
+ *
+ *  params: {
+ *      emoji: '📄'
+ * },
+ *
+ *  handler(context) {
+ *      context.send('test');
+ *  }
+ * })
+ *  pattern: /test/i,
  */
 export class Command {
   /**
-   * @type {RegExp | string} паттерн команды
+   * паттерн команды
+   * @property {RegExp | string}
+   * @memberof Command
    */
   public pattern: RegExp | string;
 
   /**
-   * @type {string} название команды
+   * обработчик комманды
+   * @property {THandlerCommand} handler
+   */
+  public handler: THandlerCommand;
+
+  /**
+   * название
+   * @property {string}
    */
   public name: string;
 
   /**
-   * @type {string} короткое описание команды
+   * @description описание
+   * @property {string} description
    */
   public description: string;
 
@@ -27,42 +60,17 @@ export class Command {
   public categories: string[];
 
   /**
-   * @type {Record<string, unknown>} дополнительные параметры
+   * @description дополнительные параметры
+   * @type {Record<string, unknown>}
    */
   public params: Record<string, unknown>;
 
   /**
-   * @type {Command[]} массив подкоманд
+   * массив подкоманд
+   * @property {Command[]} commands
    */
   public commands: Command[];
 
-  /**
-   * @type {THandlerCommand} функция обработки команды
-   */
-  handler: THandlerCommand;
-
-  [key: string]: unknown;
-
-  /**
-   * конструктор команды
-   * @param {ICommand} data
-   * @example
-   *
-   * new Command({
-   *  pattern: /test/i,
-   *  name: 'test',
-   *  description: 'test command',
-   *  categories: ['test'],
-   *
-   *  params: {
-   *      emoji: '📄'
-   * },
-   *
-   *  handler(context) {
-   *      context.send('test');
-   *  }
-   * })
-   */
   constructor(data: ICommand) {
     if (!data.pattern) {
       throw new ConfigureError(
@@ -93,7 +101,7 @@ export class Command {
     } = data;
 
     this.pattern = pattern;
-    this.name = name;
+    this.name = name || '';
     this.description = description || '';
     this.categories = categories || [];
     this.params = params || {};
@@ -110,23 +118,26 @@ export class Command {
    * @param {Record<string, unknown>} context
    * @return {Command}
    */
-  findSubCommand<c extends Context>(context: c & IContext): Command {
-    let command: Command;
-
-    for (const subCommand of this.commands) {
-      if ((<RegExp>subCommand.pattern).test(context.body[1])) {
-        command = subCommand;
-      }
-    }
+  findSubCommand<ctx extends Context>(context: ctx & IContext): Command {
+    let command: Command | undefined = this.commands.find(subCommand =>
+      (subCommand.pattern as RegExp).test(context.body?.[0] as string),
+    );
+    // for (const subCommand of this.commands) {
+    //   if ((<RegExp>subCommand.pattern).test(context.body[1])) {
+    //     command = subCommand;
+    //   }
+    // }
 
     if (!command) {
       return this;
     }
 
-    context.body = context.body[1].match(command.pattern);
+    context.body = context.body?.[1].match(
+      command.pattern as RegExp,
+    ) as RegExpMatchArray;
 
     if (command.commands.length) {
-      command = (<Command>command).findSubCommand<c>(context);
+      command = (<Command>command).findSubCommand<ctx>(context);
     }
 
     return command;

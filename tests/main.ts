@@ -1,7 +1,7 @@
 import assert from 'assert';
 
-import { fromDirectoryTest } from './from-directory';
-import { fromArrayTest } from './from-array';
+import { fromDirectoryTest } from './from-directory.js';
+import { fromArrayTest } from './from-array.js';
 
 describe('main', () => {
   describe('default test', function () {
