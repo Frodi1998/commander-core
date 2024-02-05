@@ -26,7 +26,7 @@ export interface IContext {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type THandlerCommand = (
   context: AnyObject,
-  bot: UtilsCore,
+  bot?: UtilsCore,
 ) => unknown | Promise<unknown>;
 
 /**
