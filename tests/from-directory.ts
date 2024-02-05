@@ -141,7 +141,7 @@ export function fromDirectoryTest() {
     describe('utils', () => {
       it('execute', async () => {
         const context = new MessageCTX();
-        context.text = 'utils test';
+        context.text = 'test';
 
         await handler.execute(context);
       });
