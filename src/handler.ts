@@ -1,10 +1,10 @@
 import debug from 'debug';
 
-import { Command, Commander } from './commander/index.js';
+import { Command, IContext, Context } from './command/index.js';
 import { ConfigureError } from './errors/index.js';
-import { IContext, Context } from '../types/index.js';
-import { UtilsCore, EventListener } from './utils/index.js';
-import executeCommand from './executeCommand.js';
+import { UtilsCore, EventListener } from './util/index.js';
+import executeCommand from './util/executeCommand.js';
+import { Commander } from './commander.js';
 
 const logger = debug('commander-core:handler');
 

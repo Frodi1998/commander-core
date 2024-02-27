@@ -1,10 +1,7 @@
 import { ConfigureError } from '../errors/index.js';
-import {
-  ICommand,
-  IContext,
-  Context,
-  THandlerCommand,
-} from '../../types/index.js';
+import { AnyObject } from '../types.js';
+import { UtilsCore } from '../util/utils-core.js';
+import { Context, ICommand, IContext, THandlerCommand } from './types.js';
 
 /**
  * @description Класс команды
@@ -28,7 +25,7 @@ import {
  * })
  *  pattern: /test/i,
  */
-export class Command {
+export class Command<C = AnyObject, U = UtilsCore> {
   /**
    * паттерн команды
    * @property {RegExp | string}
@@ -40,7 +37,7 @@ export class Command {
    * обработчик комманды
    * @property {THandlerCommand} handler
    */
-  public handler: THandlerCommand;
+  public handler: THandlerCommand<C, U>;
 
   /**
    * название
@@ -71,7 +68,7 @@ export class Command {
    */
   public commands: Command[];
 
-  constructor(data: ICommand) {
+  constructor(data: ICommand<C, U>) {
     if (!data.pattern) {
       throw new ConfigureError(
         'Не указан pattern команды (регулярное выражение)',
@@ -118,7 +115,7 @@ export class Command {
    * @param {Record<string, unknown>} context
    * @return {Command}
    */
-  findSubCommand<ctx extends Context>(context: ctx & IContext): Command {
+  findSubCommand<ctx extends Context>(context: ctx & IContext): Command<C, U> {
     let command: Command | undefined = this.commands.find(subCommand =>
       (subCommand.pattern as RegExp).test(context.body?.[0] as string),
     );
@@ -140,6 +137,6 @@ export class Command {
       command = (<Command>command).findSubCommand<ctx>(context);
     }
 
-    return command;
+    return command as Command<C, U>;
   }
 }

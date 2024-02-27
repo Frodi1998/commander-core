@@ -1,7 +1,7 @@
 import debug from 'debug';
 
-import { Context, IContext } from '../types/index.js';
-import { UtilsCore } from './utils/index.js';
+import { Context, IContext } from '../command/index.js';
+import { UtilsCore } from './index.js';
 
 const logger = debug('commander-core:handler');
 

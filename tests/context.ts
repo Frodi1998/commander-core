@@ -1,6 +1,6 @@
-import { Context, IContext } from '../dist/main.js';
+import { CommandContextLayer } from '../src/main';
 
-export class MessageCTX implements Context, IContext {
+export class MessageCTX implements CommandContextLayer {
   text: string;
   $command: string;
   body: RegExpMatchArray;

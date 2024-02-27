@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 
-import { Handler, Command } from '../dist/main.js';
+import { Handler, Command } from '../src/main';
 import { MessageCTX } from './context.js';
 import { Utils } from './utils.js';
 

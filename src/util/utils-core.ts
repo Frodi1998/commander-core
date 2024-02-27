@@ -1,9 +1,9 @@
 import debug from 'debug';
 
-import { Context, IContext } from '../../types/index.js';
-import { Command, Commander } from '../commander/index.js';
-import executeCommand from '../executeCommand.js';
+import { Command, Context, IContext } from '../command/index.js';
+import executeCommand from './executeCommand.js';
 import { EventListener } from './event-emiter.js';
+import { Commander } from '../commander.js';
 
 // const ping = Symbol('ping');
 const command = Symbol('command');

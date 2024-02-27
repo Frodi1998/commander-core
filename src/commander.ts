@@ -3,9 +3,9 @@ import { existsSync } from 'fs';
 import debug from 'debug';
 import walkSync from 'walk-sync';
 
-import { Command } from './command.js';
-import { ConfigureError } from '../errors/index.js';
-import { Context, IContext } from '../../types/index.js';
+import { Command } from './command/command.js';
+import { ConfigureError } from './errors/index.js';
+import { Context, IContext } from './command/index.js';
 
 const logger = debug('commander-core:commander');
 
