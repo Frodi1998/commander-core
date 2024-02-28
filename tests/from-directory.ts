@@ -2,7 +2,13 @@ import assert from 'node:assert';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
 
-import { Handler, Command, IContext, ICommand } from '../dist/main.js';
+import {
+  Handler,
+  Command,
+  IContext,
+  ICommand,
+  CommandContextLayer,
+} from '../dist/main.js';
 import { MessageCTX } from './context.js';
 import { Storage } from './storage.js';
 import { Utils } from './utils.js';
@@ -79,8 +85,8 @@ export function fromDirectoryTest() {
 
     describe('find', async () => {
       const { commander } = handler;
-      const context = new MessageCTX();
-      context.$command = 'test';
+      const context: CommandContextLayer<MessageCTX> = new MessageCTX('test');
+      context.$command = context.text;
 
       it('должен найти и вернуть инстанс команды', async () => {
         const command = await commander.find(context);
@@ -92,8 +98,7 @@ export function fromDirectoryTest() {
     describe('events', () => {
       describe('command_begin', () => {
         it('execute', () => {
-          const context = new MessageCTX();
-          context.text = 'test';
+          const context = new MessageCTX('test');
 
           handler.execute(context);
         });
@@ -114,8 +119,7 @@ export function fromDirectoryTest() {
 
       describe('command_job', () => {
         it('execute', () => {
-          const context = new MessageCTX();
-          context.text = 'test';
+          const context = new MessageCTX('test');
 
           handler.execute(context);
         });
@@ -140,8 +144,7 @@ export function fromDirectoryTest() {
 
     describe('utils', () => {
       it('execute', async () => {
-        const context = new MessageCTX();
-        context.text = 'test';
+        const context = new MessageCTX('test');
 
         await handler.execute(context);
       });

@@ -1,18 +1,18 @@
 import assert from 'node:assert';
 
-import { Handler, Command } from '../src/main';
+import { Handler, Command, UtilsCore } from '../dist/main.js';
 import { MessageCTX } from './context.js';
 import { Utils } from './utils.js';
 
 import testCommand from './commands/testCommands.js';
-import eventCommand from './commands/eventCommands.js';
+import eventCommand from './commands/event.command.js';
+import { CommandContextLayer } from '../dist/main.js';
 
-const handler = new Handler({
+const handler = new Handler<MessageCTX, Utils>({
   commands: {
     fromArray: [testCommand, eventCommand],
   },
   strictLoader: true,
-  utils: new Utils(),
 });
 
 handler.events.on('command_job', ({ context, utils }) => {
@@ -40,7 +40,7 @@ export function fromArrayTest() {
 
     describe('find', async () => {
       const { commander } = handler;
-      const context = new MessageCTX();
+      const context: CommandContextLayer<MessageCTX> = new MessageCTX('test');
       context.$command = 'test';
 
       it('должен найти и вернуть инстанс команды', async () => {
@@ -64,8 +64,7 @@ export function fromArrayTest() {
       handler.commander.addCommands(commands);
 
       it('job command', () => {
-        const context = new MessageCTX();
-        context.text = 'job';
+        const context = new MessageCTX('job');
 
         handler.execute(context);
       });
