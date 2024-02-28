@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation EventEmitter</title>
+  <title>Documentation IContext</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -82,7 +82,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Interface</p>
-                    <h1>EventEmitter</h1>
+                    <h1>IContext</h1>
                 </header>
                 
 
@@ -93,7 +93,7 @@
 
 <header>
     
-        <h2>EventEmitter</h2>
+        <h2>IContext</h2>
         
     
 </header>
@@ -123,6 +123,8 @@
     
 
     
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>use CommandContext</li></ul></dd>
+    
 
     
 
@@ -139,9 +141,9 @@
 
     
         <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
+            <a href="command_types.ts.html" class="button">View Source</a>
             <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line23">line 23</a>
+                <a href="command_types.ts.html">command/types.ts</a>, <a href="command_types.ts.html#line14">line 14</a>
             </span>
         </p>
     
@@ -164,246 +166,6 @@
 
     
 
-    
-        <div class='vertical-section'>
-            <h1>Members</h1>
-            <div class="members">
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TEmit">TEmit</a></code>
-
-
-    </span>
-
-<h4 class="name" id="emit">
-    <a class="href-link" href="#emit">#</a>
-    
-    <span class="code-name">
-        emit
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события <code>eventName</code>,
-в том порядке, в котором они были зарегистрированы, передавая каждому предоставленные аргументы.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line27">line 27</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TEventNames">TEventNames</a></code>
-
-
-    </span>
-
-<h4 class="name" id="eventNames">
-    <a class="href-link" href="#eventNames">#</a>
-    
-    <span class="code-name">
-        eventNames
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей.
-Значения в массиве - это строки или <code>Symbols</code>.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line40">line 40</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TOn">TOn</a></code>
-
-
-    </span>
-
-<h4 class="name" id="on">
-    <a class="href-link" href="#on">#</a>
-    
-    <span class="code-name">
-        on
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Добавляет <code>listener</code> функцию в конец массива слушателей для названного события eventName.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line34">line 34</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
     
 
     

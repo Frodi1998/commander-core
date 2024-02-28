@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation EventEmitter</title>
+  <title>Documentation commander.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -81,339 +83,172 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Interface</p>
-                    <h1>EventEmitter</h1>
+                    <p>Source</p>
+                    <h1>commander.ts</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
-    
-        <h2>EventEmitter</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line23">line 23</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Members</h1>
-            <div class="members">
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TEmit">TEmit</a></code>
-
-
-    </span>
-
-<h4 class="name" id="emit">
-    <a class="href-link" href="#emit">#</a>
-    
-    <span class="code-name">
-        emit
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события <code>eventName</code>,
-в том порядке, в котором они были зарегистрированы, передавая каждому предоставленные аргументы.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line27">line 27</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TEventNames">TEventNames</a></code>
-
-
-    </span>
-
-<h4 class="name" id="eventNames">
-    <a class="href-link" href="#eventNames">#</a>
-    
-    <span class="code-name">
-        eventNames
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей.
-Значения в массиве - это строки или <code>Symbols</code>.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line40">line 40</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TOn">TOn</a></code>
-
-
-    </span>
-
-<h4 class="name" id="on">
-    <a class="href-link" href="#on">#</a>
-    
-    <span class="code-name">
-        on
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Добавляет <code>listener</code> функцию в конец массива слушателей для названного события eventName.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
     
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line34">line 34</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import path from 'path';
+import { existsSync } from 'fs';
+import debug from 'debug';
+import walkSync from 'walk-sync';
+
+import { Command } from './command/command.js';
+import { ConfigureError } from './errors/index.js';
+import { Context, IContext } from './command/index.js';
+
+const logger = debug('commander-core:commander');
+
+/**
+ * @description класс обработки
+ * @class
+ */
+export class Commander {
+  public commandsLoaded = false;
+
+  private commands: Command[] = [];
+
+  get [Symbol.toStringTag](): string {
+    return 'Commander';
+  }
+
+  /**
+   * выводит команды
+   */
+  get getCommands(): Command[] {
+    return this.commands;
+  }
+
+  /**
+   * загрузка команд из директории
+   * @param {string} dir директория загрузки команд
+   * @return {Promise&lt;void>}
+   */
+  async loadFromDirectory(dir: string): Promise&lt;boolean> {
+    try {
+      if (!existsSync(dir)) {
+        logger('Commandsdirectory not found');
+        throw new ConfigureError(`${dir} не существует`);
+      }
+
+      const absPath = path.resolve(dir);
+      const filePaths = walkSync(absPath, {
+        includeBasePath: true,
+        globs: ['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts'],
+        ignore: ['**/*ignore*', 'ignore/', '**/*.d.ts'],
+      });
+
+      logger('Commandsdirectory files %O', filePaths);
+
+      for await (const filePath of filePaths) {
+        await this.importCommandFromFile(filePath);
+      }
+
+      return (this.commandsLoaded = true);
+    } catch (err) {
+      console.error(err);
+      return (this.commandsLoaded = false);
+    }
+  }
+
+  /**
+   * добавляет новые команды
+   * @param {Command | Command[]} commands
+   * @return {number}
+   */
+  async addCommands(commands: Command | Command[]): Promise&lt;number> {
+    commands = !Array.isArray(commands) ? [commands] : commands;
+
+    for await (const command of commands) {
+      logger('add new command');
+      this.commands.push(command);
+    }
+
+    return this.commands.length;
+  }
+
+  /**
+   * устанавливает команды удаляя старые
+   * @param {Command[]} commands
+   * @return {void}
+   */
+  setCommands(commands: Command[]): void {
+    logger('set new commands');
+    this.commands = commands;
+  }
+
+  /**
+   * поиск команды
+   * @param {IContext} context
+   * @return {Promise&lt;Command>}
+   * @example ts
+   *
+   * import { MessageContext } from "vk-io";
+   *
+   * const command = commander.find&lt;MessageContext>(context)
+   */
+  async find&lt;C extends Context &amp; IContext>(
+    context: C,
+  ): Promise&lt;Command | undefined> {
+    let command = this.commands.find(cmd =>
+      (cmd.pattern as RegExp).test(context.$command as string),
+    );
+
+    if (command) {
+      context.body = context.$command?.match(
+        command.pattern as string,
+      ) as RegExpMatchArray;
+
+      if (command.commands.length) {
+        logger('find subсommand');
+        command = command.findSubCommand&lt;C>(context);
+      }
+    }
+
+    return command;
+  }
+
+  private async importCommandFromFile(filePath: string): Promise&lt;void> {
+    const file = await this.loadFile(filePath);
+
+    if (!file) {
+      return;
+    }
+
+    logger('fileName: %s', filePath);
+    logger('fileContent: %O', file);
+    const commands = !Array.isArray(file) ? [file] : file;
+
+    const isCommands = commands.every(command => command instanceof Command);
+    if (!isCommands) {
+      logger('Command not instance Command');
+      throw new ConfigureError(
+        `Экспартируемые данные в файле ${filePath} не являются командой`,
+      );
+    }
+
+    await this.addCommands(commands);
+  }
+
+  private async loadFile(filePath: string) {
+    let file;
+    try {
+      file = await import(`file:///${filePath}`);
+    } catch (error) {
+      file = await import(filePath);
+    }
+
+    return file.default ? file.default : file;
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

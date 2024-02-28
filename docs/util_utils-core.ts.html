@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation EventEmitter</title>
+  <title>Documentation util/utils-core.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -81,339 +83,133 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Interface</p>
-                    <h1>EventEmitter</h1>
+                    <p>Source</p>
+                    <h1>util/utils-core.ts</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
-    
-        <h2>EventEmitter</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line23">line 23</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Members</h1>
-            <div class="members">
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TEmit">TEmit</a></code>
-
-
-    </span>
-
-<h4 class="name" id="emit">
-    <a class="href-link" href="#emit">#</a>
-    
-    <span class="code-name">
-        emit
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события <code>eventName</code>,
-в том порядке, в котором они были зарегистрированы, передавая каждому предоставленные аргументы.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line27">line 27</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TEventNames">TEventNames</a></code>
-
-
-    </span>
-
-<h4 class="name" id="eventNames">
-    <a class="href-link" href="#eventNames">#</a>
-    
-    <span class="code-name">
-        eventNames
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей.
-Значения в массиве - это строки или <code>Symbols</code>.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line40">line 40</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="global.html#TOn">TOn</a></code>
-
-
-    </span>
-
-<h4 class="name" id="on">
-    <a class="href-link" href="#on">#</a>
-    
-    <span class="code-name">
-        on
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Добавляет <code>listener</code> функцию в конец массива слушателей для названного события eventName.</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
     
-        <p class="tag-source">
-            <a href="types.ts.html" class="button">View Source</a>
-            <span>
-                <a href="types.ts.html">types.ts</a>, <a href="types.ts.html#line34">line 34</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import debug from 'debug';
+
+import { Command, Context, IContext } from '../command/index.js';
+import executeCommand from './executeCommand.js';
+import { EventListener } from './event-emiter.js';
+import { Commander } from '../commander.js';
+import { AnyObject } from '../types.js';
+
+// const ping = Symbol('ping');
+// const command = Symbol('command');
+// const status = Symbol('status');
+
+const logger = debug('commander-core:utils');
+
+export type CommandStatus = 'stop' | 'ready' | 'default';
+
+export interface IUtils extends AnyObject {
+  events: EventListener;
+  commander: Commander;
+}
+
+/**
+ * утилиты
+ * @class
+ */
+export class UtilsCore implements IUtils {
+  // protected [status]: TStatus = 'default';
+  // protected [command]: Command | undefined;
+  protected _status: CommandStatus = 'default';
+  protected _command?: Command;
+  protected _startTime?: number;
+
+  /**
+   * @type {EventEmitter} events менеджер событий
+   */
+  public events: EventListener;
+
+  /**
+   * @description менеджер команд
+   * @type {Commander}
+   */
+  public commander: Commander;
+
+  constructor() {
+    this.events = new EventListener();
+    this.commander = new Commander();
+  }
+
+  public get getPing(): number {
+    if (!this._startTime) {
+      this._startTime = Date.now();
+      return 0;
+    }
+
+    return Date.now() - this._startTime;
+  }
+
+  public setPing(startTime: number): void {
+    this._startTime = startTime;
+    // this._ping = Date.now() - start;
+    logger('ping: %d', Date.now() - startTime);
+  }
+
+  /**
+   * возвращает текущую команду
+   * @type {Command}
+   */
+  public get getCommand() {
+    return this._command;
+  }
+
+  /**
+   * статус команды
+   * @return {'stop' | 'ready' | 'default'}
+   */
+  public get getCommandStatus(): CommandStatus {
+    return this._status;
+  }
+
+  /**
+   * меняет статус выполнения команды
+   * @param {'stop' | 'ready' | 'default'} stat
+   * @return {'stop' | 'ready' | 'default'}
+   */
+  public setCommandStatus(stat: CommandStatus): CommandStatus {
+    if (stat) {
+      this._status = stat;
+    }
+
+    return this._status;
+  }
+
+  /**
+   * устанавливает команду
+   * @param {Command} $command
+   * @return {void}
+   */
+  public setCommand($command: Command): void {
+    this._command = $command;
+    logger('set command: %o', this._command);
+  }
+
+  /**
+   * выполняет команду по переданному контексту, аналогичен handler.execute
+   * @param {IContext} context
+   * @return {void}
+   */
+  public executeCommand&lt;ctx extends Context>(context: ctx &amp; IContext): void {
+    logger('command execute from utils');
+    logger('params: context: %o, utils: %o', context, this);
+
+    executeCommand&lt;ctx>(context, this);
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
