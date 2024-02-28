@@ -1,11 +1,11 @@
-import { Command, ICommand } from '../../dist/main.js';
+import { Command } from '../../dist/main.js';
 import { MessageCTX } from '../context.js';
 
 import { Utils } from '../utils.js';
 
-export default new Command({
+export default new Command<MessageCTX, Utils>({
   pattern: /^(?:test|тест)$/i,
-  async handler(ctx: MessageCTX & ICommand, bot: Utils) {
+  async handler(ctx, bot) {
     console.log('command => ' + ctx.text);
     return bot.testMetod();
   },
