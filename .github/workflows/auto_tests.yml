@@ -18,17 +18,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install yarn
-        run: |
-          npm -g i yarn
-
       - name: Install dependency
-        run: yarn
+        run: npx yarn install --frozen-lockfile
 
-      - name: lint
+      - name: typechecking
+        run: npm run typecheck
+
+      - name: linting
         run: yarn lint
 
       - name: build and test
         run: |
-          yarn build:prod
+          yarn build
           yarn test
