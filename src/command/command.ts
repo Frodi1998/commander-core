@@ -46,8 +46,7 @@ export class Command<
   public name: string;
 
   /**
-   * @description описание
-   * @property {string} description
+   * описание команды
    */
   public description: string;
 
@@ -109,8 +108,8 @@ export class Command<
   }
 
   /**
-   * @description поиск подкоманд
-   * @param {Record<string, unknown>} context
+   * поиск подкоманд
+   * @param context
    * @return {Command}
    */
   findSubCommand<ctx extends AnyObject>(

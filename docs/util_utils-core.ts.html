@@ -76,7 +76,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="Context.html">Context</a></li><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IContext.html">IContext</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="Context.html">Context</a></li><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IContext.html">IContext</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -95,23 +95,23 @@
         <article>
             <pre class="prettyprint source linenums"><code>import debug from 'debug';
 
-import { Command, Context, IContext } from '../command/index.js';
+import { Command, CommandContext } from '../command/index.js';
 import executeCommand from './executeCommand.js';
 import { EventListener } from './event-emiter.js';
 import { Commander } from '../commander.js';
-import { AnyObject } from '../types.js';
-
-// const ping = Symbol('ping');
-// const command = Symbol('command');
-// const status = Symbol('status');
 
 const logger = debug('commander-core:utils');
 
 export type CommandStatus = 'stop' | 'ready' | 'default';
 
-export interface IUtils extends AnyObject {
+export interface IUtils {
   events: EventListener;
   commander: Commander;
+  get getCommand(): Command | undefined;
+  setCommand($command: Command): void;
+  get getCommandStatus(): CommandStatus;
+  setCommandStatus(stat: CommandStatus): CommandStatus;
+  executeCommand&lt;ctx extends CommandContext>(context: ctx): void;
 }
 
 /**
@@ -119,19 +119,19 @@ export interface IUtils extends AnyObject {
  * @class
  */
 export class UtilsCore implements IUtils {
-  // protected [status]: TStatus = 'default';
-  // protected [command]: Command | undefined;
   protected _status: CommandStatus = 'default';
+
   protected _command?: Command;
+
   protected _startTime?: number;
 
   /**
-   * @type {EventEmitter} events менеджер событий
+   * events менеджер событий
    */
   public events: EventListener;
 
   /**
-   * @description менеджер команд
+   * менеджер команд
    * @type {Commander}
    */
   public commander: Commander;
@@ -200,7 +200,7 @@ export class UtilsCore implements IUtils {
    * @param {IContext} context
    * @return {void}
    */
-  public executeCommand&lt;ctx extends Context>(context: ctx &amp; IContext): void {
+  public executeCommand&lt;ctx extends CommandContext>(context: ctx): void {
     logger('command execute from utils');
     logger('params: context: %o, utils: %o', context, this);
 

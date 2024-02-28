@@ -10,37 +10,32 @@ import { AnyObject } from './types.js';
 const logger = debug('commander-core:handler');
 
 /**
- * @description источники загрузок
+ * источники загрузок
  * @interface
  */
 interface ICommandsLoader<C extends AnyObject, U extends IUtils> {
   /**
-   * @description директория
+   * директория
    */
   directory?: string;
 
   /**
-   * @description массив, при указании этого источника директория будет игнорироваться
+   * массив, при указании этого источника директория будет игнорироваться
    */
   fromArray?: Command<C, U>[];
 }
 
-/**
- * @interface
- */
 export interface IHandlerParams<
   C extends CommandContextLayer,
   U extends IUtils,
 > {
   /**
    * объект описывающий источник загрузок
-   * @type {ICommandsLoader}
    */
   commands: ICommandsLoader<C, U>;
 
   /**
    * строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
-   * @type {boolean}
    * @default true
    */
   strictLoader?: boolean;
@@ -49,15 +44,11 @@ export interface IHandlerParams<
 
   /**
    * настраиваемые утилиты для вашей логики, например для работы с базой данных
-   * @type {UtilsCore}
    */
   utils?: U;
 }
 
 /**
- * @description класс обработчика
- * @class
- * @param {IHandlerParams} data данные обработчика
  * @example
  *
  * const { Handler, UtilsCore } = require('commander-core');
@@ -89,7 +80,6 @@ export class Handler<
   C extends CommandContextLayer = CommandContextLayer,
   U extends UtilsCore = UtilsCore,
 > {
-  // private readonly UtilsConstructor: Constructable<U>;
   private readonly commandsDirectory!: string;
 
   private sourceCommands = '';
@@ -111,9 +101,6 @@ export class Handler<
       strictLoader: false,
     },
   ) {
-    // this.UtilsConstructor =
-    //   data.UtilsConstructor ?? (UtilsCore as unknown as Constructable<U>);
-
     logger('create handler start');
     this.strictLoader = data.strictLoader || false;
 

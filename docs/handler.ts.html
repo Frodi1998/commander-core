@@ -76,7 +76,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="Context.html">Context</a></li><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IContext.html">IContext</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="Context.html">Context</a></li><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IContext.html">IContext</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -95,12 +95,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import debug from 'debug';
 
-import {
-  Command,
-  IContext,
-  Context,
-  CommandContextLayer,
-} from './command/index.js';
+import { Command, CommandContextLayer } from './command/index.js';
 import { ConfigureError } from './errors/index.js';
 import { UtilsCore, EventListener, IUtils } from './util/index.js';
 import executeCommand from './util/executeCommand.js';
@@ -110,37 +105,32 @@ import { AnyObject } from './types.js';
 const logger = debug('commander-core:handler');
 
 /**
- * @description источники загрузок
+ * источники загрузок
  * @interface
  */
 interface ICommandsLoader&lt;C extends AnyObject, U extends IUtils> {
   /**
-   * @description директория
+   * директория
    */
   directory?: string;
 
   /**
-   * @description массив, при указании этого источника директория будет игнорироваться
+   * массив, при указании этого источника директория будет игнорироваться
    */
   fromArray?: Command&lt;C, U>[];
 }
 
-/**
- * @interface
- */
 export interface IHandlerParams&lt;
   C extends CommandContextLayer,
   U extends IUtils,
 > {
   /**
    * объект описывающий источник загрузок
-   * @type {ICommandsLoader}
    */
   commands: ICommandsLoader&lt;C, U>;
 
   /**
    * строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
-   * @type {boolean}
    * @default true
    */
   strictLoader?: boolean;
@@ -149,15 +139,11 @@ export interface IHandlerParams&lt;
 
   /**
    * настраиваемые утилиты для вашей логики, например для работы с базой данных
-   * @type {UtilsCore}
    */
   utils?: U;
 }
 
 /**
- * @description класс обработчика
- * @class
- * @param {IHandlerParams} data данные обработчика
  * @example
  *
  * const { Handler, UtilsCore } = require('commander-core');
@@ -189,16 +175,19 @@ export class Handler&lt;
   C extends CommandContextLayer = CommandContextLayer,
   U extends UtilsCore = UtilsCore,
 > {
-  // private readonly UtilsConstructor: Constructable&lt;U>;
   private readonly commandsDirectory!: string;
+
   private sourceCommands = '';
+
   private strictLoader = false;
 
   /**
-   * @type {EventEmitter} events менеджер событий
+   * events менеджер событий
    */
   readonly events: EventListener;
+
   readonly commander: Commander;
+
   readonly utils: U;
 
   constructor(
@@ -207,9 +196,6 @@ export class Handler&lt;
       strictLoader: false,
     },
   ) {
-    // this.UtilsConstructor =
-    //   data.UtilsConstructor ?? (UtilsCore as unknown as Constructable&lt;U>);
-
     logger('create handler start');
     this.strictLoader = data.strictLoader || false;
 
@@ -252,11 +238,11 @@ export class Handler&lt;
   }
 
   get [Symbol.toStringTag](): string {
-    return 'Handler';
+    return this.constructor.name;
   }
 
   /**
-   * @description загружает команды из директории
+   * загружает команды из директории
    * @return {Promise&lt;void>}
    */
   async loadCommands(): Promise&lt;boolean> {
@@ -290,7 +276,7 @@ export class Handler&lt;
   }
 
   /**
-   * @description обработка команды
+   * обработка команды
    * @param {object} context объект контекста возвращаемый из vk-io или puregram
    * @return {void}
    * @example
@@ -298,8 +284,10 @@ export class Handler&lt;
    * execute&lt;MessageContext>(context)
    * // => void
    */
-  async execute&lt;C extends Context>(context: C &amp; IContext): Promise&lt;void> {
-    return executeCommand&lt;C>(context, this.utils);
+  async execute&lt;C extends AnyObject>(
+    context: CommandContextLayer&lt;C>,
+  ): Promise&lt;void> {
+    return executeCommand(context, this.utils);
   }
 }
 </code></pre>

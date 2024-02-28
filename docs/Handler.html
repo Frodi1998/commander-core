@@ -74,7 +74,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Commander.html">Commander</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="Context.html">Context</a></li><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IContext.html">IContext</a></li><li><a href="IHandlerParams.html">IHandlerParams</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Command.html">Command</a></li><li><a href="Handler.html">Handler</a></li><li><a href="UtilsCore.html">UtilsCore</a></li></ul><h3>Interfaces</h3><ul><li><a href="Context.html">Context</a></li><li><a href="EventEmitter.html">EventEmitter</a></li><li><a href="ICommand.html">ICommand</a></li><li><a href="ICommandsLoader.html">ICommandsLoader</a></li><li><a href="IContext.html">IContext</a></li></ul><h3><a href="global.html">Global</a></h3></div>
                 
             </nav>
         </div>
@@ -93,7 +93,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Handler<span class="signature">(data)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Handler<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -117,7 +117,7 @@
         
         <span class="code-name">
             
-                new Handler<span class="signature">(data)</span><span class="type-signature"></span>
+                new Handler<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -125,10 +125,6 @@
 
     
     
-    <div class="description">
-        <p>класс обработчика</p>
-    </div>
-    
 
 
 
@@ -137,57 +133,6 @@
 
 
 
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>data</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type"><a href="IHandlerParams.html">IHandlerParams</a></code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>данные обработчика</p></td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -228,7 +173,7 @@
         <p class="tag-source">
             <a href="handler.ts.html" class="button">View Source</a>
             <span>
-                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line38">line 38</a>
+                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line35">line 35</a>
             </span>
         </p>
     
@@ -299,14 +244,6 @@
             
                 <div class="member">
 
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="EventEmitter.html">EventEmitter</a></code>
-
-
-    </span>
-
 <h4 class="name" id="events">
     <a class="href-link" href="#events">#</a>
     
@@ -362,7 +299,7 @@
         <p class="tag-source">
             <a href="handler.ts.html" class="button">View Source</a>
             <span>
-                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line46">line 46</a>
+                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line42">line 42</a>
             </span>
         </p>
     
@@ -379,7 +316,7 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<code class="param-type"><a href="EventEmitter.html">EventEmitter</a></code>
+<code class="param-type">EventListener</code>
 
 
     </span>
@@ -439,7 +376,7 @@
         <p class="tag-source">
             <a href="handler.ts.html" class="button">View Source</a>
             <span>
-                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line180">line 180</a>
+                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line150">line 150</a>
             </span>
         </p>
     
@@ -584,7 +521,7 @@
         <p class="tag-source">
             <a href="handler.ts.html" class="button">View Source</a>
             <span>
-                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line199">line 199</a>
+                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line169">line 169</a>
             </span>
         </p>
     
@@ -636,7 +573,8 @@
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>execute&lt;MessageContext>(context)// => void</code></pre>
+        <pre class="prettyprint"><code>execute&lt;MessageContext>(context)
+// => void</code></pre>
     
 
 
@@ -715,7 +653,7 @@
         <p class="tag-source">
             <a href="handler.ts.html" class="button">View Source</a>
             <span>
-                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line187">line 187</a>
+                <a href="handler.ts.html">handler.ts</a>, <a href="handler.ts.html#line157">line 157</a>
             </span>
         </p>
     
