@@ -1,10 +1,16 @@
 import debug from 'debug';
 
-import { Command, IContext, Context } from './command/index.js';
+import {
+  Command,
+  IContext,
+  Context,
+  CommandContextLayer,
+} from './command/index.js';
 import { ConfigureError } from './errors/index.js';
-import { UtilsCore, EventListener } from './util/index.js';
+import { UtilsCore, EventListener, IUtils } from './util/index.js';
 import executeCommand from './util/executeCommand.js';
 import { Commander } from './commander.js';
+import { AnyObject } from './types.js';
 
 const logger = debug('commander-core:handler');
 
@@ -12,7 +18,7 @@ const logger = debug('commander-core:handler');
  * @description источники загрузок
  * @interface
  */
-interface ICommandsLoader {
+interface ICommandsLoader<C extends AnyObject, U extends IUtils> {
   /**
    * @description директория
    */
@@ -21,18 +27,21 @@ interface ICommandsLoader {
   /**
    * @description массив, при указании этого источника директория будет игнорироваться
    */
-  fromArray?: Command[];
+  fromArray?: Command<C, U>[];
 }
 
 /**
  * @interface
  */
-export interface IHandlerParams {
+export interface IHandlerParams<
+  C extends CommandContextLayer,
+  U extends IUtils,
+> {
   /**
    * объект описывающий источник загрузок
    * @type {ICommandsLoader}
    */
-  commands: ICommandsLoader;
+  commands: ICommandsLoader<C, U>;
 
   /**
    * строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
@@ -41,11 +50,13 @@ export interface IHandlerParams {
    */
   strictLoader?: boolean;
 
+  // UtilsConstructor?: Constructable<U>;
+
   /**
    * настраиваемые утилиты для вашей логики, например для работы с базой данных
    * @type {UtilsCore}
    */
-  utils: UtilsCore;
+  utils?: U;
 }
 
 /**
@@ -79,25 +90,31 @@ export interface IHandlerParams {
  *  utils: new Utils() // Utils
  * })
  */
-export class Handler {
+export class Handler<
+  C extends CommandContextLayer = CommandContextLayer,
+  U extends UtilsCore = UtilsCore,
+> {
+  // private readonly UtilsConstructor: Constructable<U>;
+  private readonly commandsDirectory!: string;
+  private sourceCommands = '';
+  private strictLoader = false;
+
   /**
    * @type {EventEmitter} events менеджер событий
    */
   readonly events: EventListener;
   readonly commander: Commander;
-  readonly utils: UtilsCore;
-
-  private readonly commandsDirectory!: string;
-  private sourceCommands = '';
-  private strictLoader = false;
+  readonly utils: U;
 
   constructor(
-    data: IHandlerParams = {
+    data: IHandlerParams<C, U> = {
       commands: {},
       strictLoader: false,
-      utils: new UtilsCore(),
     },
   ) {
+    // this.UtilsConstructor =
+    //   data.UtilsConstructor ?? (UtilsCore as unknown as Constructable<U>);
+
     logger('create handler start');
     this.strictLoader = data.strictLoader || false;
 
@@ -115,13 +132,13 @@ export class Handler {
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
-    this.utils = data.utils;
+    this.utils = data.utils || (new UtilsCore() as U);
     logger('handler.utils: %o', this.utils);
 
-    this.events = data.utils.events;
+    this.events = this.utils.events;
     logger('handler.events: %o', this.events);
 
-    this.commander = data.utils.commander;
+    this.commander = this.utils.commander;
     logger('handler.commander: %o', this.commander);
 
     if ((data.commands.fromArray?.length as number) > 0) {

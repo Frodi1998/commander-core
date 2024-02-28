@@ -3,6 +3,11 @@ export type AnyObject = Record<string, any>;
 
 export type UnknownObj = Record<string, unknown>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Constructable<T> = new (...args: any) => T;
+
+export type AssertExtendedType<T, T1> = T extends T1 ? T1 : T & T1;
+
 /**
  * @typedef {Function}
  */
@@ -28,7 +33,6 @@ type TEventNames = () => Array<string>;
  */
 export interface EventEmitter {
   /**
-   * @description
    * Синхронно вызывает каждого из прослушивателей, зарегистрированных для указанного события ```eventName```,
    * в том порядке, в котором они были зарегистрированы, передавая каждому предоставленные аргументы.
    * @type {TEmit}
@@ -36,13 +40,12 @@ export interface EventEmitter {
   emit: TEmit;
 
   /**
-   * @description Добавляет ```listener``` функцию в конец массива слушателей для названного события eventName.
+   * Добавляет ```listener``` функцию в конец массива слушателей для названного события eventName.
    * @type {TOn}
    */
   on: TOn;
 
   /**
-   * @description
    * Возвращает массив со списком событий, для которых эмиттер зарегистрировал слушателей.
    * Значения в массиве - это строки или ```Symbols```.
    * @type {TEventNames}

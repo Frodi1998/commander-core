@@ -1,14 +1,16 @@
 import debug from 'debug';
 
-import { Context, IContext } from '../command/index.js';
+import { CommandContextLayer } from '../command/index.js';
 import { UtilsCore } from './index.js';
+import { AnyObject, AssertExtendedType } from '../types.js';
 
 const logger = debug('commander-core:handler');
 
-export default async function executeCommand<ctx extends Context>(
-  context: ctx & IContext,
-  utils: UtilsCore,
-): Promise<void> {
+export default async function executeCommand<
+  CTX extends CommandContextLayer<{ text?: string }>,
+  U extends AnyObject = AnyObject,
+  R extends UtilsCore = AssertExtendedType<U, UtilsCore>,
+>(context: CTX, utils: R): Promise<void> {
   logger('start command processing');
   logger('execute param context: %O', context);
   logger('execute param utils: %O', utils);
@@ -21,7 +23,7 @@ export default async function executeCommand<ctx extends Context>(
   }
 
   const startTime = Date.now();
-  const command = await utils.commander.find<ctx>(context);
+  const command = await utils.commander.find<CTX>(context);
 
   if (!command) {
     logger('command not found');

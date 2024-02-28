@@ -23,14 +23,14 @@ export class Commander {
   }
 
   /**
-   * @description выводит команды
+   * выводит команды
    */
   get getCommands(): Command[] {
     return this.commands;
   }
 
   /**
-   * @description загрузка команд из директории
+   * загрузка команд из директории
    * @param {string} dir директория загрузки команд
    * @return {Promise<void>}
    */
@@ -62,7 +62,7 @@ export class Commander {
   }
 
   /**
-   * @description добавляет новые команды
+   * добавляет новые команды
    * @param {Command | Command[]} commands
    * @return {number}
    */
@@ -78,7 +78,7 @@ export class Commander {
   }
 
   /**
-   * @description устанавливает команды удаляя старые
+   * устанавливает команды удаляя старые
    * @param {Command[]} commands
    * @return {void}
    */
@@ -88,7 +88,7 @@ export class Commander {
   }
 
   /**
-   * @description поиск команды
+   * поиск команды
    * @param {IContext} context
    * @return {Promise<Command>}
    * @example ts

@@ -1,7 +1,11 @@
 import { ConfigureError } from '../errors/index.js';
-import { AnyObject } from '../types.js';
-import { UtilsCore } from '../util/utils-core.js';
-import { Context, ICommand, IContext, THandlerCommand } from './types.js';
+import type { AnyObject } from '../types.js';
+import type {
+  CommandContextLayer,
+  CommandPayloadLayer,
+  ICommand,
+  THandlerCommand,
+} from './types.js';
 
 /**
  * @description Класс команды
@@ -25,7 +29,11 @@ import { Context, ICommand, IContext, THandlerCommand } from './types.js';
  * })
  *  pattern: /test/i,
  */
-export class Command<C = AnyObject, U = UtilsCore> {
+export class Command<
+  C extends AnyObject = AnyObject,
+  U extends AnyObject = AnyObject,
+  R = CommandPayloadLayer<U>,
+> {
   /**
    * паттерн команды
    * @property {RegExp | string}
@@ -37,7 +45,7 @@ export class Command<C = AnyObject, U = UtilsCore> {
    * обработчик комманды
    * @property {THandlerCommand} handler
    */
-  public handler: THandlerCommand<C, U>;
+  public handler: THandlerCommand<C, R>;
 
   /**
    * название
@@ -66,9 +74,9 @@ export class Command<C = AnyObject, U = UtilsCore> {
    * массив подкоманд
    * @property {Command[]} commands
    */
-  public commands: Command[];
+  public commands: Command<C, U, R>[];
 
-  constructor(data: ICommand<C, U>) {
+  constructor(data: ICommand<C, U, R>) {
     if (!data.pattern) {
       throw new ConfigureError(
         'Не указан pattern команды (регулярное выражение)',
@@ -102,7 +110,7 @@ export class Command<C = AnyObject, U = UtilsCore> {
     this.description = description || '';
     this.categories = categories || [];
     this.params = params || {};
-    this.commands = <Command[] | []>commands || [];
+    this.commands = <Command<C, U, R>[] | []>commands || [];
     this.handler = handler;
   }
 
@@ -115,15 +123,12 @@ export class Command<C = AnyObject, U = UtilsCore> {
    * @param {Record<string, unknown>} context
    * @return {Command}
    */
-  findSubCommand<ctx extends Context>(context: ctx & IContext): Command<C, U> {
-    let command: Command | undefined = this.commands.find(subCommand =>
-      (subCommand.pattern as RegExp).test(context.body?.[0] as string),
+  findSubCommand<ctx extends AnyObject>(
+    context: CommandContextLayer<ctx>,
+  ): Command<C, U, R> {
+    let command = this.commands.find(subCommand =>
+      (subCommand.pattern as RegExp).test(context.body?.[1] as string),
     );
-    // for (const subCommand of this.commands) {
-    //   if ((<RegExp>subCommand.pattern).test(context.body[1])) {
-    //     command = subCommand;
-    //   }
-    // }
 
     if (!command) {
       return this;
@@ -134,9 +139,9 @@ export class Command<C = AnyObject, U = UtilsCore> {
     ) as RegExpMatchArray;
 
     if (command.commands.length) {
-      command = (<Command>command).findSubCommand<ctx>(context);
+      command = (<Command<C, U, R>>command).findSubCommand<ctx>(context);
     }
 
-    return command as Command<C, U>;
+    return command as Command<C, U, R>;
   }
 }

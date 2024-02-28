@@ -1,34 +1,40 @@
 import debug from 'debug';
 
-import { Command, Context, IContext } from '../command/index.js';
+import { Command, CommandContext } from '../command/index.js';
 import executeCommand from './executeCommand.js';
 import { EventListener } from './event-emiter.js';
 import { Commander } from '../commander.js';
 
-// const ping = Symbol('ping');
-const command = Symbol('command');
-const status = Symbol('status');
-
 const logger = debug('commander-core:utils');
 
-type TStatus = 'stop' | 'ready' | 'default';
+export type CommandStatus = 'stop' | 'ready' | 'default';
+
+export interface IUtils {
+  events: EventListener;
+  commander: Commander;
+  get getCommand(): Command | undefined;
+  setCommand($command: Command): void;
+  get getCommandStatus(): CommandStatus;
+  setCommandStatus(stat: CommandStatus): CommandStatus;
+  executeCommand<ctx extends CommandContext>(context: ctx): void;
+}
 
 /**
- * @description утилиты
+ * утилиты
  * @class
  */
-export class UtilsCore {
-  [status]: TStatus = 'default';
-  [command]: Command | undefined;
-  private _startTime!: number | undefined;
+export class UtilsCore implements IUtils {
+  protected _status: CommandStatus = 'default';
+  protected _command?: Command;
+  protected _startTime?: number;
 
   /**
-   * @type {EventEmitter} events менеджер событий
+   * events менеджер событий
    */
   public events: EventListener;
 
   /**
-   * @description менеджер команд
+   * менеджер команд
    * @type {Commander}
    */
   public commander: Commander;
@@ -54,19 +60,19 @@ export class UtilsCore {
   }
 
   /**
-   * @description возвращает текущую команду
+   * возвращает текущую команду
    * @type {Command}
    */
   public get getCommand() {
-    return this[command];
+    return this._command;
   }
 
   /**
    * статус команды
    * @return {'stop' | 'ready' | 'default'}
    */
-  public get getCommandStatus(): TStatus {
-    return this[status];
+  public get getCommandStatus(): CommandStatus {
+    return this._status;
   }
 
   /**
@@ -74,30 +80,30 @@ export class UtilsCore {
    * @param {'stop' | 'ready' | 'default'} stat
    * @return {'stop' | 'ready' | 'default'}
    */
-  public setCommandStatus(stat: TStatus): TStatus {
+  public setCommandStatus(stat: CommandStatus): CommandStatus {
     if (stat) {
-      this[status] = stat;
+      this._status = stat;
     }
 
-    return this[status];
+    return this._status;
   }
 
   /**
-   * @description устанавливает команду
+   * устанавливает команду
    * @param {Command} $command
    * @return {void}
    */
   public setCommand($command: Command): void {
-    this[command] = $command;
-    logger('set command: %o', this[command]);
+    this._command = $command;
+    logger('set command: %o', this._command);
   }
 
   /**
-   * @description выполняет команду по переданному контексту, аналогичен handler.execute
+   * выполняет команду по переданному контексту, аналогичен handler.execute
    * @param {IContext} context
    * @return {void}
    */
-  public executeCommand<ctx extends Context>(context: ctx & IContext): void {
+  public executeCommand<ctx extends CommandContext>(context: ctx): void {
     logger('command execute from utils');
     logger('params: context: %o, utils: %o', context, this);
 

@@ -1,11 +1,15 @@
-import { AnyObject } from '../types.js';
-import { UtilsCore } from '../util/utils-core.js';
-import { Command } from './command.js';
+import type { AnyObject } from '../types.js';
+import type { IUtils } from '../util/utils-core.js';
+import type { Command } from './command.js';
 
 export interface CommandContext {
   $command?: string;
   body?: RegExpMatchArray;
 }
+
+// export type CommandPayloadLayer<T> = AssertExtendedType<T, IUtils>;
+export type CommandPayloadLayer<T extends AnyObject = AnyObject> =
+  T extends IUtils ? T : T & IUtils;
 
 export type CommandContextLayer<T = AnyObject> = T & CommandContext;
 
@@ -33,14 +37,18 @@ export interface IContext extends CommandContext {}
  */
 export type THandlerCommand<
   C = AnyObject,
-  U = UtilsCore,
+  U = IUtils,
   R = CommandContextLayer<C>,
 > = (context: R, bot: U) => unknown | Promise<unknown>;
 
 /**
  * @interface
  */
-export interface ICommand<C = AnyObject, U = UtilsCore> {
+export interface ICommand<
+  C extends AnyObject = AnyObject,
+  U extends AnyObject = AnyObject,
+  R = CommandPayloadLayer<U>,
+> {
   /**
    * @type {RegExp | string} регулярное выражение
    */
@@ -49,7 +57,7 @@ export interface ICommand<C = AnyObject, U = UtilsCore> {
   /**
    * @type {THandlerCommand} функция обработки
    */
-  handler: THandlerCommand<C, U>;
+  handler: THandlerCommand<C, R>;
 
   /**
    * @type {string} название команды
@@ -78,5 +86,5 @@ export interface ICommand<C = AnyObject, U = UtilsCore> {
    * @type {Command[]} массив подкоманд
    * @default []
    */
-  commands?: Command[];
+  commands?: Command<C, U, R>[];
 }
