@@ -1,11 +1,6 @@
 import debug from 'debug';
 
-import {
-  Command,
-  IContext,
-  Context,
-  CommandContextLayer,
-} from './command/index.js';
+import { Command, CommandContextLayer } from './command/index.js';
 import { ConfigureError } from './errors/index.js';
 import { UtilsCore, EventListener, IUtils } from './util/index.js';
 import executeCommand from './util/executeCommand.js';
@@ -96,14 +91,18 @@ export class Handler<
 > {
   // private readonly UtilsConstructor: Constructable<U>;
   private readonly commandsDirectory!: string;
+
   private sourceCommands = '';
+
   private strictLoader = false;
 
   /**
-   * @type {EventEmitter} events менеджер событий
+   * events менеджер событий
    */
   readonly events: EventListener;
+
   readonly commander: Commander;
+
   readonly utils: U;
 
   constructor(
@@ -157,11 +156,11 @@ export class Handler<
   }
 
   get [Symbol.toStringTag](): string {
-    return 'Handler';
+    return this.constructor.name;
   }
 
   /**
-   * @description загружает команды из директории
+   * загружает команды из директории
    * @return {Promise<void>}
    */
   async loadCommands(): Promise<boolean> {
@@ -195,7 +194,7 @@ export class Handler<
   }
 
   /**
-   * @description обработка команды
+   * обработка команды
    * @param {object} context объект контекста возвращаемый из vk-io или puregram
    * @return {void}
    * @example
@@ -203,7 +202,9 @@ export class Handler<
    * execute<MessageContext>(context)
    * // => void
    */
-  async execute<C extends Context>(context: C & IContext): Promise<void> {
-    return executeCommand<C>(context, this.utils);
+  async execute<C extends AnyObject>(
+    context: CommandContextLayer<C>,
+  ): Promise<void> {
+    return executeCommand(context, this.utils);
   }
 }

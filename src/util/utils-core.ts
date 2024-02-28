@@ -25,7 +25,9 @@ export interface IUtils {
  */
 export class UtilsCore implements IUtils {
   protected _status: CommandStatus = 'default';
+
   protected _command?: Command;
+
   protected _startTime?: number;
 
   /**

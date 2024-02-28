@@ -8,10 +8,6 @@ import type {
 } from './types.js';
 
 /**
- * @description Класс команды
- * @class
- * @param {ICommand} data
- *
  * @example
  * new Command({
  *
@@ -36,20 +32,16 @@ export class Command<
 > {
   /**
    * паттерн команды
-   * @property {RegExp | string}
-   * @memberof Command
    */
   public pattern: RegExp | string;
 
   /**
    * обработчик комманды
-   * @property {THandlerCommand} handler
    */
   public handler: THandlerCommand<C, R>;
 
   /**
    * название
-   * @property {string}
    */
   public name: string;
 
@@ -60,19 +52,17 @@ export class Command<
   public description: string;
 
   /**
-   * @type {string[]}
+   * категория команды, опционально
    */
   public categories: string[];
 
   /**
-   * @description дополнительные параметры
-   * @type {Record<string, unknown>}
+   * дополнительные параметры
    */
   public params: Record<string, unknown>;
 
   /**
    * массив подкоманд
-   * @property {Command[]} commands
    */
   public commands: Command<C, U, R>[];
 
@@ -115,7 +105,7 @@ export class Command<
   }
 
   get [Symbol.toStringTag](): string {
-    return 'Command';
+    return this.constructor.name;
   }
 
   /**

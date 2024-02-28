@@ -6,20 +6,17 @@ import walkSync from 'walk-sync';
 import { Command } from './command/command.js';
 import { ConfigureError } from './errors/index.js';
 import { Context, IContext } from './command/index.js';
+import { loadFile } from './util/index.js';
 
 const logger = debug('commander-core:commander');
 
-/**
- * @description класс обработки
- * @class
- */
 export class Commander {
   public commandsLoaded = false;
 
   private commands: Command[] = [];
 
   get [Symbol.toStringTag](): string {
-    return 'Commander';
+    return this.constructor.name;
   }
 
   /**
@@ -54,11 +51,11 @@ export class Commander {
         await this.importCommandFromFile(filePath);
       }
 
-      return (this.commandsLoaded = true);
+      this.commandsLoaded = true;
     } catch (err) {
-      console.error(err);
-      return (this.commandsLoaded = false);
+      this.commandsLoaded = false;
     }
+    return this.commandsLoaded;
   }
 
   /**
@@ -67,9 +64,9 @@ export class Commander {
    * @return {number}
    */
   async addCommands(commands: Command | Command[]): Promise<number> {
-    commands = !Array.isArray(commands) ? [commands] : commands;
+    const $commands = !Array.isArray(commands) ? [commands] : commands;
 
-    for await (const command of commands) {
+    for await (const command of $commands) {
       logger('add new command');
       this.commands.push(command);
     }
@@ -119,7 +116,7 @@ export class Commander {
   }
 
   private async importCommandFromFile(filePath: string): Promise<void> {
-    const file = await this.loadFile(filePath);
+    const file = await loadFile(filePath);
 
     if (!file) {
       return;
@@ -140,14 +137,14 @@ export class Commander {
     await this.addCommands(commands);
   }
 
-  private async loadFile(filePath: string) {
-    let file;
-    try {
-      file = await import(`file:///${filePath}`);
-    } catch (error) {
-      file = await import(filePath);
-    }
+  // private async loadFile(filePath: string) {
+  //   let file;
+  //   try {
+  //     file = await import(`file:///${filePath}`);
+  //   } catch (error) {
+  //     file = await import(filePath);
+  //   }
 
-    return file.default ? file.default : file;
-  }
+  //   return file.default ? file.default : file;
+  // }
 }
