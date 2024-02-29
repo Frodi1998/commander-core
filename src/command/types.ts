@@ -7,11 +7,10 @@ export interface CommandContext {
   body?: RegExpMatchArray;
 }
 
-// export type CommandPayloadLayer<T> = AssertExtendedType<T, IUtils>;
+export type CommandContextLayer<T = AnyObject> = T & CommandContext;
+
 export type CommandPayloadLayer<T extends AnyObject = AnyObject> =
   T extends IUtils ? T : T & IUtils;
-
-export type CommandContextLayer<T = AnyObject> = T & CommandContext;
 
 /**
  * @deprecated use CommandContextLayer<Context>
