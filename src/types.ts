@@ -29,7 +29,7 @@ type TOn = (
 type TEventNames = () => Array<string>;
 
 /**
- * @interface
+ * @deprecate
  */
 export interface EventEmitter {
   /**
