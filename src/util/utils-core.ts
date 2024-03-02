@@ -1,9 +1,10 @@
 import debug from 'debug';
 
-import { Command, CommandContext } from '../command/index.js';
+import { Command, CommandContextLayer } from '../command/index.js';
 import executeCommand from './executeCommand.js';
 import { EventListener } from './event-emiter.js';
 import { Commander } from '../commander.js';
+import { AnyObject } from '../types.js';
 
 const logger = debug('commander-core:utils');
 
@@ -13,10 +14,10 @@ export interface IUtils {
   events: EventListener;
   commander: Commander;
   get getCommand(): Command | undefined;
-  setCommand($command: Command): void;
+  setCommand<C extends Command = Command>($command: C): void;
   get getCommandStatus(): CommandStatus;
   setCommandStatus(stat: CommandStatus): CommandStatus;
-  executeCommand<ctx extends CommandContext>(context: ctx): void;
+  executeCommand<T extends AnyObject>(context: CommandContextLayer<T>): void;
 }
 
 /**
@@ -95,7 +96,7 @@ export class UtilsCore implements IUtils {
    * @param {Command} $command
    * @return {void}
    */
-  public setCommand($command: Command): void {
+  public setCommand<C extends Command = Command>($command: C): void {
     this._command = $command;
     logger('set command: %o', this._command);
   }
@@ -105,10 +106,12 @@ export class UtilsCore implements IUtils {
    * @param {IContext} context
    * @return {void}
    */
-  public executeCommand<ctx extends CommandContext>(context: ctx): void {
+  public executeCommand<T extends AnyObject>(
+    context: CommandContextLayer<T>,
+  ): void {
     logger('command execute from utils');
     logger('params: context: %o, utils: %o', context, this);
 
-    executeCommand<ctx>(context, this);
+    executeCommand(context, this as UtilsCore);
   }
 }

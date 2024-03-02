@@ -1,11 +1,15 @@
 import debug from 'debug';
 
-import { Command, CommandContextLayer } from './command/index.js';
+import {
+  Command,
+  CommandContextLayer,
+  CommandPayloadLayer,
+} from './command/index.js';
 import { ConfigureError } from './errors/index.js';
 import { UtilsCore, EventListener, IUtils } from './util/index.js';
 import executeCommand from './util/executeCommand.js';
 import { Commander } from './commander.js';
-import { AnyObject } from './types.js';
+import { AnyObject, AssertExtendedType } from './types.js';
 
 const logger = debug('commander-core:handler');
 
@@ -13,7 +17,11 @@ const logger = debug('commander-core:handler');
  * источники загрузок
  * @interface
  */
-interface ICommandsLoader<C extends AnyObject, U extends IUtils> {
+interface ICommandsLoader<
+  C extends AnyObject,
+  U extends IUtils,
+  CMD extends Command<C, U> = Command<C, U>,
+> {
   /**
    * директория
    */
@@ -22,17 +30,18 @@ interface ICommandsLoader<C extends AnyObject, U extends IUtils> {
   /**
    * массив, при указании этого источника директория будет игнорироваться
    */
-  fromArray?: Command<C, U>[];
+  fromArray?: CMD[];
 }
 
 export interface IHandlerParams<
   C extends CommandContextLayer,
-  U extends IUtils,
+  U extends AnyObject,
+  CMD extends Command<C, U> = Command<C, U>,
 > {
   /**
    * объект описывающий источник загрузок
    */
-  commands: ICommandsLoader<C, U>;
+  commands: ICommandsLoader<C, CommandPayloadLayer<U>, CMD>;
 
   /**
    * строгий режим, гарантирующий что при загрузке будет хотя бы 1 команда иначе бросит ошибку
@@ -45,7 +54,7 @@ export interface IHandlerParams<
   /**
    * настраиваемые утилиты для вашей логики, например для работы с базой данных
    */
-  utils?: U;
+  utils: CommandPayloadLayer<U>;
 }
 
 /**
@@ -78,7 +87,8 @@ export interface IHandlerParams<
  */
 export class Handler<
   C extends CommandContextLayer = CommandContextLayer,
-  U extends UtilsCore = UtilsCore,
+  U extends AnyObject = AnyObject,
+  CMD extends Command<C, U> = Command<C, U>,
 > {
   private readonly commandsDirectory!: string;
 
@@ -93,12 +103,13 @@ export class Handler<
 
   readonly commander: Commander;
 
-  readonly utils: U;
+  readonly utils: CommandPayloadLayer<U>;
 
   constructor(
-    data: IHandlerParams<C, U> = {
+    data: IHandlerParams<C, U, CMD> = {
       commands: {},
       strictLoader: false,
+      utils: new UtilsCore() as unknown as CommandPayloadLayer<U>,
     },
   ) {
     logger('create handler start');
@@ -118,7 +129,7 @@ export class Handler<
       throw new ConfigureError('Строгий режим загрузки! команды не найдены');
     }
 
-    this.utils = data.utils || (new UtilsCore() as U);
+    this.utils = data.utils;
     logger('handler.utils: %o', this.utils);
 
     this.events = this.utils.events;
@@ -129,7 +140,9 @@ export class Handler<
 
     if ((data.commands.fromArray?.length as number) > 0) {
       this.commander.commandsLoaded = true;
-      this.commander.setCommands(data.commands.fromArray as Command[]);
+      this.commander.setCommands(
+        data.commands.fromArray as unknown as Command[],
+      );
     }
 
     if (data.commands.directory) {
@@ -189,8 +202,8 @@ export class Handler<
    * execute<MessageContext>(context)
    * // => void
    */
-  async execute<C extends AnyObject>(
-    context: CommandContextLayer<C>,
+  async execute<T extends AnyObject>(
+    context: AssertExtendedType<T, CommandContextLayer<T>>,
   ): Promise<void> {
     return executeCommand(context, this.utils);
   }

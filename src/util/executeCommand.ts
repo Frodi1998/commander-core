@@ -1,16 +1,16 @@
 import debug from 'debug';
 
-import { CommandContextLayer } from '../command/index.js';
-import { UtilsCore } from './index.js';
-import { AnyObject, AssertExtendedType } from '../types.js';
+import { CommandContextLayer, CommandPayloadLayer } from '../command/index.js';
+import { ListenerContext } from './index.js';
+import { AnyObject } from '../types.js';
 
 const logger = debug('commander-core:handler');
 
 export default async function executeCommand<
-  CTX extends CommandContextLayer<{ text?: string }>,
+  C extends AnyObject = AnyObject,
   U extends AnyObject = AnyObject,
-  R extends UtilsCore = AssertExtendedType<U, UtilsCore>,
->(context: CTX, utils: R): Promise<void> {
+  CTX extends CommandContextLayer = CommandContextLayer<C & { text: string }>,
+>(context: CTX, utils: CommandPayloadLayer<U>): Promise<void> {
   logger('start command processing');
   logger('execute param context: %O', context);
   logger('execute param utils: %O', utils);
@@ -47,7 +47,13 @@ export default async function executeCommand<
     try {
       await command.handler(context, utils);
     } catch (error) {
-      utils.events.emit('command_error', { context, utils, error });
+      const params: ListenerContext<CTX, U> = {
+        context,
+        utils,
+        error: error as Error,
+      };
+
+      utils.events.emit('command_error', params);
       return;
     }
   }
