@@ -10,6 +10,6 @@ export default new Command({
 
     const ctx = new MessageCTX(context.body![1]);
 
-    return utils.executeCommand<MyContext>(ctx);
+    return utils.executeCommand(ctx);
   },
 });
