@@ -5,11 +5,11 @@ import { Utils } from '../utils.js';
 export default new Command({
   pattern: /^utils\s(.*)$/i,
   name: 'event',
-  handler(context: MyContext, bot: Utils) {
+  handler(context: MyContext, utils: Utils) {
     console.log('command => utils');
 
     const ctx = new MessageCTX(context.body![1]);
 
-    return bot.executeCommand(ctx);
+    return utils.executeCommand<MyContext>(ctx);
   },
 });
