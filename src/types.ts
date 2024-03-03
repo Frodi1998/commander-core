@@ -1,3 +1,7 @@
+export type MaybeArray<T> = T | T[];
+
+export type MaybePromise<T> = T | Promise<T>;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyObject = Record<string, any>;
 
