@@ -5,7 +5,7 @@ import walkSync from 'walk-sync';
 
 import { Command } from './command/command.js';
 import { ConfigureError } from './errors/index.js';
-import { Context, IContext } from './command/index.js';
+import { CommandContextLayer } from './command/index.js';
 import { loadFile } from './util/index.js';
 
 const logger = debug('commander-core:commander');
@@ -86,7 +86,7 @@ export class Commander {
 
   /**
    * поиск команды
-   * @param {IContext} context
+   * @param {CommandContext} context
    * @return {Promise<Command>}
    * @example ts
    *
@@ -94,7 +94,7 @@ export class Commander {
    *
    * const command = commander.find<MessageContext>(context)
    */
-  async find<C extends Context & IContext>(
+  async find<C extends CommandContextLayer>(
     context: C,
   ): Promise<Command | undefined> {
     let command = this.commands.find(cmd =>
@@ -136,15 +136,4 @@ export class Commander {
 
     await this.addCommands(commands);
   }
-
-  // private async loadFile(filePath: string) {
-  //   let file;
-  //   try {
-  //     file = await import(`file:///${filePath}`);
-  //   } catch (error) {
-  //     file = await import(filePath);
-  //   }
-
-  //   return file.default ? file.default : file;
-  // }
 }
