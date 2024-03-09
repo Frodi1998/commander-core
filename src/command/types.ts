@@ -1,4 +1,4 @@
-import type { AnyObject } from '../types.js';
+import type { AnyObject, MaybePromise } from '../types.js';
 import type { IUtils } from '../util/utils-core.js';
 import type { Command } from './command.js';
 
@@ -29,16 +29,20 @@ export interface IContext extends CommandContext {}
  * @typedef {Function}
  * @example
  *
- * handler(context, bot) {
+ * handler(context, utils) {
  *  bot.testMetod() //utils.testMetod
  *  context.send('ура')
  * }
  */
-export type THandlerCommand<
-  C = AnyObject,
-  U = IUtils,
-  R = CommandContextLayer<C>,
-> = (context: R, bot: U) => unknown | Promise<unknown>;
+export type CommandHandler<C = AnyObject, U = IUtils> = (
+  context: CommandContextLayer<C>,
+  utils: U,
+) => MaybePromise<unknown>;
+
+/**
+ * @deprecated use CommandHandler
+ */
+export type THandlerCommand<C = AnyObject, U = IUtils> = CommandHandler<C, U>;
 
 /**
  * @interface
@@ -56,7 +60,7 @@ export interface ICommand<
   /**
    * @type {THandlerCommand} функция обработки
    */
-  handler: THandlerCommand<C, R>;
+  handler: CommandHandler<C, R>;
 
   /**
    * @type {string} название команды
