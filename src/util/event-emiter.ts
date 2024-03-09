@@ -30,10 +30,13 @@ export interface CustomEventListener<
     event: CommandEventTypes,
     listener: (ctx: ListenerContext<T, U>) => void,
   ): this;
+  once(
+    event: CommandEventTypes,
+    listener: (ctx: ListenerContext<T, U>) => void,
+  ): this;
   emit(event: CommandEventTypes, ctx: ListenerContext<T, U>): boolean;
 }
 
-// Класс EventListener с использованием дженериков
 export class EventListener<
     C extends AnyObject = AnyObject,
     U extends AnyObject = AnyObject,
@@ -46,6 +49,13 @@ export class EventListener<
     listener: (ctx: ListenerContext<C, U>) => void,
   ): this {
     return super.on(event, listener);
+  }
+
+  once(
+    event: CommandEventTypes,
+    listener: (ctx: ListenerContext<C, U>) => void,
+  ): this {
+    return super.once(event, listener);
   }
 
   emit(event: CommandEventTypes, ctx: ListenerContext<C, U>): boolean {
