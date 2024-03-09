@@ -7,6 +7,7 @@ import { Command } from './command/command.js';
 import { ConfigureError } from './errors/index.js';
 import { CommandContextLayer } from './command/index.js';
 import { loadFile } from './util/index.js';
+import { MaybeArray } from './types.js';
 
 const logger = debug('commander-core:commander');
 
@@ -63,7 +64,7 @@ export class Commander {
    * @param {Command | Command[]} commands
    * @return {number}
    */
-  async addCommands(commands: Command | Command[]): Promise<number> {
+  async addCommands(commands: MaybeArray<Command>): Promise<number> {
     const $commands = !Array.isArray(commands) ? [commands] : commands;
 
     for await (const command of $commands) {
